@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Roadmap</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/roadmap.css') }}" />
+</head>
+<body data-page="roadmap" data-bgm="/static/bgm/roadmap.mp3">
+  <div class="roadmap-wrapper">
+    <div class="roadmap-content">
+      <!-- Background Image -->
+      <img src="{{ url_for('static', filename='images/gameimg/roadmap/roadmap.png') }}" alt="Roadmap" class="bg-img" />
+      <audio id="buttonClickSound" src="/static/sfx/click.mp3" preload="auto"></audio>
+
+      <!-- Image-Based Buttons -->
+      <div class="roadmap-buttons">
+        <!-- Back Button -->
+        <div class="roadmap-btn-wrapper">
+          <a href="{{ url_for('dashboard') }}" onclick="delayedRoadmapRedirect(event)">
+            <button class="back-btn"></button>
+          </a>
+        </div>
+
+        <!-- Map Buttons -->
+
+         <!-- Addition -->
+        <div class="roadmap-btn-wrapper">
+          <a href="{{ url_for('stages', map='addition') }}" class="roadmap-btn addition-village" data-map="addition" onclick="delayedRedirect(event, this.href)"></a>
+        </div>
+        <div class="star-wrapper addition-village-stars">
+          <img src="{{ url_for('static', filename='images/gameimg/roadmap/star-empty.png') }}" onclick="playButtonClickSound();" class="progress-star star-1" alt="star">
+          <img src="{{ url_for('static', filename='images/gameimg/roadmap/star-empty.png') }}" onclick="playButtonClickSound();" class="progress-star star-2" alt="star">
+          <img src="{{ url_for('static', filename='images/gameimg/roadmap/star-empty.png') }}" onclick="playButtonClickSound();" class="progress-star star-3" alt="star">
+        </div>
+
+        <!-- Subtraction -->
+        <div class="roadmap-btn-wrapper">
+          <a href="{{ url_for('stages', map='subtraction') }}" class="roadmap-btn subtraction-sands" data-map="subtraction" onclick="delayedRedirect(event, this.href)"></a>
+        </div>
+        <div class="star-wrapper subtraction-sands-stars">
+          <img src="{{ url_for('static', filename='images/gameimg/roadmap/star-empty.png') }}" onclick="playButtonClickSound();" class="progress-star star-1" alt="star">
+          <img src="{{ url_for('static', filename='images/gameimg/roadmap/star-empty.png') }}" onclick="playButtonClickSound();" class="progress-star star-2" alt="star">
+          <img src="{{ url_for('static', filename='images/gameimg/roadmap/star-empty.png') }}" onclick="playButtonClickSound();" class="progress-star star-3" alt="star">
+        </div>
+
+        <!-- Comparison -->
+        <div class="roadmap-btn-wrapper">
+          <a href="{{ url_for('stages', map='comparison') }}" class="roadmap-btn comparison-cliffs" data-map="comparison" onclick="delayedRedirect(event, this.href)"></a>
+        </div>
+        <div class="star-wrapper comparison-cliffs-stars">
+          <img src="{{ url_for('static', filename='images/gameimg/roadmap/star-empty.png') }}" onclick="playButtonClickSound();" class="progress-star star-1" alt="star">
+          <img src="{{ url_for('static', filename='images/gameimg/roadmap/star-empty.png') }}" onclick="playButtonClickSound();" class="progress-star star-2" alt="star">
+          <img src="{{ url_for('static', filename='images/gameimg/roadmap/star-empty.png') }}" onclick="playButtonClickSound();" class="progress-star star-3" alt="star">
+        </div>
+        <!-- Place Value -->
+        <div class="roadmap-btn-wrapper">
+          <a href="{{ url_for('stages', map='placevalue') }}" class="roadmap-btn place-value-town" data-map="placevalue" onclick="delayedRedirect(event, this.href)"></a>
+        </div>
+        <div class="star-wrapper place-value-town-stars">
+          <img src="{{ url_for('static', filename='images/gameimg/roadmap/star-empty.png') }}" onclick="playButtonClickSound();" class="progress-star star-1" alt="star">
+          <img src="{{ url_for('static', filename='images/gameimg/roadmap/star-empty.png') }}" onclick="playButtonClickSound();" class="progress-star star-2" alt="star">
+          <img src="{{ url_for('static', filename='images/gameimg/roadmap/star-empty.png') }}" onclick="playButtonClickSound();" class="progress-star star-3" alt="star">
+        </div>
+        <!-- Multiplication -->
+        <div class="roadmap-btn-wrapper">
+          <a href="{{ url_for('stages', map='multiplication') }}" class="roadmap-btn multiplication-mirage" data-map="multiplication" onclick="delayedRedirect(event, this.href)"></a>
+        </div>
+        <div class="star-wrapper multiplication-mirage-stars">
+          <img src="{{ url_for('static', filename='images/gameimg/roadmap/star-empty.png') }}" onclick="playButtonClickSound();" class="progress-star star-1" alt="star">
+          <img src="{{ url_for('static', filename='images/gameimg/roadmap/star-empty.png') }}" onclick="playButtonClickSound();" class="progress-star star-2" alt="star">
+          <img src="{{ url_for('static', filename='images/gameimg/roadmap/star-empty.png') }}" onclick="playButtonClickSound();" class="progress-star star-3" alt="star">
+        </div>
+        <!-- Division -->
+        <div class="roadmap-btn-wrapper">
+          <a href="{{ url_for('stages', map='division') }}" class="roadmap-btn division-river" data-map="division" onclick="delayedRedirect(event, this.href)"></a>
+        </div>
+        <div class="star-wrapper division-river-stars">
+          <img src="{{ url_for('static', filename='images/gameimg/roadmap/star-empty.png') }}" onclick="playButtonClickSound();" class="progress-star star-1" alt="star">
+          <img src="{{ url_for('static', filename='images/gameimg/roadmap/star-empty.png') }}" onclick="playButtonClickSound();" class="progress-star star-2" alt="star">
+          <img src="{{ url_for('static', filename='images/gameimg/roadmap/star-empty.png') }}" onclick="playButtonClickSound();" class="progress-star star-3" alt="star">
+        </div>
+        <!-- Numerals -->
+        <div class="roadmap-btn-wrapper">
+          <a href="{{ url_for('stages', map='numerals') }}" class="roadmap-btn numeral-ruins" data-map="numerals" onclick="delayedRedirect(event, this.href)"></a>
+        </div>
+        <div class="star-wrapper numeral-ruins-stars">
+          <img src="{{ url_for('static', filename='images/gameimg/roadmap/star-empty.png') }}" onclick="playButtonClickSound();" class="progress-star star-1" alt="star">
+          <img src="{{ url_for('static', filename='images/gameimg/roadmap/star-empty.png') }}" onclick="playButtonClickSound();" class="progress-star star-2" alt="star">
+          <img src="{{ url_for('static', filename='images/gameimg/roadmap/star-empty.png') }}" onclick="playButtonClickSound();" class="progress-star star-3" alt="star">
+        </div>
+        <!-- Counting -->
+        <div class="roadmap-btn-wrapper">
+          <a href="{{ url_for('stages', map='counting') }}" class="roadmap-btn counting-springs" data-map="counting" onclick="delayedRedirect(event, this.href)"></a>
+        </div>
+        <div class="star-wrapper counting-springs-stars">
+          <img src="{{ url_for('static', filename='images/gameimg/roadmap/star-empty.png') }}" onclick="playButtonClickSound();" class="progress-star star-1" alt="star">
+          <img src="{{ url_for('static', filename='images/gameimg/roadmap/star-empty.png') }}" onclick="playButtonClickSound();" class="progress-star star-2" alt="star">
+          <img src="{{ url_for('static', filename='images/gameimg/roadmap/star-empty.png') }}" onclick="playButtonClickSound();" class="progress-star star-3" alt="star">
+        </div>
+      </div> <!-- .roadmap-buttons -->
+    </div> <!-- .roadmap-content -->
+  </div> <!-- .roadmap-wrapper -->
+
+<!-- STAR PROGRESS SCRIPT -->
+<script>
+  const starFilled = "{{ url_for('static', filename='images/gameimg/roadmap/star-filled.png') }}";
+  const starEmpty = "{{ url_for('static', filename='images/gameimg/roadmap/star-empty.png') }}";
+
+  // Function to set stars for both roadmap and stages
+  function setStars(wrapperSelector, mapPrefix, progress, stageCount = 3) {
+    const wrapper = document.querySelector(wrapperSelector);
+    if (!wrapper) return;
+
+    const stars = wrapper.querySelectorAll('.progress-star');
+    let totalStars = 0;
+
+    // Loop through each stage and set star progress
+    for (let i = 0; i < stageCount; i++) {
+      const stageKey = `${mapPrefix}-${i + 1}`;
+      const stageData = progress[stageKey];
+      const starsEarned = (stageData && stageData.stars) || 0;
+
+      // console.log(`Stage Key: ${stageKey}, Stars Earned: ${starsEarned}`); // Debug log
+
+      totalStars += starsEarned;
+
+      // Set stars for the current stage
+      if (stars[i]) {
+        stars[i].src = starsEarned > 0 ? starFilled : starEmpty;
+      }
+    }
+
+    // Update overall stars for the map in the roadmap (max 3 stars per map)
+    const mapProgress = document.querySelector(`.${mapPrefix}-progress`);
+    if (mapProgress) {
+      const totalMapStars = Math.min(totalStars, 3); // Ensure max 3 stars per map
+      console.log(`Total Stars for ${mapPrefix}: ${totalMapStars}`); // Debug log
+      mapProgress.src = totalMapStars === 3 ? starFilled : (totalMapStars > 0 ? starEmpty : starFilled);
+    }
+  }
+
+  // List of map wrappers and their prefixes
+  const maps = [
+    ['.addition-village-stars', 'addition'],
+    ['.subtraction-sands-stars', 'subtraction'],
+    ['.comparison-cliffs-stars', 'comparison'],
+    ['.place-value-town-stars', 'placevalue'],
+    ['.multiplication-mirage-stars', 'multiplication'],
+    ['.division-river-stars', 'division'],
+    ['.numeral-ruins-stars', 'numerals'],
+    ['.counting-springs-stars', 'counting']
+  ];
+
+  // Fetch progress from server and update all maps
+  fetch('/get_stage_progress')
+    .then(response => response.json())
+    .then(progress => {
+      // console.log("Stage Progress:", progress); // Debug log
+      maps.forEach(([selector, prefix]) => {
+        setStars(selector, prefix, progress);
+      });
+    })
+    .catch(error => {
+      // console.error('Failed to load stage progress:', error);
+    });
+
+
+
+    
+</script>
+
+<script>
+  function playButtonClickSound() {
+    const originalSound = document.getElementById('buttonClickSound');
+    const soundClone = originalSound.cloneNode(); // clone the <audio> element
+    soundClone.volume = 1;
+    soundClone.playbackRate = 2;
+
+    // Play the cloned audio
+    soundClone.play().catch((e) => {
+        console.error('Playback failed:', e);
+    });
+  }
+
+</script>
+
+<script>
+  function delayedRoadmapRedirect(event) {
+    event.preventDefault(); // Prevent immediate redirect
+    playButtonClickSound(); // Play your button click sound
+    const targetUrl = event.currentTarget.getAttribute('href');
+    setTimeout(() => {
+      window.location.href = targetUrl;
+    }, 400); // 400ms delay before redirect
+  }
+
+  function delayedRedirect(event, url) {
+    event.preventDefault(); // Stop the instant jump
+    playButtonClickSound();
+    setTimeout(() => {
+      window.location.href = url;
+    }, 350); // Adjust delay to your liking
+  }
+</script>
+<script src="{{ url_for('static', filename='js/tutorial.js') }}"></script>
+<script src="{{ url_for('static', filename='js/orientation.js') }}"></script>
+<script src="{{ url_for('static', filename='js/bgmusic.js') }}"></script>
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Roadmap</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/shop.css') }}" />
+</head>
+<body data-page="shop" data-bgm="/static/bgm/Shop.mp3" data-play-bgm="true">
+  <div class="shop-wrapper">
+    <div class="shop-content">
+      <!-- Fullscreen Background Image -->
+      <img src="{{ url_for('static', filename='images/shopimg/shop.png') }}" alt="Shop Image" class="shop-img"/> 
+
+      <audio id="buttonClickSound" src="/static/sfx/click.mp3" preload="auto"></audio>
+      <audio id="greetings" src="/static/sfx/shopwelcome.mp3" preload="auto"></audio>
+      <audio id="counticus" src="/static/sfx/counticuswelcome.mp3" preload="auto"></audio>
+      <audio id="farewell" src="/static/sfx/shopfarewell.mp3" preload="auto"></audio>
+
+
+        <div class="shop-btn-wrapper">
+            <div class="shop-btn shopkeeper"onclick="greetings();"></button>
+        </div>
+
+        <div class="back-btn-wrapper">
+          <a href="{{ url_for('dashboard') }}" onclick="delayedBackRedirect(event)">
+            <button class="back-btn"></button>
+          </a>
+        </div>
+        
+
+
+
+        <div class="shop-btn-wrapper">
+            <button class="shop-btn health"onclick="playButtonClickSound();"></button>
+          </div>
+          
+          <div class="shop-btn-wrapper">
+            <button class="shop-btn thunder"onclick="playButtonClickSound();"></button>
+          </div>
+          
+          <div class="shop-btn-wrapper">
+            <button class="shop-btn freeze" onclick="playButtonClickSound();"></button>
+          </div>
+          
+          <div class="shop-btn-wrapper">
+            <button class="shop-btn counticus"onclick="counticus();"></button>
+          </div>
+          
+
+          <div class="speech-bubble" id="speechBubble">
+            <h2 id="speechTitle" class=""></h2>
+            <p id="speechText"></p>
+          </div>
+          
+
+          <script>
+            const speechBubble = document.getElementById("speechBubble");
+            const speechTitle = document.getElementById("speechTitle");
+            const speechText = document.getElementById("speechText");
+          
+            let timeoutId;
+          
+            function showSpeech(title, text, colorClass) {
+              // Clear old timeout and remove previous title color class
+              clearTimeout(timeoutId);
+              speechTitle.className = "";
+          
+              // Update content
+              speechTitle.textContent = title;
+              speechText.textContent = text;
+              speechTitle.classList.add(colorClass);
+          
+              // Show the bubble with fade in
+              speechBubble.classList.add("show");
+          
+              // Auto-hide after 1 minute
+              timeoutId = setTimeout(() => {
+                speechBubble.classList.remove("show");
+              }, 15000);
+            }
+          
+                document.querySelector(".health").addEventListener("click", () => {
+                showSpeech(
+                    "HEALTH POTION",
+                    "A sweet, red potion that heals your wounds after tough math battles with tricky monsters. Drink up to get back in the game!",
+                    "health-title"
+                );
+                });
+
+                document.querySelector(".thunder").addEventListener("click", () => {
+                showSpeech(
+                    "THUNDER POTION",
+                    "Crackles with electric energy! Use it to zap those pesky, number-stealing monsters with a spark of math power!",
+                    "thunder-title"
+                );
+                });
+
+                document.querySelector(".freeze").addEventListener("click", () => {
+                showSpeech(
+                    "FREEZE POTION",
+                    "An icy potion that freezes the enemy in place, giving you precious time to think and plan your next move!",
+                    "freeze-title"
+                );
+                });
+
+          </script>
+          
+          <script>
+            let isNavigatingAway = false;
+          
+            function playButtonClickSound() {
+              const originalSound = document.getElementById('buttonClickSound');
+              const soundClone = originalSound.cloneNode(); // clone the <audio> element
+              soundClone.volume = 1;
+              soundClone.playbackRate = 2;
+          
+              // Play the cloned audio
+              soundClone.play().catch((e) => {
+                  console.error('Playback failed:', e);
+              });
+            }
+          
+            let hasPlayedGreeting = false;
+            let isGreetingPlaying = false; // NEW: to prevent overlap
+
+            function playGreetingSound() {
+              const sound = document.getElementById('greetings');
+
+              // Prevent playing if already playing
+              if (!sound.paused || isGreetingPlaying) return;
+
+              isGreetingPlaying = true;
+              sound.currentTime = 0;
+              sound.volume = 0.5;
+
+              sound.play().catch((e) => {
+                console.error('Playback failed:', e);
+                isGreetingPlaying = false;
+              });
+
+              sound.onended = () => {
+                isGreetingPlaying = false;
+              };
+            }
+
+            // Autoplay on first user interaction
+            ['click', 'keydown', 'touchstart'].forEach(event => {
+              document.addEventListener(event, () => {
+                if (!hasPlayedGreeting && !isNavigatingAway) {
+                  playGreetingSound();
+                  hasPlayedGreeting = true;
+                }
+              }, { once: true });
+            });
+
+            // For manual triggers
+            function greetings() {
+              playGreetingSound();
+            }
+
+          
+            function counticus() {
+              const sound = document.getElementById('counticus');
+          
+              // Only play if not already playing
+              if (sound.paused) {
+                sound.currentTime = 0; // rewind to start
+                sound.volume = 0.5;
+                sound.play().catch((e) => {
+                  console.error('Playback failed:', e);
+                });
+              }
+            }
+          
+            let isFarewellPlaying = false;
+
+            function farewell() {
+              const sound = document.getElementById('farewell');
+
+              if (!isFarewellPlaying) {
+                isFarewellPlaying = true;
+                sound.currentTime = 0;
+                sound.volume = 0.5;
+
+                sound.play().catch((e) => {
+                  console.error('Playback failed:', e);
+                  isFarewellPlaying = false;  // reset flag if play fails
+                });
+
+                sound.onended = () => {
+                  isFarewellPlaying = false;  // reset flag after sound ends
+                };
+              }
+            }
+
+
+          
+            // NEW FUNCTION to stop all sounds immediately
+            function stopAllSounds() {
+              const sounds = ['greetings', 'counticus', 'farewell', 'buttonClickSound'];
+              sounds.forEach(id => {
+                const audio = document.getElementById(id);
+                if (!audio.paused) {
+                  audio.pause();
+                  audio.currentTime = 0;
+                }
+              });
+            }
+          
+            function delayedBackRedirect(event) {
+              event.preventDefault();
+              isNavigatingAway = true; // Set flag to avoid greeting sound
+              
+              stopAllSounds();  // STOP all sounds immediately before playing farewell
+              farewell(); // Play farewell sound
+          
+              const targetUrl = event.currentTarget.getAttribute('href');
+              setTimeout(() => {
+                window.location.href = targetUrl;
+              }, 2600);
+            }
+          </script>
+          <script src="{{ url_for('static', filename='js/tutorial.js') }}"></script>
+          <script src="{{ url_for('static', filename='js/orientation.js') }}"></script>
+          <script src="{{ url_for('static', filename='js/bgmusic.js') }}"></script>
+
+          
+
+      </div>
+    </div>
+  </div>
+</body>
+</html>

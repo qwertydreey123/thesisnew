@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+        <!-- Bootstrap CSS -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+</head>
+<body>
+
+    <div class="custom-container">
+        <!-- Background video (paused at start) -->
+        <video id="intro-video" src="{{ url_for('static', filename='images/indeximg/intro.mp4') }}"></video>
+    
+        <!-- Tap to Enter image button -->
+        <img id="tap-to-enter" src="{{ url_for('static', filename='images/indeximg/enterbtn.png') }}" alt="Tap to Enter">
+        
+        <!-- Login form (initially hidden) -->
+        <div id="login-form" class="login-form" style="display: none; opacity: 0;">
+            <form id="loginForm" method="POST" action="{{ url_for('login') }}" class="login-box">
+                <img id="second-image" src="{{ url_for('static', filename='images/indeximg/login.png') }}" alt="Second Image" style="display: none;">
+
+                <input type="text" id="username" name="username" required autocomplete="off" autocorrect="off" autocapitalize="off">
+                <input type="password" id="password" name="password" required autocomplete="off" autocorrect="off" autocapitalize="off">
+                <button id="submit-btn" class="submit-button" type="submit" style="display: none;"></button>
+                <div class="register-link">
+                    <p>Don't have an account? <a href="{{ url_for('register') }}" class="register-button">Register here</a></p>
+                </div>
+            </form>
+            <!-- Register Link Section -->
+
+        </div>
+        
+        
+
+        <!-- Background image and second image (initially hidden) -->
+        <img id="background-image" src="{{ url_for('static', filename='images/indeximg/loginbg.png') }}" alt="Background Image" style="display: none;">
+        
+            <!-- Skip Button -->
+            <button id="skip-btn" class="control-button" style="display: none; left: 10px;">
+                Skip
+            </button>
+
+            <!-- Mute Button -->
+            <button id="mute-btn" class="control-button mute" style="display: none; right: 10px;">
+                🔊
+            </button>
+
+            <!-- Watch Intro Button -->
+            <button id="watch-intro-btn" class="control-button" style="display: none; left: 10px;">
+                Watch Intro
+            </button>
+
+    </div>
+
+    <script>
+        const tapImage = document.getElementById('tap-to-enter');
+        const video = document.getElementById('intro-video');
+        const bgImage = document.getElementById('background-image');
+        const secondImage = document.getElementById('second-image');
+        const loginForm = document.getElementById('login-form');
+        const skipButton = document.getElementById('skip-btn');
+        const muteButton = document.getElementById('mute-btn');
+        const submitButton = document.getElementById('submit-btn');
+        const watchIntroButton = document.getElementById('watch-intro-btn');
+    
+        let imagesShown = false;
+    
+        // On page load
+        window.onload = () => {
+            video.pause();
+    
+            // Restore from sessionStorage if redirected from login
+            const preserved = sessionStorage.getItem('preserveSkip');
+            if (preserved) {
+                localStorage.setItem('videoSkipped', preserved);
+                sessionStorage.removeItem('preserveSkip');
+            }
+    
+            const skipState = localStorage.getItem('videoSkipped');
+            if (skipState === 'true') {
+                showImages();
+                skipButton.style.display = 'none';
+                watchIntroButton.style.display = 'block';
+            }
+        };
+    
+        // Show login form and visuals
+        function showImages() {
+            if (imagesShown) return;
+            imagesShown = true;
+    
+            bgImage.style.display = 'block';
+            secondImage.style.display = 'block';
+            loginForm.style.display = 'block';
+            submitButton.style.display = 'block';
+    
+            setTimeout(() => {
+                bgImage.style.opacity = 1;
+                secondImage.style.opacity = 1;
+                loginForm.style.opacity = 1;
+                submitButton.style.opacity = 1;
+            }, 10);
+        }
+    
+        // Skip the intro
+// Skip intro
+function skipIntro() {
+    video.currentTime = 13; // Skip to 18 seconds
+    video.pause();
+    
+    // Store video skipped state in localStorage and sessionStorage
+    localStorage.setItem('videoSkipped', 'true');
+    sessionStorage.setItem('preserveSkip', 'true'); // For redirect safety
+    
+    // Hide skip button and show "Watch Intro" button
+    skipButton.style.display = 'none';
+    watchIntroButton.style.display = 'block';
+    
+    // Show images and login form
+    showImages();
+}
+
+// Watch intro again
+function watchIntro() {
+    imagesShown = false;
+
+    // Hide login form and reset the view
+    bgImage.style.display = 'none';
+    secondImage.style.display = 'none';
+    loginForm.style.display = 'none';
+    submitButton.style.display = 'none';
+
+    bgImage.style.opacity = 0;
+    secondImage.style.opacity = 0;
+    loginForm.style.opacity = 0;
+    submitButton.style.opacity = 0;
+
+    // Reset video visuals (play from start)
+    video.currentTime = 0;
+    video.volume = 0.1; // Reset volume to 0.1
+    video.play();
+
+    // Show buttons
+    skipButton.style.display = 'block';
+    muteButton.style.display = 'block';
+    watchIntroButton.style.display = 'none';
+
+    // Clear skip status
+    localStorage.removeItem('videoSkipped');
+    sessionStorage.removeItem('preserveSkip');
+
+    // Hide "Tap to Play" image when intro is played again
+    const tapImage = document.getElementById('tap-to-enter');
+    if (tapImage) {
+        tapImage.style.display = 'none'; // Hide the "Tap to Play" image
+    }
+}
+
+
+    
+        // Skip button event
+        skipButton.addEventListener('click', skipIntro);
+    
+        // Watch intro button event
+        watchIntroButton.addEventListener('click', watchIntro);
+    
+        // Video time checker
+        video.addEventListener('timeupdate', () => {
+            if (video.currentTime >= 13) {
+                localStorage.setItem('videoSkipped', 'true');
+                sessionStorage.setItem('preserveSkip', 'true');
+                skipButton.style.display = 'none';
+                watchIntroButton.style.display = 'block';
+                showImages();
+            }
+        });
+    
+        // Mute button toggle
+        muteButton.addEventListener('click', () => {
+            video.muted = !video.muted;
+            muteButton.textContent = video.muted ? '🔇' : '🔊';
+        });
+    
+        // Tap-to-enter start
+        tapImage.addEventListener('click', () => {
+            tapImage.style.opacity = 0;
+            setTimeout(() => {
+                tapImage.style.display = 'none';
+                video.volume = 0.1;
+                video.play();
+                skipButton.style.display = 'block';
+                muteButton.style.display = 'block';
+            }, 900);
+        });
+    
+    </script>
+    
+    
+    <script>
+        // Wait until the DOM is fully loaded
+        document.addEventListener('DOMContentLoaded', function () {
+            // Select the text and password fields
+            const textInput = document.querySelector('.login-box input[type="text"]');
+            const passwordInput = document.querySelector('.login-box input[type="password"]');
+    
+            // Disable autofill for text input
+            textInput.setAttribute('autocomplete', 'off');
+            // Disable autofill for password input
+            passwordInput.setAttribute('autocomplete', 'off');
+            
+            // Disable the autofill suggestion behavior
+            textInput.setAttribute('autocorrect', 'off');
+            passwordInput.setAttribute('autocorrect', 'off');
+            textInput.setAttribute('autocapitalize', 'off');
+            passwordInput.setAttribute('autocapitalize', 'off');
+    
+            // Clear autofill data if it is present
+            textInput.value = '';
+            passwordInput.value = '';
+            
+            // Ensure that autofill does not reappear by using a random name
+            // textInput.setAttribute('name', 'nope');
+            // passwordInput.setAttribute('name', 'nope');
+        });
+    </script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const loginForm = document.getElementById('loginForm');
+            const usernameInput = document.getElementById('username');
+            const passwordInput = document.getElementById('password');
+    
+            if (loginForm) {
+                loginForm.addEventListener('submit', function(event) {
+                    event.preventDefault();
+    
+                    const existingOverlay = document.getElementById('loadingOverlay');
+                    if (existingOverlay) {
+                        existingOverlay.remove();
+                    }
+    
+                    const overlay = document.createElement('div');
+                    overlay.id = 'loadingOverlay';
+                    overlay.style.position = 'fixed';
+                    overlay.style.top = '0';
+                    overlay.style.left = '0';
+                    overlay.style.width = '100%';
+                    overlay.style.height = '100%';
+                    overlay.style.backgroundColor = 'rgba(0, 0, 0, 0.6)';
+                    overlay.style.display = 'flex';
+                    overlay.style.flexDirection = 'column';
+                    overlay.style.justifyContent = 'center';
+                    overlay.style.alignItems = 'center';
+                    overlay.style.color = '#fff';
+                    overlay.style.fontSize = '2rem';
+                    overlay.style.zIndex = '9999';
+    
+                    const spinner = document.createElement('div');
+                    spinner.classList.add('spinner-border');
+                    spinner.setAttribute('role', 'status');
+                    spinner.style.width = '4rem';
+                    spinner.style.height = '4rem';
+                    spinner.style.color = 'white';
+    
+                    const loadingText = document.createElement('div');
+                    loadingText.innerText = 'Logging in...';
+                    loadingText.style.marginTop = '20px';
+                    loadingText.style.fontSize = '1.5rem';
+    
+                    overlay.appendChild(spinner);
+                    overlay.appendChild(loadingText);
+                    document.body.appendChild(overlay);
+    
+                    const formData = new FormData(loginForm);
+    
+                    // Delay the fetch call by 1 second (1000ms)
+                    setTimeout(() => {
+                        fetch('{{ url_for("login") }}', {
+                            method: 'POST',
+                            body: formData
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            document.body.removeChild(overlay);
+    
+                            if (data.success) {
+                                window.location.href = data.redirect;
+                            } else {
+                                alert(data.message);
+                                passwordInput.value = ''; // Clear password
+                                passwordInput.focus();
+                            }
+                        })
+                        .catch(error => {
+                            document.body.removeChild(overlay);
+                            alert('An error occurred. Please try again.');
+                            console.error(error);
+                        });
+                    }, 1000); // 1 second delay here
+                });
+            }
+        });
+    </script>
+    <script src="{{ url_for('static', filename='js/orientation.js') }}"></script>
+
+    
+</body>
+</html>

@@ -1,0 +1,525 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #2C003E;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    overflow: hidden;
+}
+
+
+
+.tab-slide {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+  margin: 0;
+  transform: translateX(100%);
+  transition: transform 0.5s ease-in-out;
+  z-index: 1;
+
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: 100% 100%; /* ✅ Force stretch to fill screen exactly */
+  background-color: #000;
+  overflow: hidden;
+}
+
+.tab-slide.active {
+  transform: translateX(0);
+  z-index: 2;
+}
+
+.tab-slide.out-left {
+  transform: translateX(-100%);
+}
+
+.tab-slide.out-right {
+  transform: translateX(100%);
+}
+
+#medals-section {
+  background-image: url('../images/collectiblesimg/Badges Background_.png');
+}
+
+#skins-section {
+  background-image: url('../images/collectiblesimg/Costume Background.png');
+}
+
+
+
+
+.nav-btn {
+  position: absolute;
+  top: 50%;
+  font-size: 8vh;
+  background-color: transparent;
+  color: rgb(255, 255, 255);
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  z-index: 3;
+  transform-origin: center;
+}
+
+/* Left button fixed rotation + move left-right */
+.nav-btn.left {
+  left: 4vh;
+  transform: translateY(-50%) rotate(30deg);
+  animation: moveSideways 1s ease-in-out infinite;
+}
+
+/* Right button fixed rotation + move left-right */
+.nav-btn.right {
+  right: 9vh;
+  transform: translateY(-50%) rotate(90deg);
+  animation: moveSideways 1s ease-in-out infinite;
+}
+
+@keyframes moveSideways {
+  0%, 100% {
+      transform: translateY(-50%) translateX(0);
+  }
+  50% {
+      transform: translateY(-50%) translateX(6px);
+  }
+}
+
+
+
+.badge-image {
+  position: relative; /* changed from absolute para hindi mag-overlap yung dropdown */
+  width: auto;
+  height: 15vh;
+  transition: opacity 0.3s, filter 0.3s;
+  user-select: none;
+  -webkit-user-drag: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+.badge-image:hover {
+  opacity: 1;
+  filter: brightness(1.2);
+}
+
+.badge-info {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: -100px;
+  background: rgb(255, 255, 255); /* Darker bg para mas gaming vibe */
+  padding: 10px 16px;
+  border-radius: 12px; /* rounder corners */
+  width: 180px;
+  color: #000000;
+  font-family: 'Poppins', sans-serif;
+  line-height: 1.5;
+  font-size: 0.9rem;
+  font-weight: 700;
+  box-shadow: white;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  user-select: none;
+  transition: opacity 0.25s ease, visibility 0.25s ease;
+  z-index: 100;
+  text-align: center;
+  white-space: normal;
+}
+
+.badge-container:hover .badge-info {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.badge-info::before {
+  content: "";
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-bottom: 10px solid rgb(255, 255, 255);
+}
+
+
+/* Adjust positions of specific badges by using custom classes */
+#multiplication-stage1-claimed {
+  position: absolute;
+  top: 10%;
+  left: 16%;
+}
+
+#multiplication-stage2-claimed {
+  position: absolute;
+  top: 10%;
+  left: 29%;
+}
+
+#multiplication-stage3-claimed {
+  position: absolute;
+  top: 10%;
+  left: 39.5%;
+
+}
+
+#addition-stage1-claimed {
+  position: absolute;
+  top: 10%;
+  left: 51.8%;
+}
+
+#addition-stage2-claimed {
+  position: absolute;
+  top: 10%;
+  left: 63%;
+
+}
+
+#addition-stage3-claimed {
+  position: absolute;
+  top: 10%;
+  left: 76.5%;
+}
+
+#subtraction-stage1-claimed {
+  position: absolute;
+  top: 27.5%;
+  left: 16%;
+}
+
+#subtraction-stage2-claimed {
+  position: absolute;
+  top: 27.5%;
+  left: 29%;
+}
+
+#subtraction-stage3-claimed {
+  position: absolute;
+  top: 27.5%;
+  left: 39.5%;
+
+}
+
+#division-stage1-claimed {
+  position: absolute;
+  top: 27.5%;
+  left: 51.8%;
+}
+
+#division-stage2-claimed {
+  position: absolute;
+  top: 27.5%;
+  left: 63%;
+}
+
+#division-stage3-claimed {
+  position: absolute;
+  top: 27.5%;
+  left: 76.5%;
+}
+
+#counting-stage1-claimed {
+  position: absolute;
+  top: 45%;
+  left: 16%;
+}
+
+#counting-stage2-claimed {
+  position: absolute;
+  top: 45%;
+  left: 29%;
+}
+
+#counting-stage3-claimed {
+  position: absolute;
+  top: 45%;
+  left: 39.5%;
+}
+
+#comparison-stage1-claimed {
+  position: absolute;
+  top: 45%;
+  left: 51.8%;
+}
+
+#comparison-stage2-claimed {
+  position: absolute;
+  top: 45%;
+  left: 63%;
+}
+
+#comparison-stage3-claimed {
+  position: absolute;
+  top: 45%;
+  left: 76.5%;
+}
+
+#numerals-stage1-claimed {
+  position: absolute;
+  top: 62.3%;
+  left: 16%;
+}
+
+#numerals-stage2-claimed {
+  position: absolute;
+  top: 62.3%;
+  left: 29%;
+}
+
+#numerals-stage3-claimed {
+  position: absolute;
+  top: 62.3%;
+  left: 39.5%;
+}
+
+#placevalue-stage1-claimed {
+  position: absolute;
+  top: 62.3%;
+  left: 51.8%;
+}
+
+#placevalue-stage2-claimed {
+  position: absolute;
+  top: 62.3%;
+  left: 63%;
+}
+
+#placevalue-stage3-claimed {
+  position: absolute;
+  top: 62.3%;
+  left: 76.5%;
+}
+
+  
+
+
+
+
+
+
+
+
+
+/* Skins Container */
+#skin-image {
+  position: absolute;
+  user-select: none;
+  -webkit-user-drag: none; /* Prevents dragging in Safari/Chrome */
+  -webkit-user-select: none; /* Prevents text/image selection in WebKit */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE/Edge */
+}
+
+/* Skin 1 positioning */
+.skin-1 {
+  top: 43%;
+  left: 48%;
+  height: 26%;
+  width: auto;
+  
+}
+
+/* Skin 2 positioning */
+.skin-2 {
+  top: 44%;
+  left: 47.4%;
+  height: 25%;
+  width: auto;
+}
+
+/* Skin 3 positioning */
+.skin-3 {
+  top: 46%;
+  left: 47.5%;
+  height: 23%;
+  width: auto;
+}
+
+/* Skin 4 positioning */
+.skin-4 {
+  top: 44%;
+  left: 48%;
+  height: 25%;
+  width: auto;
+}
+
+/* Skin 5 positioning */
+.skin-5 {
+  top: 43%;
+  left: 48%;
+  height: 27%;
+  width: auto;
+}
+
+/* Skin 6 positioning */
+.skin-6 {
+  top: 43%;
+  left: 48%;
+  height: 26%;
+  width: auto;
+}
+
+/* Skin 7 positioning */
+.skin-7 {
+  top: 43%;
+  left: 47.3%;
+  height: 26%;
+  width: auto;
+}
+
+/* Skin 8 positioning */
+.skin-8 {
+  top: 46%;
+  left: 47%;
+  height: 23%;
+  width: auto;
+}
+
+/* Skin 9 positioning */
+.skin-9 {
+  top: 43%;
+  left: 48.3%;
+  height: 26%;
+  width: auto;
+}
+
+/* Magic Mirror positioning */
+.mirror {
+  background-image: url('../images/collectiblesimg/Magic Mirror.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  width: 41%;
+  height: 72%;
+  top: 16%;
+  left: 31%;
+  position: absolute;
+  z-index: -1;
+}
+
+/* Equip Button */
+.equip-btn {
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color: transparent;
+  width: 12%;
+  height: 8%;
+  position: absolute;
+  top: 80%;
+  left: 45.6%;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.equip-btn:hover:not(:disabled) {
+  transform: scale(1.02);
+}
+
+/* Equip State */
+.equip-btn.equip {
+  background-image: url('../images/collectiblesimg/equip.png');
+}
+
+/* Equipped State */
+.equip-btn.equipped {
+  background-image: url('../images/collectiblesimg/equipped.png');
+  cursor: default;
+}
+
+/* Locked State */
+.equip-btn.locked {
+  background-image: url('../images/collectiblesimg/locked.png');
+  cursor: not-allowed;
+}
+
+
+
+
+
+
+
+/* General Carousel Button Styles */
+.carousel-btn {
+    position:absolute;
+    width: 8vh;
+    height: 8vh;
+    align-items: center;
+    cursor: pointer;
+    border: none; /* Remove any default borders */
+    background-color: transparent; /* Ensure the background is transparent */
+    transition: all 0.3s ease;
+
+  }
+  
+  /* Previous Button */
+  .prev-btn {
+    left: 41%; /* Change from vh to % for better responsiveness */
+    top: 80%; /* Adjusted percentage for better placement */
+    background-image: url('../images/atlasimg/left.png'); 
+    background-size: contain; /* Ensure the image fits inside the button */
+    background-repeat: no-repeat; /* Avoid repeating the background image */
+    background-position: center; /* Center the background image inside the button */
+    background-color: transparent; /* Transparent background to allow image to be visible */
+}
+
+/* Next Button */
+.next-btn {
+    left: 58.5%;    
+    top: 80%; /* Adjusted percentage for better placement */
+    background-image: url('../images/atlasimg/right.png'); 
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-color: transparent;
+}
+
+/* Click Animation */
+.carousel-btn:active {
+    transform: scale(0.95); /* Shrinks slightly on click */
+    transition: transform 0.1s ease;
+}
+
+.back-btn {
+  position: absolute;
+  top: 3.1%;
+  left: 3%;
+  width: 9%;
+  height: 13.8%;
+  background: transparent center/contain no-repeat; /* Same layout (image background) */
+  background-image: url('../images/collectiblesimg/back.png'); /* Image as background */
+  border: none; /* No border */
+  padding: 0; /* No padding */
+  margin: 0; /* No margin */
+  outline: none; /* Remove outline */
+  cursor: pointer; /* Pointer cursor on hover */
+  transition: transform 0.5s ease; /* Smooth transition */
+  z-index: 999; /* Ensure it's on top */
+}
+
+.back-btn:hover {
+  transform: scale(1.03); /* Scale up on hover */
+}
+
+/* Shadow Border */
+.back-btn {
+  filter: drop-shadow(0 0 8px rgba(0, 0, 0, 0.8)) /* Stronger shadow with higher opacity */
+          drop-shadow(0 0 12px rgba(0, 0, 0, 0.6)) /* Slightly larger shadow */
+          drop-shadow(0 0 18px rgba(0, 0, 0, 0.4)); /* Even larger shadow for deeper effect */
+}
+

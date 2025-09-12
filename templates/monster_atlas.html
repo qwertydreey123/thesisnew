@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Monster Atlas</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/monster_atlas.css') }}">
+</head>
+<body data-page="monsterAtlas" data-bgm="/static/bgm/Atlas.mp3">
+  <img src="{{ url_for('static', filename='images/atlasimg/bg.png') }}" alt="bg" class="bg"/> 
+
+  
+
+
+  <div class="back-btn-wrapper">
+    <a href="{{ url_for('dashboard') }}" onclick="delayedBackRedirect(event)">
+      <button class="back-btn"></button>
+    </a>
+  </div>
+
+
+    
+  <audio id="buttonClickSound" src="/static/sfx/click.mp3" preload="auto"></audio>
+
+
+    <div id="monster-track"></div>
+
+    <div id="monster-info">
+      <!-- Monster image section -->
+      <div class="monster-container">
+        <div id="monster-image"></div>
+      </div>
+    
+      <!-- Scroll background + monster details grouped -->
+      <div class="monster-details-wrapper">
+        <img src="{{ url_for('static', filename='images/atlasimg/Scroll.png') }}" class="scroll" alt="scroll"/>
+    
+        <div id="monster-details">
+          <div class="monster-name"></div>
+          <div class="monster-type"></div>
+          <div class="monster-desc"></div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Navigation buttons -->
+    <div id="monster-navigation">
+      <button id="prev-btn" onclick="playButtonClickSound()"></button>
+      <button id="next-btn" onclick="playButtonClickSound()"></button>
+    </div>
+    
+    <!-- Keep Tome image if still needed elsewhere -->
+    <img src="{{ url_for('static', filename='images/atlasimg/Tome.png') }}" class="tome" alt="tome"/>
+    
+
+
+
+<div id="map-container">
+  <button class="map-btn btn-addition" data-operation="addition" onclick="playButtonClickSound(); displayMonsters('addition')">
+    <img src="{{ url_for('static', filename='images/atlasimg/tomes/Addition.png') }}" alt="Addition" />
+  </button>
+  <button class="map-btn btn-subtraction" data-operation="subtraction" onclick="playButtonClickSound(); displayMonsters('subtraction')">
+    <img src="{{ url_for('static', filename='images/atlasimg/tomes/Subtraction.png') }}" alt="Subtraction" />
+  </button>
+  <button class="map-btn btn-multiplication" data-operation="multiplication" onclick="playButtonClickSound(); displayMonsters('multiplication')">
+    <img src="{{ url_for('static', filename='images/atlasimg/tomes/Multiplication.png') }}" alt="Multiplication" />
+  </button>
+  <button class="map-btn btn-division" data-operation="division" onclick="playButtonClickSound(); displayMonsters('division')">
+    <img src="{{ url_for('static', filename='images/atlasimg/tomes/Division.png') }}" alt="Division" />
+  </button>
+  <button class="map-btn btn-counting" data-operation="counting" onclick="playButtonClickSound(); displayMonsters('counting')">
+    <img src="{{ url_for('static', filename='images/atlasimg/tomes/Counting.png') }}" alt="Counting" />
+  </button>
+  <button class="map-btn btn-comparison" data-operation="comparison" onclick="playButtonClickSound(); displayMonsters('comparison')">
+    <img src="{{ url_for('static', filename='images/atlasimg/tomes/Comparison.png') }}" alt="Comparison" />
+  </button>
+  <button class="map-btn btn-numerals" data-operation="numerals" onclick="playButtonClickSound(); displayMonsters('numerals')">
+    <img src="{{ url_for('static', filename='images/atlasimg/tomes/Numerals.png') }}" alt="Numerals" />
+  </button>
+  <button class="map-btn btn-placevalue" data-operation="placevalue" onclick="playButtonClickSound(); displayMonsters('placevalue')">
+    <img src="{{ url_for('static', filename='images/atlasimg/tomes/placevalue.png') }}" alt="Place Value" />
+  </button>
+</div>
+
+
+  <!-- Two additional standalone images -->
+  <img class="left-tome" src="{{ url_for('static', filename='images/atlasimg/tomes/left-tome.png') }}" alt="Left Tome" />
+  <img class="right-tome" src="{{ url_for('static', filename='images/atlasimg/tomes/right-tome.png') }}" alt="Right Tome" />
+</div>
+
+    
+    
+      
+      
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script>
+let isChanging = false; // Flag to prevent rapid transitions
+let currentMonsterIndex = 0;
+let currentMonsters = [];
+const monsters = {
+    
+    addition: [
+
+{ "name": "Addition-Mob-1", "displayName": "JUNGLE VIPER", "img": "Addition-Mob-1.png", "description": "A sneaky serpent that strikes as the numbers grow.", "type": "Mob" },
+{ "name": "Addition-Mob-2", "displayName": "MARCHING ANT", "img": "Addition-Mob-2.png", "description": "A busy worker ant, carrying numbers to add together.", "type": "Mob" },
+{ "name": "Addition-Mob-3", "displayName": "MOSSBACK TURTLE", "img": "Addition-Mob-3.png", "description": "A slow-moving creature that adds value with each step.", "type": "Mob" },
+{ "name": "Addition-Boss-1", "displayName": "THE ADD CHIEFTAIN", "img": "Addition-Boss-1.png", "description": "The leader of the jungle, mastering the art of addition.", "type": "Boss" },
+{ "name": "Addition-Mob-4", "displayName": "TRIBE WARRIOR", "img": "Addition-Mob-4.png", "description": "A fierce fighter, adding strength with each battle.", "type": "Mob" },
+{ "name": "Addition-Mob-5", "displayName": "CROWING CONDOR", "img": "Addition-Mob-5.png", "description": "A mighty bird, soaring through the skies with added power.", "type": "Mob" },
+{ "name": "Addition-Mob-6", "displayName": "TREEMANCER", "img": "Addition-Mob-6.png", "description": "A magical being, summoning trees that grow with each addition.", "type": "Mob" },
+{ "name": "Addition-Boss-2", "displayName": "THE SUM TITAN", "img": "Addition-Boss-2.png", "description": "A colossal figure, gathering all numbers to create ultimate sums.", "type": "Boss" },
+{ "name": "Addition-Mob-7", "displayName": "JUNGLE CUB", "img": "Addition-Mob-7.png", "description": "A playful cub, adding up its playful steps as it grows.", "type": "Mob" },
+{ "name": "Addition-Mob-8", "displayName": "SCALY STRIKER", "img": "Addition-Mob-8.png", "description": "A sharp and striking creature, adding power with each attack.", "type": "Mob" },
+{ "name": "Addition-Mob-9", "displayName": "TREETOP TALONS", "img": "Addition-Mob-9.png", "description": "Climbing higher with each addition, grabbing the highest sums.", "type": "Mob" },
+{ "name": "Addition-Boss-3", "displayName": "THE TOTEM FURIES", "img": "Addition-Boss-3.png", "description": "A group of furious totems, combining their powers to add the ultimate sum.", "type": "Boss" }
+
+],
+
+
+
+multiplication: [
+
+  { "name": "Multiplication-Mob-1", "displayName": "OASIS OGRES", "img": "Multiplication-Mob-1.png", "description": "Gruff creatures that guard the rare water springs deep in the desert.", "type": "Mob" },
+  { "name": "Multiplication-Mob-2", "displayName": "PRODUCT PIRANHAS", "img": "Multiplication-Mob-2.png", "description": "Fierce desert fish that multiply in packs and attack with precision.", "type": "Mob" },
+  { "name": "Multiplication-Mob-3", "displayName": "MULTIPLEX MONKEY", "img": "Multiplication-Mob-3.png", "description": "A hyperactive desert monkey who copies its moves with multiplying speed.", "type": "Mob" },
+  { "name": "Multiplication-Boss-1", "displayName": "THE PRODUCT GOLEM", "img": "Multiplication-Boss-1.1.png", "description": "A towering golem formed from ancient multiplication stones—strong and stubborn.", "type": "Boss" },
+  { "name": "Multiplication-Mob-4", "displayName": "TIME TURTLE", "img": "Multiplication-Mob-4.png", "description": "A wise turtle that controls time and repeats patterns with perfect rhythm.", "type": "Mob" },
+  { "name": "Multiplication-Mob-5", "displayName": "SERPENT SOLVER", "img": "Multiplication-Mob-5.png", "description": "A cunning snake who slithers through problems with multiplying speed.", "type": "Mob" },
+  { "name": "Multiplication-Mob-6", "displayName": "CRUNCH CROCODILE", "img": "Multiplication-Mob-6.png", "description": "Its jaws snap like quick calculations—sharp, accurate, and loud.", "type": "Mob" },
+  { "name": "Multiplication-Boss-2", "displayName": "THE MULTI REX", "img": "Multiplication-Boss-2.2.png", "description": "The king of multiplication beasts, roaring with numerical power.", "type": "Boss" },
+  { "name": "Multiplication-Mob-7", "displayName": "ECHO ELEPHANT", "img": "Multiplication-Mob-7.png", "description": "This giant repeats every move you make—again and again and again.", "type": "Mob" },
+  { "name": "Multiplication-Mob-8", "displayName": "MULTI MAGPIE", "img": "Multiplication-Mob-8.png", "description": "A shiny-feathered bird that multiplies stolen treasures with every flap.", "type": "Mob" },
+  { "name": "Multiplication-Mob-9", "displayName": "WHIRL WHALE", "img": "Multiplication-Mob-9.png", "description": "Spinning through the sandstorms, this beast multiplies waves of chaos.", "type": "Mob" },
+  { "name": "Multiplication-Boss-3", "displayName": "THE EQUATION BEAST", "img": "Multiplication-Boss-3.3.png", "description": "A mythical monster formed from the most complex equations in math lore.", "type": "Boss" }
+
+],
+
+
+
+subtraction: [
+
+  { "name": "Subtraction-Mob-1", "displayName": "MUMMY REBIRTH", "img": "Subtraction-Mob-1.png", "description": "A resurrected mummy, stripping away the life force of numbers.", "type": "Mob" },
+  { "name": "Subtraction-Mob-2", "displayName": "ANUBIS CHOSEN", "img": "Subtraction-Mob-2.png", "description": "An ancient guardian, subtracting the soul from existence.", "type": "Mob" },
+  { "name": "Subtraction-Mob-3", "displayName": "TART TERRITOR", "img": "Subtraction-Mob-3.png", "description": "A master of territory, causing digits to fade away.", "type": "Mob" },
+  { "name": "Subtraction-Boss-1", "displayName": "THE SOARING SENTINEL", "img": "Subtraction-Boss-1.png", "description": "A flying sentinel, subtracting everything in its path.", "type": "Boss" },
+  { "name": "Subtraction-Mob-4", "displayName": "DUNE DRAINER", "img": "Subtraction-Mob-4.png", "description": "A creature of the desert, draining life and value from numbers.", "type": "Mob" },
+  { "name": "Subtraction-Mob-5", "displayName": "SCARAB SENTINELS", "img": "Subtraction-Mob-5.png", "description": "A swarm of scarabs, removing value from all they touch.", "type": "Mob" },
+  { "name": "Subtraction-Mob-6", "displayName": "SAND SCORPIONS", "img": "Subtraction-Mob-6.png", "description": "Deadly scorpions, subtracting life with each sting.", "type": "Mob" },
+  { "name": "Subtraction-Boss-2", "displayName": "THE PYRAMID SPHINX", "img": "Subtraction-Boss-2.png", "description": "A riddle-bearing sphinx, pulling everything into the void.", "type": "Boss" },
+  { "name": "Subtraction-Mob-7", "displayName": "TOMB STALKER", "img": "Subtraction-Mob-7.png", "description": "A lurking shadow, erasing all that it encounters.", "type": "Mob" },
+  { "name": "Subtraction-Mob-8", "displayName": "ANCIENT WARDEN", "img": "Subtraction-Mob-8.png", "description": "A warden of the past, subtracting light and hope from the world.", "type": "Mob" },
+  { "name": "Subtraction-Mob-9", "displayName": "SAND JINN", "img": "Subtraction-Mob-9.png", "description": "A mystical spirit, drawing numbers into the endless sands.", "type": "Mob" },
+  { "name": "Subtraction-Boss-3", "displayName": "THE ANCIENT RULER", "img": "Subtraction-Boss-3.png", "description": "The ruler of forgotten realms, mastering the art of subtraction and void.", "type": "Boss" }
+
+],
+
+
+
+division: [
+
+  { "name": "Division-Mob-1", "displayName": "DIVIDE GATOR", "img": "Division-Mob-1.png", "description": "A sharp-toothed predator that splits numbers as easily as it snaps bones.", "type": "Mob" },
+  { "name": "Division-Mob-2", "displayName": "RATIO LOBSTER", "img": "Division-Mob-2.png", "description": "With claws of calculation, it balances the ocean's math through perfect ratios.", "type": "Mob" },
+  { "name": "Division-Mob-3", "displayName": "SILK STRANGLERS", "img": "Division-Mob-3.png", "description": "Sneaky sea creatures that wrap foes in silk and divide their strength.", "type": "Mob" },
+  { "name": "Division-Boss-1", "displayName": "THE FRACTION HOUSE", "img": "Division-Boss-1.png", "description": "A haunted coral mansion where every visitor gets divided… permanently.", "type": "Boss" },
+  { "name": "Division-Mob-4", "displayName": "SPLIT PHANTOMS", "img": "Division-Mob-4.png", "description": "Ghostly figures that disappear and reappear, always halving what they touch.", "type": "Mob" },
+  { "name": "Division-Mob-5", "displayName": "GROWTH GUARD", "img": "Division-Mob-5.png", "description": "A stalwart sea guardian that multiplies defense but divides attackers.", "type": "Mob" },
+  { "name": "Division-Mob-6", "displayName": "TENTACLE TERROR", "img": "Division-Mob-6.png", "description": "Each of its limbs divides the battlefield with terror and precision.", "type": "Mob" },
+  { "name": "Division-Boss-2", "displayName": "THE TIDAL DRAGON", "img": "Division-Boss-2.png", "description": "A mighty sea serpent whose tidal waves separate lands and legends.", "type": "Boss" },
+  { "name": "Division-Mob-7", "displayName": "DEEP SEA SERPENT", "img": "Division-Mob-7.png", "description": "A lurking predator in the trenches that splits prey with a single strike.", "type": "Mob" },
+  { "name": "Division-Mob-8", "displayName": "DIVIDE DEMON", "img": "Division-Mob-8.png", "description": "An abyssal horror that feeds on unity and leaves only fragments behind.", "type": "Mob" },
+  { "name": "Division-Mob-9", "displayName": "SWAMP STOMPER", "img": "Division-Mob-9.png", "description": "Heavy-footed and brute, it breaks ground and numbers alike.", "type": "Mob" },
+  { "name": "Division-Boss-3", "displayName": "THE MURKY MAJESTY", "img": "Division-Boss-3.png", "description": "Ruler of the shadowy swamps, its reign is marked by separation and silence.", "type": "Boss" }
+
+],
+
+
+  
+counting: [
+
+  { "name": "Counting-Mob-1", "displayName": "COLORFUL BIRD", "img": "Counting-Mob-1.png", "description": "A vibrant bird that counts in colorful patterns.", "type": "Mob" },
+  { "name": "Counting-Mob-2", "displayName": "AURORA TREE", "img": "Counting-Mob-2.png", "description": "A mystical tree that multiplies numbers with its glowing branches.", "type": "Mob" },
+  { "name": "Counting-Mob-3", "displayName": "PRISMATIC FROG", "img": "Counting-Mob-3.png", "description": "A frog that stretches the number line with its dazzling prismatic leaps.", "type": "Mob" },
+  { "name": "Counting-Boss-1", "displayName": "THE JUMP JESTER", "img": "Counting-Boss-1.png", "description": "A mischievous boss that rules the counting kingdom with high jumps and tricks.", "type": "Boss" },
+  { "name": "Counting-Mob-4", "displayName": "COLORFALL UNICORN", "img": "Counting-Mob-4.png", "description": "A mystical unicorn that counters with rainbow-colored hooves.", "type": "Mob" },
+  { "name": "Counting-Mob-5", "displayName": "SPECTRAL LILY", "img": "Counting-Mob-5.png", "description": "A spectral flower that grows in intervals, each bloom a new count.", "type": "Mob" },
+  { "name": "Counting-Mob-6", "displayName": "CHROMA FLORA", "img": "Counting-Mob-6.png", "description": "A flora that rapidly multiplies, producing bright, chromatic flowers.", "type": "Mob" },
+  { "name": "Counting-Boss-2", "displayName": "THE RAINBOW WISHER", "img": "Counting-Boss-2.png", "description": "A boss who grants wishes for those who count with rainbow-colored energy.", "type": "Boss" },
+  { "name": "Counting-Mob-7", "displayName": "SPECTRAL FINNED", "img": "Counting-Mob-7.png", "description": "A ghostly creature with fins, stretching the number line as it swims.", "type": "Mob" },
+  { "name": "Counting-Mob-8", "displayName": "SPECTRAL PIXIE", "img": "Counting-Mob-8.png", "description": "A tiny, magical pixie who continues the count with her enchanted dust.", "type": "Mob" },
+  { "name": "Counting-Mob-9", "displayName": "COLORSPROUT", "img": "Counting-Mob-9.png", "description": "A sprouting entity that powers through with the force of counting energy.", "type": "Mob" },
+  { "name": "Counting-Boss-3", "displayName": "THE PRISMATIC HEXER", "img": "Counting-Boss-3.png", "description": "A powerful sorcerer that manipulates the number line with prismatic magic.", "type": "Boss" }
+
+],
+
+
+comparison: [
+
+  { "name": "Comparison-Mob-1", "displayName": "CAVERN GREMLINS", "img": "Comparison-Mob-1.png", "description": "Mischievous creatures lurking in the cavern, skilled in measuring the unseen.", "type": "Mob" },
+  { "name": "Comparison-Mob-2", "displayName": "IRONCLAD ANTS", "img": "Comparison-Mob-2.png", "description": "A hardworking colony that divides and conquers, comparing objects with precision.", "type": "Mob" },
+  { "name": "Comparison-Mob-3", "displayName": "TREEHOPPERS", "img": "Comparison-Mob-3.png", "description": "Balancing in the treetops, these creatures compare values with steady focus.", "type": "Mob" },
+  { "name": "Comparison-Boss-1", "displayName": "THE CAVERN FLYERS", "img": "Comparison-Boss-1.png", "description": "The rulers of the cavern, overseeing every comparison with sharp vision.", "type": "Boss" },
+  { "name": "Comparison-Mob-4", "displayName": "TWISTED BRANCHES", "img": "Comparison-Mob-4.png", "description": "Mysterious beings with twisted limbs, maintaining balance in a chaotic world.", "type": "Mob" },
+  { "name": "Comparison-Mob-5", "displayName": "FLUTTERBLOODS", "img": "Comparison-Mob-5.png", "description": "Delicate creatures, judging the value of things with swift movements and precision.", "type": "Mob" },
+  { "name": "Comparison-Mob-6", "displayName": "STARDUST OWLS", "img": "Comparison-Mob-6.png", "description": "Wise night hunters who measure the stars, comparing their glows and distances.", "type": "Mob" },
+  { "name": "Comparison-Boss-2", "displayName": "THE SKYCLAW HAWKS", "img": "Comparison-Boss-2.png", "description": "Majestic creatures that rule the sky, comparing the winds and clouds with fierce determination.", "type": "Boss" },
+  { "name": "Comparison-Mob-7", "displayName": "EQUALIZER", "img": "Comparison-Mob-7.png", "description": "A creature of balance, ensuring values are perfectly compared from both sides.", "type": "Mob" },
+  { "name": "Comparison-Mob-8", "displayName": "MISTY WOOLS", "img": "Comparison-Mob-8.png", "description": "Soft, mist-like creatures who measure differences in the fog, never missing a comparison.", "type": "Mob" },
+  { "name": "Comparison-Mob-9", "displayName": "FLITFURY GNATS", "img": "Comparison-Mob-9.png", "description": "Swift and unpredictable, these gnats compare everything they touch with lightning speed.", "type": "Mob" },
+  { "name": "Comparison-Boss-3", "displayName": "THE VOLCA GOLEM", "img": "Comparison-Boss-3.png", "description": "A towering titan of stone and magma, mastering the art of comparison with unstoppable power.", "type": "Boss" }
+
+],
+
+
+numerals: [
+
+  { "name": "Numerals-Mob-1", "displayName": "CRYPT DEFENDERS", "img": "Numerals-Mob-1.png", "description": "Protectors of ancient numbers, guarding the paths between numerals.", "type": "Mob" },
+  { "name": "Numerals-Mob-2", "displayName": "WRAITHBONE", "img": "Numerals-Mob-2.png", "description": "A phantom-like entity that moves through the number line with eerie precision.", "type": "Mob" },
+  { "name": "Numerals-Mob-3", "displayName": "BOWMASTER CENTAUR", "img": "Numerals-Mob-3.png", "description": "A mighty centaur aiming arrows at the number line to hit the target values.", "type": "Mob" },
+  { "name": "Numerals-Boss-1", "displayName": "THE SWORDHALL KNIGHT", "img": "Numerals-Boss-1.png", "description": "A legendary knight sworn to protect the sacred order of numbers, wielding a sword of infinite value.", "type": "Boss" },
+  { "name": "Numerals-Mob-4", "displayName": "IRONHORN WARRIOR", "img": "Numerals-Mob-4.png", "description": "A fierce warrior with iron-clad horns, charging through the numerals with unmatched strength.", "type": "Mob" },
+  { "name": "Numerals-Mob-5", "displayName": "SIREN'S MARKSMAN", "img": "Numerals-Mob-5.png", "description": "A master archer, using precision to strike at exact numeral targets.", "type": "Mob" },
+  { "name": "Numerals-Mob-6", "displayName": "WINGED EQUUS", "img": "Numerals-Mob-6.png", "description": "A mythical winged horse soaring above the number line, carrying the wisdom of the ages.", "type": "Mob" },
+  { "name": "Numerals-Boss-2", "displayName": "THE CHIMERA KING", "img": "Numerals-Boss-2.png", "description": "A terrifying creature with the power of all numerals combined, ruling over the numerical realm with fearsome authority.", "type": "Boss" },
+  { "name": "Numerals-Mob-7", "displayName": "FERAL TIGER", "img": "Numerals-Mob-7.png", "description": "A wild tiger with unmatched agility, pouncing on numerals to claim dominion over them.", "type": "Mob" },
+  { "name": "Numerals-Mob-8", "displayName": "FLAMEWING EAGLE", "img": "Numerals-Mob-8.png", "description": "A fiery eagle, whose wings scorch the number line, leaving trails of burning digits in its wake.", "type": "Mob" },
+  { "name": "Numerals-Mob-9", "displayName": "STONEFIST GOLEM", "img": "Numerals-Mob-9.png", "description": "A towering stone golem, using its fists to crush numerals under its massive strength.", "type": "Mob" },
+  { "name": "Numerals-Boss-3", "displayName": "THE THREEFURY KNIGHT", "img": "Numerals-Boss-3.png", "description": "A warrior with three blazing swords, each representing the fury of numbers, wielding them to bring destruction to all.", "type": "Boss" }
+
+],
+
+
+placevalue: [
+
+  { "name": "PlaceValue-Mob-1", "displayName": "CROP CRUSHER", "img": "Placevalue-Mob-1.png", "description": "A basic place value monster, guarding the ones place.", "type": "Mob" },
+  { "name": "PlaceValue-Mob-2", "displayName": "BARNHOG BEAST", "img": "Placevalue-Mob-2.png", "description": "A place value guardian, keeping track of tens.", "type": "Mob" },
+  { "name": "PlaceValue-Mob-3", "displayName": "SHEEP TRIO", "img": "Placevalue-Mob-3.png", "description": "The place value trickster, shifting between hundreds.", "type": "Mob" },
+  { "name": "PlaceValue-Boss-1", "displayName": "THE CORNFIELD SENTINEL", "img": "Placevalue-Boss-1.png", "description": "The mighty Place Value King, ruler of all digits.", "type": "Boss" },
+  { "name": "PlaceValue-Mob-4", "displayName": "WOLFSTORM", "img": "Placevalue-Mob-4.png", "description": "A monster that moves numbers across the thousands place.", "type": "Mob" },
+  { "name": "PlaceValue-Mob-5", "displayName": "INFERNO HORSE", "img": "Placevalue-Mob-5.png", "description": "The place value master, controlling decimal places.", "type": "Mob" },
+  { "name": "PlaceValue-Mob-6", "displayName": "RAGING TUSK", "img": "Placevalue-Mob-6.png", "description": "A monster that makes numbers grow into greater places.", "type": "Mob" },
+  { "name": "PlaceValue-Boss-2", "displayName": "THE WINDMILL HAVEN", "img": "Placevalue-Boss-2.png", "description": "The supreme Place Value Overlord, with the power to shift any digit.", "type": "Boss" },
+  { "name": "PlaceValue-Mob-7", "displayName": "MUDHAVEN BEAST", "img": "Placevalue-Mob-7.png", "description": "A chaotic place value creature, messing up the order of digits.", "type": "Mob" },
+  { "name": "PlaceValue-Mob-8", "displayName": "FALLOW SENTRY", "img": "Placevalue-Mob-8.png", "description": "A place value beast that multiplies numbers by powers of ten.", "type": "Mob" },
+  { "name": "PlaceValue-Mob-9", "displayName": "HARVEST SCARECROW", "img": "Placevalue-Mob-9.png", "description": "A place value destroyer, erasing numbers from existence.", "type": "Mob" },
+  { "name": "PlaceValue-Boss-3", "displayName": "THE CINDERSCORCH", "img": "Placevalue-Boss-3.png", "description": "The supreme Place Value Overlord, with the power to shift any digit.", "type": "Boss" }
+
+]
+
+
+};
+
+
+
+
+
+
+// Default operation to be selected when the page loads
+window.addEventListener('DOMContentLoaded', function() {
+    // Set the default operation to 'addition' (or any other operation you prefer)
+    displayMonsters('addition');
+});
+
+function displayMonsters(operation) {
+    // Set the current monsters based on the selected operation
+    currentMonsters = monsters[operation];
+    currentMonsterIndex = 0;  // Reset to the first monster
+    
+    // Update the display with the first monster
+    updateMonsterDisplay();
+
+    // Highlight the clicked button and remove highlight from others
+    const mapButtons = document.querySelectorAll('.map-btn');
+mapButtons.forEach(btn => btn.classList.remove('active'));
+
+const activeButton = document.querySelector(`#map-container button[data-operation="${operation}"]`);
+if (activeButton) {
+    activeButton.classList.add('active');
+}
+}
+
+function updateMonsterDisplay() {
+    const monster = currentMonsters[currentMonsterIndex];
+    const monsterImageContainer = document.getElementById('monster-image');
+    const monsterDetails = document.getElementById('monster-details');
+    const monsterTrack = document.getElementById('monster-track');
+
+    // Add fade-out to details
+    monsterDetails.classList.add('monster-info-fade-out');
+
+    // Optional: remove old image immediately
+    monsterImageContainer.innerHTML = '';
+
+    setTimeout(() => {
+        const folderName = monster.name.split('-')[0].toLowerCase();
+        const monstersInFolder = monsters[folderName];
+        const monsterData = monstersInFolder.find(m => m.name === monster.name);
+        const imagePath = `/static/images/gameimg/mnstr/${folderName}/${monsterData.img}`;
+
+        // Add new image with spawn animation
+        const img = document.createElement('img');
+        img.src = imagePath;
+        img.alt = monsterData.name;
+        img.classList.add('monster-spawn-animation');
+        monsterImageContainer.appendChild(img);
+
+        // Clear and fade-in new details
+        monsterDetails.innerHTML = '';
+
+        const nameDiv = document.createElement('div');
+        nameDiv.classList.add('monster-name');
+        nameDiv.innerHTML = monsterData.displayName;
+
+        const typeDiv = document.createElement('div');
+        typeDiv.classList.add('monster-type');
+        typeDiv.innerHTML = `<strong>Type:</strong> ${monsterData.type}`;
+
+        const descDiv = document.createElement('div');
+        descDiv.classList.add('monster-desc');
+        descDiv.innerHTML = monsterData.description;
+
+        monsterDetails.appendChild(nameDiv);
+        monsterDetails.appendChild(typeDiv);
+        monsterDetails.appendChild(descDiv);
+
+        // Track info
+        monsterTrack.textContent = `${currentMonsterIndex + 1} of ${currentMonsters.length}`;
+
+        // Fade-in for details
+        monsterDetails.classList.remove('monster-info-fade-out');
+        monsterDetails.classList.add('monster-info-fade-in');
+
+    }, 100);
+}
+
+
+
+
+
+// Prevent rapid clicking by adding debounce logic
+document.getElementById('next-btn').addEventListener('click', function() {
+    if (!isChanging && currentMonsterIndex < currentMonsters.length - 1) {
+        isChanging = true; // Lock the transition
+        currentMonsterIndex++;
+        updateMonsterDisplay();
+
+        // Reset lock after the transition is done
+        setTimeout(() => {
+            isChanging = false; // Unlock the transition after the fade-in is done
+        }, 50); // Match this with the duration of the CSS transition
+    }
+});
+
+document.getElementById('prev-btn').addEventListener('click', function() {
+    if (!isChanging && currentMonsterIndex > 0) {
+        isChanging = true; // Lock the transition
+        currentMonsterIndex--;
+        updateMonsterDisplay();
+
+        // Reset lock after the transition is done
+        setTimeout(() => {
+            isChanging = false; // Unlock the transition after the fade-in is done
+        }, 50); // Match this with the duration of the CSS transition
+    }
+});
+
+// Get the previous and next buttons
+const prevBtn = document.getElementById('prev-btn');
+const nextBtn = document.getElementById('next-btn');
+
+// Apply bounce effect when the buttons are clicked
+prevBtn.addEventListener('click', function () {
+    // Add 'clicked' class for bounce effect
+    prevBtn.classList.add('clicked');
+    setTimeout(() => prevBtn.classList.remove('clicked'), 200);  // Remove it after animation finishes
+});
+
+nextBtn.addEventListener('click', function () {
+    // Add 'clicked' class for bounce effect
+    nextBtn.classList.add('clicked');
+    setTimeout(() => nextBtn.classList.remove('clicked'), 200);  // Remove it after animation finishes
+});
+
+  </script>
+          <script>
+            function playButtonClickSound() {
+              const originalSound = document.getElementById('buttonClickSound');
+              const soundClone = originalSound.cloneNode(); // clone the <audio> element
+              soundClone.volume = 1;
+              soundClone.playbackRate = 2;
+          
+              // Play the cloned audio
+              soundClone.play().catch((e) => {
+                  console.error('Playback failed:', e);
+              });
+            }
+      
+          </script>
+
+<script>
+  function delayedBackRedirect(event) {
+    event.preventDefault(); // Stop immediate redirect
+    playButtonClickSound(); // Play sound
+    const targetUrl = event.currentTarget.getAttribute('href');
+    setTimeout(() => {
+      window.location.href = targetUrl;
+    }, 400); // 400ms delay
+  }
+</script>
+<script src="{{ url_for('static', filename='js/tutorial.js') }}"></script>
+<script src="{{ url_for('static', filename='js/orientation.js') }}"></script>
+<script src="{{ url_for('static', filename='js/bgmusic.js') }}"></script>
+
+</body>
+</html>

@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Stages</title>
+  <!-- Link to External CSS -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/stages.css') }}" />
+  <!-- Tailwind CSS (Optional) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body>
+  <audio data-page="stages" id="buttonClickSound" src="/static/sfx/click.mp3" preload="auto"></audio>
+
+  <div class="back">
+    <a href="{{ url_for('roadmap') }}" onclick="delayedRoadmapBackRedirect(event)">
+      <button class="back-btn"></button>
+    </a>
+  </div>
+  
+  <div class="main-wrapper">
+    <div class="stages-content">
+      <img src="{{ url_for('static', filename='images/stageimg/bg.png') }}" alt="stages" class="bg-img" />
+    </div>
+    <div class="map-img">
+        <div class="buttons">
+          <button class="stage s1" id="{{ selected_map }}-stage1">
+            <img src="{{ url_for('static', filename='images/stageimg/stage1.png') }}" alt="stage 1">
+          </button>
+          <button class="stage s2" id="{{ selected_map }}-stage2">
+            <img src="{{ url_for('static', filename='images/stageimg/stage2.png') }}" alt="stage 2">
+          </button>
+          <button class="stage s3" id="{{ selected_map }}-stage3">
+            <img src="{{ url_for('static', filename='images/stageimg/stage3.png') }}" alt="stage 3">
+          </button>
+        </div>
+
+    
+    
+      <div class="stars">
+        <img src="{{ url_for('static', filename='images/stageimg/star-empty.png') }}" class="star st1" />
+        <img src="{{ url_for('static', filename='images/stageimg/star-empty.png') }}" class="star st2" />
+        <img src="{{ url_for('static', filename='images/stageimg/star-empty.png') }}" class="star st3" />
+      </div>
+    
+      <!-- Reward Bubble inside map-img -->
+<!-- Make sure this is directly inside <body> -->
+
+  
+    </div>
+    
+    <div id="rewardBubble" class="reward-bubble hidden">
+      <div class="bubble-content">
+        <p id="rewardText" class="reward-text" style="visibility: hidden;"></p> <!-- Keep the element, but hide the text -->
+        <img id="rewardImage" src="" alt="reward" class="reward-img" />
+        <button id="rewardOkButton" class="reward-btn"></button>
+      </div>
+    </div>
+    
+
+
+    <script>
+      function getQueryParam(param) {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get(param);
+      }
+    
+      const selectedMap = getQueryParam("map") || "defaultMap";
+      const selectedStageKey = getQueryParam("stage") || "stage1";
+    
+      // Function to navigate to the stage
+      function goToStage(stageNumber) {
+        if (selectedMap) {
+          // Create a loading overlay with blur effect
+          const loadingOverlay = document.createElement('div');
+          loadingOverlay.style.position = 'fixed';
+          loadingOverlay.style.top = '0';
+          loadingOverlay.style.left = '0';
+          loadingOverlay.style.width = '100vw';
+          loadingOverlay.style.height = '100vh';
+          loadingOverlay.style.backgroundColor = 'rgba(0, 0, 0, 0.3)';
+          loadingOverlay.style.backdropFilter = 'blur(10px)';
+          loadingOverlay.style.webkitBackdropFilter = 'blur(10px)';
+          loadingOverlay.style.display = 'flex';
+          loadingOverlay.style.justifyContent = 'center';
+          loadingOverlay.style.alignItems = 'center';
+          loadingOverlay.style.zIndex = '9999';
+    
+          // Create the top and bottom parts of the image (up and down)
+          const topHalf = document.createElement('img');
+          topHalf.src = '/static/images/anim/loading/up.png';
+          topHalf.style.position = 'absolute';
+          topHalf.style.top = '0';
+          topHalf.style.left = '0';
+          topHalf.style.width = '100vw';
+          topHalf.style.height = '50%';
+          topHalf.style.objectFit = 'fill';
+          topHalf.style.transition = 'transform 2s ease';
+    
+          const bottomHalf = document.createElement('img');
+          bottomHalf.src = '/static/images/anim/loading/down.png';
+          bottomHalf.style.position = 'absolute';
+          bottomHalf.style.bottom = '0';
+          bottomHalf.style.left = '0';
+          bottomHalf.style.width = '100vw';
+          bottomHalf.style.height = '50%';
+          bottomHalf.style.objectFit = 'fill';
+          bottomHalf.style.transition = 'transform 2s ease';
+    
+          loadingOverlay.appendChild(topHalf);
+          loadingOverlay.appendChild(bottomHalf);
+          document.body.appendChild(loadingOverlay);
+    
+          // 🔊 Play loading SFX
+          window.playSound('/static/sfx/loading.mp3', 0); // 0ms delay
+
+    
+          // Animate after slight delay
+          setTimeout(() => {
+            topHalf.style.transform = 'translateY(-100%)';
+            bottomHalf.style.transform = 'translateY(100%)';
+          }, 0);
+    
+          // Navigate after animation
+          setTimeout(() => {
+            window.location.href = `/game?map=${selectedMap}&stage=${stageNumber}`;
+          }, 2300);
+        } else {
+          alert('No map selected.');
+        }
+      }
+    
+      // Attach event listeners to stage buttons
+      document.querySelectorAll('.stage').forEach((stageImg, index) => {
+        stageImg.addEventListener('click', () => {
+          goToStage(index + 1);
+        });
+      });
+    </script>
+    
+    
+  
+  
+  
+  
+    
+<script>
+  // Change background image based on selectedMap
+  const mapImgDiv = document.querySelector('.map-img');
+  const mapImages = {
+    addition: "{{ url_for('static', filename='images/stageimg/addition-bg.png') }}",
+    subtraction: "{{ url_for('static', filename='images/stageimg/subtraction-bg.png') }}",
+    multiplication: "{{ url_for('static', filename='images/stageimg/multiplication-bg.png') }}",
+    division: "{{ url_for('static', filename='images/stageimg/division-bg.png') }}",
+    counting: "{{ url_for('static', filename='images/stageimg/counting-bg.png') }}",
+    comparison: "{{ url_for('static', filename='images/stageimg/comparison-bg.png') }}",
+    numerals: "{{ url_for('static', filename='images/stageimg/numerals-bg.png') }}",
+    placevalue: "{{ url_for('static', filename='images/stageimg/placevalue-bg.png') }}"
+  };
+
+  if (selectedMap && mapImgDiv) {
+    mapImgDiv.style.backgroundImage = `url('${mapImages[selectedMap]}')`;
+    mapImgDiv.style.backgroundSize = 'cover';
+    mapImgDiv.style.backgroundPosition = 'center';
+  }
+</script>
+
+<script>
+window.addEventListener('DOMContentLoaded', () => {
+    const selectedMap = getQueryParam("map") || "defaultMap"; // fallback if needed
+
+    const starFilled = "{{ url_for('static', filename='images/stageimg/star-filled.png') }}";  // Filled star
+    const starEmpty = "{{ url_for('static', filename='images/stageimg/star-empty.png') }}";   // Empty star
+
+    // Fetch stage progress directly from the server
+    fetch(`/get_stage_progress?map=${selectedMap}`)
+      .then(response => response.json())
+      .then(stageProgress => {
+        if (stageProgress) {
+          // Loop through the stages (Stage 1, 2, 3) and update the stars
+          for (let stage = 1; stage <= 3; stage++) {
+            const stageKey = `${selectedMap}-${stage}`;
+            const stageData = stageProgress[stageKey];
+            const stars = stageData ? stageData.stars : 0;
+
+            // Update stars in stages
+            const stageElements = document.querySelectorAll(`.st${stage}`);
+            stageElements.forEach(element => {
+              element.src = stars > 0 ? starFilled : starEmpty;
+            });
+
+            // Update stars in roadmap
+            const roadmapStageElements = document.querySelectorAll(`.roadmap-${stage}`);
+            roadmapStageElements.forEach(element => {
+              element.src = stars > 0 ? starFilled : starEmpty;
+            });
+          }
+
+          // Check if Stage 3 is completed
+          const stage3Key = `${selectedMap}-3`;
+          const stage3Data = stageProgress[stage3Key];
+
+          if (stage3Data && stage3Data.stars > 0) {
+            fetch(`/has_claimed_skin?map=${selectedMap}`)
+              .then(res => res.json())
+              .then(data => {
+                if (data.claimed) {
+                  console.log("Skin already claimed for this user, skipping reward bubble.");
+                  return;
+                }
+
+                // Show reward bubble if not claimed
+                showRewardBubble(selectedMap);
+              })
+              .catch(error => {
+                // console.error("Error checking skin claim status:", error);
+              });
+          }
+
+        }
+      })
+      .catch(error => {
+        // console.error('Failed to load stage progress:', error);
+      });
+});
+
+  // Function to update the stage lock buttons (grayscale & pointer-events)
+  async function updateStageLock() {
+    const selectedMap = getQueryParam("map") || "defaultMap";
+
+    try {
+      const response = await fetch(`/get_stage_progress?map=${selectedMap}`);
+      if (!response.ok) throw new Error('Failed to fetch stage progress');
+
+      const stageProgress = await response.json();
+
+      const stage1Completed = stageProgress[`${selectedMap}-1`] && stageProgress[`${selectedMap}-1`].stars > 0;
+      const stage2Completed = stageProgress[`${selectedMap}-2`] && stageProgress[`${selectedMap}-2`].stars > 0;
+
+      const stageButtons = document.querySelectorAll('.stage');
+
+      stageButtons.forEach(button => {
+        const stageId = button.closest('button')?.getAttribute('id');
+
+        if (stageId && stageId.startsWith(selectedMap)) {
+          const stageNumber = parseInt(stageId.split('-')[1].replace('stage', ''));
+
+          if (stageNumber === 2 && !stage1Completed) {
+            button.closest('button').style.filter = 'grayscale(100%)';
+            button.closest('button').style.pointerEvents = 'none';
+          } else if (stageNumber === 3 && !stage2Completed) {
+            button.closest('button').style.filter = 'grayscale(100%)';
+            button.closest('button').style.pointerEvents = 'none';
+          } else {
+            button.closest('button').style.filter = 'none';
+            button.closest('button').style.pointerEvents = 'auto';
+          }
+        } else {
+          // console.warn(`Invalid stage id: ${stageId}`);
+        }
+      });
+
+    } catch (error) {
+      // console.error('Error fetching stage progress:', error);
+    }
+  }
+
+  window.addEventListener('DOMContentLoaded', updateStageLock);
+</script>
+
+
+
+<script>
+// Function to show the reward bubble and mark as claimed
+function showRewardBubble(selectedMap) {
+    const rewardBubble = document.getElementById('rewardBubble');
+    const rewardImage = document.getElementById('rewardImage');
+    const rewardText = document.getElementById('rewardText');
+
+    // Proceed to show the reward bubble
+    const rewardImageUrl = getRewardImage(selectedMap);
+    rewardImage.src = rewardImageUrl || ""; 
+    rewardText.textContent = "";  // No text will be displayed
+
+    rewardBubble.classList.remove('hidden');
+    requestAnimationFrame(() => {
+        rewardBubble.classList.add('visible');
+        setTimeout(() => {
+            const bubbleContent = rewardBubble.querySelector('.bubble-content');
+            bubbleContent.classList.add('show');
+        }, 300);
+    });
+}
+
+// Function to close the reward bubble
+function closeRewardBubble() {
+    const rewardBubble = document.getElementById('rewardBubble');
+    const bubbleContent = rewardBubble.querySelector('.bubble-content');
+
+    bubbleContent.classList.remove('show'); // Reset pop state
+    rewardBubble.classList.remove('visible');
+
+    setTimeout(() => {
+        rewardBubble.classList.add('hidden');
+    }, 400); // Wait for fade-out
+}
+
+// Function to get the reward image based on the selected map
+function getRewardImage(selectedMap) {
+    switch (selectedMap) {
+        case 'multiplication':
+            return "{{ url_for('static', filename='images/gameimg/rewardimg/skins/r1.png') }}";
+        case 'addition':
+            return "{{ url_for('static', filename='images/gameimg/rewardimg/skins/r2.png') }}";
+        case 'subtraction':
+            return "{{ url_for('static', filename='images/gameimg/rewardimg/skins/r3.png') }}";
+        case 'division':
+            return "{{ url_for('static', filename='images/gameimg/rewardimg/skins/r4.png') }}";
+        case 'counting':
+            return "{{ url_for('static', filename='images/gameimg/rewardimg/skins/r5.png') }}";
+        case 'comparison':
+            return "{{ url_for('static', filename='images/gameimg/rewardimg/skins/r6.png') }}";
+        case 'numerals':
+            return "{{ url_for('static', filename='images/gameimg/rewardimg/skins/r7.png') }}";
+        case 'placevalue':
+            return "{{ url_for('static', filename='images/gameimg/rewardimg/skins/r8.png') }}";
+        default:
+            return "";
+    }
+}
+
+
+// Function to close the reward bubble
+function closeRewardBubble() {
+    const rewardBubble = document.getElementById('rewardBubble');
+    const bubbleContent = rewardBubble.querySelector('.bubble-content');
+
+    bubbleContent.classList.remove('show'); // Reset pop state
+    rewardBubble.classList.remove('visible');
+
+    setTimeout(() => {
+        rewardBubble.classList.add('hidden');
+    }, 400); // Wait for fade-out
+}
+
+
+// Function to get the reward image based on the selected map
+function getRewardImage(selectedMap) {
+    switch (selectedMap) {
+        case 'multiplication':
+            return "{{ url_for('static', filename='images/gameimg/rewardimg/skins/r1.png') }}";
+        case 'addition':
+            return "{{ url_for('static', filename='images/gameimg/rewardimg/skins/r2.png') }}";
+        case 'subtraction':
+            return "{{ url_for('static', filename='images/gameimg/rewardimg/skins/r3.png') }}";
+        case 'division':
+            return "{{ url_for('static', filename='images/gameimg/rewardimg/skins/r4.png') }}";
+        case 'counting':
+            return "{{ url_for('static', filename='images/gameimg/rewardimg/skins/r5.png') }}";
+        case 'comparison':
+            return "{{ url_for('static', filename='images/gameimg/rewardimg/skins/r6.png') }}";
+        case 'numerals':
+            return "{{ url_for('static', filename='images/gameimg/rewardimg/skins/r7.png') }}";
+        case 'placevalue':
+            return "{{ url_for('static', filename='images/gameimg/rewardimg/skins/r8.png') }}";
+        default:
+            return "";
+    }
+}
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    const rewardOkButton = document.getElementById('rewardOkButton');
+    rewardOkButton.addEventListener('click', () => {
+        const selectedMap = getQueryParam("map") || "defaultMap";
+
+        fetch('/claim_skin', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ map: selectedMap })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // console.log('Skin successfully claimed!');
+            } else {
+                // console.error('Failed to claim skin:', data.message);
+            }
+        })
+        .catch(error => {
+            // console.error('Error claiming skin:', error);
+        });
+
+        document.getElementById('rewardBubble').classList.add('hidden');
+    });
+});
+
+</script>
+
+<script>
+  function playButtonClickSound() {
+    const originalSound = document.getElementById('buttonClickSound');
+    const soundClone = originalSound.cloneNode(); // clone the <audio> element
+    soundClone.volume = 1;
+    soundClone.playbackRate = 2;
+
+    // Play the cloned audio
+    soundClone.play().catch((e) => {
+        console.error('Playback failed:', e);
+    });
+  }
+
+  function delayedRoadmapBackRedirect(event) {
+    playButtonClickSound(); // Play your sound
+    setTimeout(() => {
+    }, 400); // Delay in ms
+  }
+</script>
+  
+<script src="{{ url_for('static', filename='js/tutorial.js') }}"></script>
+<script src="{{ url_for('static', filename='js/orientation.js') }}"></script>
+<script src="{{ url_for('static', filename='js/bgmusic.js') }}"></script>
+
+
+
+
+
+</body>
+</html>

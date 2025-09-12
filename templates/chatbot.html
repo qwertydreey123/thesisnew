@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Chatbot</title>
+    <!-- Bootstrap CSS -->
+    <link 
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" 
+        rel="stylesheet" 
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" 
+        crossorigin="anonymous">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet"> <!-- Font Awesome -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/chatbot.css') }}" />
+</head>
+<body>
+  <!-- Chat Container -->
+  <div class="chat-container shadow">
+    <audio id="counticushelp" src="/static/sfx/counticushelp.mp3" preload="auto"></audio>
+  
+    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem;">
+      <button onclick="history.back()" style="
+        flex: 0 0 auto;
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        padding: 8px 16px;
+        font-size: 14px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      " 
+      onmouseover="this.style.backgroundColor='#45a049';" 
+      onmouseout="this.style.backgroundColor='#4CAF50';">
+        Back
+      </button>
+  
+      <h5 style="color: white; flex: 1 1 auto; text-align: center; margin: 0;">
+        Chat with Wizard Counticus
+      </h5>
+  
+      <div style="flex: 0 0 auto;">
+        <button id="clearChatBtn" onclick="clearChat()" style="
+          background-color: #f44336;
+          color: white;
+          border: none;
+          padding: 8px 16px;
+          font-size: 14px;
+          border-radius: 5px;
+          cursor: pointer;
+          transition: background-color 0.3s ease;
+        "
+        onmouseover="this.style.backgroundColor='#da190b';"
+        onmouseout="this.style.backgroundColor='#f44336';"
+        >
+          Clear Chat
+        </button>
+      </div>
+
+      <!-- DELETE AFTER COPY RESPONSE BUTTON -->
+      <!-- <div style="flex: 0 0 auto; margin-left: 8px;">
+        <button id="copyResponsesBtn" onclick="copyChat()" style="
+          background-color: #007bff;
+          color: white;
+          border: none;
+          padding: 8px 16px;
+          font-size: 14px;
+          border-radius: 5px;
+          cursor: pointer;
+          transition: background-color 0.3s ease;
+        "
+        onmouseover="this.style.backgroundColor='#0056b3';"
+        onmouseout="this.style.backgroundColor='#007bff';"
+        >
+          Copy Responses
+        </button>
+      </div> -->
+      <!-- DELETE AFTER COPY RESPONSE BUTTON -->
+
+    </div>
+
+
+    <div class="chat-messages" id="chat-box">
+      <!-- Messages appear here -->
+    </div>
+    <form id="chat-form" class="d-flex mt-2">
+      <textarea class="form-control me-2" id="user-input" placeholder="Type your message..." rows="1" style="resize: none;"></textarea>
+      <button type="submit" class="btn btn-success">Send</button>
+    </form>
+    
+    <!-- Voice Selection Dropdown -->
+    <div class="voice-selector mt-3">
+      <label for="voice-select">Choose a voice: </label>
+      <select id="voice-select" class="form-select">
+        <!-- Options will be added dynamically -->
+      </select>
+    </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- DELETE AFTER COPY RESPONSE BUTTON -->
+    <!-- <script>
+      function copyChat() {
+        if (messages.length === 0) {
+          alert("No chat messages to copy!");
+          return;
+        }
+    
+        // Format chat as "User: message" and "Bot: message" per line
+        const fullChat = messages
+          .map(msg => (msg.sender === 'user' ? 'You: ' : 'Counticus: ') + msg.text)
+          .join('\n\n');
+    
+        navigator.clipboard.writeText(fullChat).then(() => {
+          alert("Chat copied to clipboard!");
+        }).catch(err => {
+          alert("Failed to copy chat: " + err);
+        });
+      }
+    </script> -->
+  <!-- DELETE AFTER COPY RESPONSE BUTTON --> 
+      
+
+
+    <!-- Sample Chat Logic -->
+    <script>
+    const today = new Date().toDateString();
+    const lastSavedDate = localStorage.getItem('chatDate');
+
+    if (lastSavedDate !== today) {
+        localStorage.removeItem('chatMessages');
+        localStorage.setItem('chatDate', today);
+    }
+
+
+    
+        // Load saved messages or start with empty array
+        const savedMessages = localStorage.getItem('chatMessages');
+        const messages = savedMessages ? JSON.parse(savedMessages) : [];
+    
+        const chatBox = document.getElementById('chat-box');
+        const form = document.getElementById('chat-form');
+        const input = document.getElementById('user-input');
+        const sendButton = form.querySelector('button');
+        const voiceSelect = document.getElementById('voice-select');
+    
+        let currentUtterance = null;
+        let selectedVoice = null;
+    
+        function saveMessagesToStorage() {
+          localStorage.setItem('chatMessages', JSON.stringify(messages));
+        }
+    
+        // Render messages so newest pairs are on top, grouped as user+bot pairs
+        function renderMessages() {
+    chatBox.innerHTML = '';
+
+    for (let i = messages.length - 1; i >= 0; i -= 2) {
+        const pairContainer = document.createElement('div');
+        pairContainer.classList.add('conversation-pair');
+
+        // bot message (if exists)
+        if (i - 1 >= 0) {
+            const botMsg = createMessageRow(messages[i - 1].text, messages[i - 1].sender);
+            pairContainer.appendChild(botMsg);
+        }
+
+        // user message (if exists)
+        if (i >= 0) {
+            const userMsg = createMessageRow(messages[i].text, messages[i].sender);
+            pairContainer.appendChild(userMsg);
+        }
+
+        chatBox.appendChild(pairContainer);
+    }
+
+    chatBox.scrollTop = chatBox.scrollHeight;
+    saveMessagesToStorage();
+}
+
+    
+        // Voice loading code unchanged
+        function loadVoice() {
+            const voices = speechSynthesis.getVoices();
+            if (voices.length === 0) {
+                setTimeout(loadVoice, 100);
+                return;
+            }
+            voiceSelect.innerHTML = '';
+            voices.forEach(voice => {
+                const option = document.createElement('option');
+                option.value = voice.name;
+                option.textContent = voice.name;
+                voiceSelect.appendChild(option);
+            });
+            const defaultVoice = voices.find(voice => voice.name.includes('Google US English')) || voices[0];
+            selectedVoice = defaultVoice;
+            voiceSelect.value = selectedVoice.name;
+        }
+        if (speechSynthesis.onvoiceschanged !== undefined) {
+            speechSynthesis.onvoiceschanged = loadVoice;
+        }
+        loadVoice();
+    
+        voiceSelect.addEventListener('change', () => {
+            const voices = speechSynthesis.getVoices();
+            selectedVoice = voices.find(voice => voice.name === voiceSelect.value);
+        });
+    
+        // createMessageRow function unchanged, keep it here from your code
+        function createMessageRow(message, sender) {
+            const row = document.createElement('div');
+            row.classList.add('message-row', sender);
+    
+            const profile = document.createElement('img');
+            profile.classList.add('profile-pic');
+            profile.src = sender === 'user'
+                ? "{{ url_for('static', filename='images/chatbotimg/userpfp.png') }}"
+                : "{{ url_for('static', filename='images/chatbotimg/counticuspfp.png') }}";
+    
+            const bubble = document.createElement('div');
+            bubble.classList.add('message-bubble');
+    
+            const messageText = document.createElement('span');
+            messageText.innerHTML = message.replace(/\n/g, '<br>');
+            messageText.style.whiteSpace = 'pre-line';
+
+            bubble.appendChild(messageText);
+    
+            if (sender === 'bot') {
+                const profileContainer = document.createElement('div');
+                profileContainer.style.display = 'flex';
+                profileContainer.style.flexDirection = 'column';
+                profileContainer.style.alignItems = 'center';
+                profileContainer.style.gap = '4px';
+    
+                profileContainer.appendChild(profile);
+    
+                const speakerIcon = document.createElement('i');
+                speakerIcon.classList.add('fas', 'fa-volume-up', 'speaker-icon', 'bot');
+                speakerIcon.title = "Read aloud";
+                speakerIcon.style.fontSize = '20px';
+                speakerIcon.style.cursor = 'pointer';
+    
+                speakerIcon.addEventListener('click', () => {
+                    if (currentUtterance && speechSynthesis.speaking) {
+                        speechSynthesis.cancel();
+                        currentUtterance = null;
+                    } else {
+                        const utterance = new SpeechSynthesisUtterance(message);
+                        if (selectedVoice) {
+                            utterance.voice = selectedVoice;
+                        }
+                        utterance.rate = 0.9;
+                        utterance.pitch = 1;
+                        currentUtterance = utterance;
+                        speechSynthesis.speak(utterance);
+                    }
+                });
+    
+                profileContainer.appendChild(speakerIcon);
+    
+                row.appendChild(profileContainer);
+                row.appendChild(bubble);
+            } else {
+                row.appendChild(bubble);
+                row.appendChild(profile);
+            }
+    
+            bubble.style.position = 'relative';
+    
+            return row;
+        }
+        input.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        form.requestSubmit(); // Manually trigger form submission
+    }
+});
+
+form.addEventListener('submit', async function(e) {
+
+            e.preventDefault();
+    
+            const userText = input.value.trim();
+            if (!userText) return;
+    
+            if (currentUtterance && speechSynthesis.speaking) {
+                speechSynthesis.cancel();
+                currentUtterance = null;
+            }
+    
+            input.disabled = true;
+            sendButton.disabled = true;
+    
+            // Add user message
+            messages.push({ sender: 'user', text: userText });
+            renderMessages();
+    
+            // Add "thinking" bot message
+            messages.push({ sender: 'bot', text: "Hmm... let me think about that!" });
+            renderMessages();
+    
+            input.value = '';
+            chatBox.scrollTop = chatBox.scrollHeight;
+    
+            try {
+                const response = await fetch('/chatbot-api', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ message: userText })
+                });
+                const data = await response.json();
+    
+                // Replace the "thinking" message with actual reply
+                messages.pop();
+                messages.push({ sender: 'bot', text: data.reply });
+                renderMessages();
+            } catch (error) {
+                messages.pop();
+                messages.push({ sender: 'bot', text: "Oops! Counticus couldn't reach the magic scrolls 🧙‍♂️📜." });
+                renderMessages();
+            } finally {
+                input.disabled = false;
+                sendButton.disabled = false;
+            }
+        });
+    
+        // Initial render on page load
+        renderMessages();
+    
+
+        function clearChat() {
+  // Clear messages array
+  messages.length = 0;
+
+  // Clear sessionStorage
+  localStorage.removeItem('chatMessages');
+  fetch('/reset-chat-session', { method: 'POST' });
+
+  // Clear the chat box UI
+  chatBox.innerHTML = '';
+
+  // Optionally, disable speech synthesis if speaking
+  if (speechSynthesis.speaking) {
+    speechSynthesis.cancel();
+  }
+}
+
+async function resetBackendSession() {
+    await fetch('/reset-chat-session', { method: 'POST' });
+    // Clear local sessionStorage too
+    localStorage.removeItem('chatMessages');
+    messages.length = 0;
+    renderMessages();
+}
+
+
+    </script>
+    
+
+
+<script>
+
+  
+    let hasPlayedCounticus = false;
+  
+    function counticushelp() {
+  const sound = document.getElementById('counticushelp');
+  
+  // Check localStorage if sound has already played
+  if (!localStorage.getItem('counticusHelpPlayed') && sound.paused) {
+    sound.currentTime = 0;
+    sound.volume = 1;
+    sound.play().then(() => {
+      localStorage.setItem('counticusHelpPlayed', 'true');
+    }).catch((e) => {
+      console.error('Playback failed:', e);
+    });
+  }
+}
+
+// Play once on first interaction anywhere (like before)
+['click', 'keydown', 'touchstart'].forEach(event => {
+  document.addEventListener(event, counticushelp, { once: true });
+});
+
+  
+    // Play once on first interaction anywhere
+    ['click', 'keydown', 'touchstart'].forEach(event => {
+      document.addEventListener(event, counticushelp, { once: true });
+    });
+  </script>
+  <script src="{{ url_for('static', filename='js/orientation.js') }}"></script>
+
+</body>
+</html>

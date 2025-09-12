@@ -1,0 +1,200 @@
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    overflow: hidden;
+    font-family: 'Poppins', sans-serif; /* Use the custom font */
+
+}
+
+.custom-container {
+    height: 100vh;
+    width: 100vw;
+    position: relative;
+}
+
+/* Background video always visible, but paused at first */
+#intro-video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: fill; /* Fill screen without distortion */
+    z-index: 0;
+}
+
+/* Tap to Enter button image centered */
+#tap-to-enter {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    cursor: pointer;
+    z-index: 1;
+    width: 120vh; /* Adjust size as needed */
+    transition: opacity 1.8s ease;
+}
+
+/* Background image and second image initially hidden */
+#background-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: fill; /* Fill screen without distortion */
+    z-index: 10;
+    display: none; /* Hidden initially */
+    opacity: 0; /* Hidden initially */
+    user-select: none;
+    -webkit-user-drag: none; /* Prevents dragging in Safari/Chrome */
+    -webkit-user-select: none; /* Prevents text/image selection in WebKit */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* IE/Edge */
+}
+
+#second-image {
+    position: absolute;
+    top: 34%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: -1;
+    width: 95vh; /* Adjust size as needed */
+    transition: opacity 1.8s ease;
+    display: none; /* Hidden initially */
+    opacity: 0; /* Hidden initially */
+    user-select: none;
+    -webkit-user-drag: none; /* Prevents dragging in Safari/Chrome */
+    -webkit-user-select: none; /* Prevents text/image selection in WebKit */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* IE/Edge */
+}
+
+
+
+
+.login-form {
+    position: absolute;
+    height: 38vh;
+    width: 56vh;
+    top: 45vh;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 20;
+    display: none; /* Hidden initially */
+
+}
+
+
+.login-box input[type="text"] {
+    position: absolute;
+    width: 52.5vh;
+    height: 5vh;
+    padding: 1vh 2vh;
+    top: 2.6vh;
+    left: 0vh;
+    border-radius: 1.5vh;
+    font-size: 2.5vh;
+    font-weight: 500;
+    outline: none;
+    border: none;
+    background: transparent; /* Transparent background */
+}
+
+
+.login-box input[type="password"] {
+    position: absolute;
+    width: 52.5vh;
+    height: 5vh;
+    padding: 1vh 2vh;
+    top: 12vh;
+    left: 0vh;
+    border-radius: 1.5vh;
+    font-size: 3.5vh;
+    outline: none;
+    border: none;
+    background: transparent; /* Transparent background */
+    }
+
+
+
+.login-box button {
+    position: absolute;
+    top: 20vh;
+    left: 11vh;
+    height: 11vh;
+    width: 34vh;
+    background: transparent center/contain no-repeat;
+    background-image: url('../images/indeximg/loginbtn.png');
+    border: none;
+    cursor: pointer;
+    display: none;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out, transform 0.6s ease;
+}
+
+/* Hover effect: scale up slightly and add a soft shadow */
+.login-box button:hover {
+    transform: scale(1.03);
+}
+
+/* Active effect: press down effect */
+.login-box button:active {
+    transform: scale(0.95);
+}
+
+.register-link {
+    position: absolute;
+    top: 34vh;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 36vh;
+    height: 3vh;
+    font-size: 2vh;
+    font-weight: 500;
+    text-align: center;
+}
+
+.register-button {
+    color: #ff0000db; /* Or any other color matching your theme */
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.register-button:hover {
+    text-decoration: underline;
+}
+
+.control-button {
+    position: absolute;
+    top: 1vh;
+    height: 5vh;
+    width: 13vh;
+    z-index: 15;
+    padding: 1vh 2vh;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 1.7vh;
+    border-radius: 1vh;
+}
+.mute {
+    position: absolute;
+    top: 1vh;
+    height: 5vh;
+    width: 5vh;
+    z-index: 15;
+    padding: 1vh 1vh;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 1.7vh;
+    border-radius: 1vh;
+}
+/* For mute button specifically (emoji already handles color) */
+#mute-btn {
+    color: white;
+}

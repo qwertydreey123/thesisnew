@@ -1,0 +1,252 @@
+
+/* Apply a background image to the body */
+body {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+.custom-container{
+    height: 100vh;
+    width: 100vw;
+}
+.bg-img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: fill; /* Fill screen without distortion */
+    z-index: -1;
+}
+/* Wood login wrapper with hover effect */
+.register-wrapper {
+    background-image: url('../images/registerimg/bgform.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    position: absolute;
+    top: 7vh;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 62vh;
+    height: 85vh;
+    z-index: 1;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Login content inside the wood background */
+.register-content {
+    position: absolute;
+    top: 26vh;
+    left: 9vh;
+    width: 44vh;
+    height: 47vh;
+}
+
+
+
+
+/* Fancy input styles for kids */
+.content {
+    position: absolute;
+    height: 2vh;
+    width: 40.8vh;
+    padding: 1vh 1.5vh;
+    border-radius: 1.2vh;
+    font-size: 2vh; /* Font size for readability */
+    font-weight: 600;
+    color: #000000;
+    outline: none;
+    border: none;
+    background-color: transparent;
+}
+
+.username{
+    top:0vh;
+}  
+
+.firstname{
+    top: 5.5vh;
+}   
+
+.lastname{
+    top:11vh;
+}  
+
+.newpass{
+    top:28vh;
+}   
+
+.confirmpass{
+    top:33.5vh;
+}  
+/* Input placeholder styling */
+.content::placeholder {
+    color: #313131;
+}
+
+
+
+
+/* Birthdate wrapper with horizontal alignment for day, month, and year */
+.birthdate-wrapper {
+    display: flex;
+    justify-content: space-between;
+    width: 100%; /* Ensures the wrapper takes full width */
+    gap: 10px; /* Space between the select elements */
+}
+
+/* Select box styling for day, month, year */
+.birthday-select {
+    position: absolute;
+    display: flex;
+    justify-content: space-between;
+    top: 16.7vh;
+    background-color: transparent;
+    border: none;
+    padding: 0vh 2vh;
+    border-radius: 1.2vh;
+    font-size: 1.8vh;
+    font-weight: 600;
+    color: #000000;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-image: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="none" stroke="currentColor" width="16" height="16"%3E%3Cpath stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 7l5 5 5-5"%3E%3C/path%3E%3C/svg%3E');
+    background-repeat: no-repeat;
+    background-position: right 1vh center;
+    background-size: 2.4vh;
+    height: 4vh;
+    max-height: 4vh;
+}
+
+
+
+/* Existing layout */
+.day {
+    height: 4vh;
+    width: 14vh;
+    left: 0vh;
+}
+
+.month {
+    height: 4vh;
+    width: 13vh;
+    left: 15.5vh;
+}
+
+.year {
+    height: 4vh;
+    width: 13.8vh;
+    left: 30vh;
+}
+
+
+
+
+.gender-group {
+    position: absolute;
+    padding: 1vh 1.5vh; /* Spacing inside */
+    border-radius: 1vh;
+    font-size: 1.8vh;
+    font-weight: 600;
+    color: #313131;
+    top: 21.5vh;
+    width: 32.5vh;
+    height: 4vh; /* Same height as input */
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* Space between label and radio */
+}
+
+
+
+.male input {
+    position: absolute;
+    height: 2vh;
+    width: 2vh;
+    right: 15vh;
+    bottom: 2vh;
+}
+
+
+
+.female input {
+    position: absolute;
+    height: 2vh;
+    width: 2vh;
+    right: -7.5vh;
+    bottom: 2vh;
+    
+
+}
+
+
+
+
+
+
+/* Submit button styling */
+button[type="submit"] {
+    position: absolute;
+    top: 38.5vh;
+    left: -0.4vh;
+    height: 6.5vh;
+    width: 44.5vh;
+    background: transparent center/contain no-repeat;
+    background-image: url('../images/registerimg/signupbtn.png');
+    border: none;
+    cursor: pointer;
+    transition: transform 0.6s ease;
+}
+
+/* Hover effect for submit button */
+button[type="submit"]:hover {
+    transform: scale(1.02);
+}
+
+
+.sign-in {
+    position: absolute;
+    top: 45vh;
+    left: -0.4vh;
+    height: 6.5vh;
+    width: 44.5vh;
+    background: transparent center/contain no-repeat;
+    background-image: url('../images/registerimg/signin.png');
+    border: none;
+    cursor: pointer;
+    transition: transform 0.6s ease;
+}
+.sign-in:hover{
+    transform: scale(1.02);
+
+}
+
+.flash-container {
+    position: fixed;
+    top: 0%;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 9999;
+    width: auto;
+    max-width: 90%;
+    text-align: center;
+  }
+  
+  .flash {
+    padding: 10px;
+    border-radius: 6px;
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+  
+  .flash-success {
+    background-color: #d4edda;
+    color: #155724;
+  }
+  
+  .flash-danger {
+    background-color: #f8d7da;
+    color: #721c24;
+  }
+  

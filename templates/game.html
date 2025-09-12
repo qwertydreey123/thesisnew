@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Tailwind CSS and Font Awesome -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/game.css') }}">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Chewy&family=Fredoka:wght@300..700&family=Varela+Round&display=swap" rel="stylesheet">
+</head>
+
+<body data-page="shop" data-bgm="dynamic">
+  <audio id="buttonClickSound" src="/static/sfx/click.mp3" preload="auto"></audio>
+  <audio id="calcbtns" src="/static/sfx/calcbtns.mp3" preload="auto"></audio>
+  <audio id="counticus" src="/static/sfx/counticusclick.mp3" preload="auto"></audio>
+  <audio id="potionused" src="/static/sfx/potionused.mp3" preload="auto"></audio>
+
+  <div class="game-wrapper">
+
+    <!-- Game Background -->
+    <div class="game-bg" id="game-bg">
+      
+      <!-- Player and Monster Section -->
+      <div class="flex justify-between items-center p-4 w-full">
+        <!-- Player -->
+        <div class="player-container">
+          <p class="player-name">{{ first_name | upper }}</p>
+          <div id="player-health" class="hp-bar-container playerhp"></div>
+          <div id="difficulty-display" class="difficulty-display"></div>
+
+        </div>
+
+        <!-- Lightning Effect -->
+        <div class="lightning-container">
+          <img src="{{ url_for('static', filename='images/anim/thunder/11.png') }}" class="sprite-lightning" />
+          <img src="{{ url_for('static', filename='images/anim/thunder/22.png') }}" class="sprite-lightning" />
+          <img src="{{ url_for('static', filename='images/anim/thunder/33.png') }}" class="sprite-lightning" />
+          <img src="{{ url_for('static', filename='images/anim/thunder/44.png') }}" class="sprite-lightning" />
+          <img src="{{ url_for('static', filename='images/anim/thunder/55.png') }}" class="sprite-lightning" />
+        </div>
+
+        <!-- Monster -->
+        <div class="monster-container">
+          <p class="monster-name"></p>
+          <div id="monster-health" class="hp-bar-container monsterhp"></div>
+
+        </div>
+      </div>
+
+      <!-- HP Bar Path -->
+      <div id="hp-bar-path" data-base-url="{{ url_for('static', filename='images/gameimg/hpbars/') }}"></div>
+
+
+
+      <!-- Menu Button -->
+<button class="1btn" id="menuButton" onclick="showVictoryScreen()">W</button>
+      <!-- Characters and Platform Section (Ground) -->
+      <div class="ground">
+        <!-- Platform -->
+        <img id="platform-image" src="" alt="Platform" class="platform">
+
+        <!-- Characters -->
+        <img src="" class="character player-spawn" id="player-spawn">
+        <img src="" alt="Wizard" id="player-idle" class="character player hidden">
+        
+        
+        
+
+
+        <div class="fireball"></div>
+
+        <img id="monster-sprite" src="" alt="Monster" class="monster">
+
+        <!-- Fireball -->
+      </div>
+
+    </div> <!-- End of game-bg -->
+
+    <!-- Game Control Box -->
+    <div class="game-control-box"></div>
+      
+    
+<!-- Potion Section -->
+<div class="potion-section">
+  <div class="potion-item">
+    <div class="freeze-box-container">
+      <img src="{{ url_for('static', filename='images/gameimg/freeze.png') }}" class="freeze-potion" alt="Freeze Potion" onclick="potionused(); useFreezePotion()">
+      <img src="{{ url_for('static', filename='images/gameimg/freezebox.png') }}" class="freeze-box">
+    </div>
+    <span class="potion-quantity" id="freeze-quantity">3</span>
+  </div>
+
+  <div class="potion-item">
+    <div class="health-box-container">
+      <img src="{{ url_for('static', filename='images/gameimg/health.png') }}" class="health-potion" alt="Health Potion" onclick="potionused(); useHealthPotion()">
+      <img src="{{ url_for('static', filename='images/gameimg/healthbox.png') }}" class="health-box">
+    </div>
+    <span class="potion-quantity" id="health-quantity">1</span>
+  </div>
+
+  <div class="potion-item">
+    <div class="thunder-box-container">
+      <img src="{{ url_for('static', filename='images/gameimg/thunder.png') }}" class="thunder-potion" alt="Thunder Potion" onclick="potionused(); useThunderPotion()">
+      <img src="{{ url_for('static', filename='images/gameimg/thunderbox.png') }}" class="thunder-box">
+    </div>
+    <span class="potion-quantity" id="thunder-quantity">3</span>
+  </div>
+</div>
+
+
+
+
+
+
+<div class="game-control-container">
+  <div class="button" onclick="calcbtns(); addToInput(7)"></div>
+  <div class="button" onclick="calcbtns();  addToInput(8)"></div>
+  <div class="button" onclick="calcbtns();  addToInput(9)"></div>
+  <div class="button" onclick="calcbtns();  addToInput(4)"></div>
+  <div class="button" onclick="calcbtns();  addToInput(5)"></div>
+  <div class="button" onclick="calcbtns();  addToInput(6)"></div>
+  <div class="button" onclick="calcbtns();  addToInput(1)"></div>
+  <div class="button" onclick="calcbtns();  addToInput(2)"></div>
+  <div class="button" onclick="calcbtns();  addToInput(3)"></div>
+  <div class="button backspace" onclick="calcbtns();  backspace()"></div>
+  <div class="button" onclick="calcbtns(); addToInput(0)"></div>
+  <div class="button" onclick="calcbtns();  addToInput('.')"></div>
+  <div class="placeholder-input">
+    <input type="text" class="input-field" id="number-input" />
+  </div>
+  <div class="attack-button" onclick="playButtonClickSound(); handleAttack()"></div>
+</div>
+
+
+
+        <div class="chatbot-container">
+          <div class="speech-bubble" id="speech-bubble">
+            <!-- No initial text, will be updated dynamically -->
+          </div>
+          
+          
+       
+            <a href="{{ url_for('chatbot') }}" onclick="counticus(); delayedRedirect(event)">
+              <img src="{{ url_for('static', filename='images/gameimg/counticus.png') }}" alt="Wizard Counticus" class="chatbot-img">
+            </a>
+          </div>
+
+
+
+
+<!-- Question Section -->
+<div class="question-container">
+  <div class="question-text-wrapper">
+    <p id="question-text" class="question-text"></p>
+  </div>
+  <input type="hidden" id="correct-answer">
+  <div class="menu-btn-wrapper">
+    <button id="menuButton" class="menu-btn" onclick="toggleMenu()">☰ Menu</button>
+  </div>
+  <div id="freeze-turn" class="freeze-turn"></div>
+
+</div>
+
+<p id="feedback"></p>
+
+
+<div id="feedback-message" class="feedback-message">
+  
+    <!-- Feedback -->
+
+  </div> <!-- End of game-wrapper -->
+<!-- Victory Screen -->
+<div id="victory-screen" class="victory-screen">
+  <div class="victory-box">
+    <div class="victory-buttons">
+      <button id="continue-btn" class="victory-btn"></button>
+      <button id="retry-btn" class="victory-btn"></button>
+      <button id="home-btn" class="victory-btn"></button>
+    </div>
+    
+    <!-- Reward Box (Moved here) -->
+    <div class="reward-box">
+      <div class="reward-container">
+        <div id="reward-claimed-text" class="reward-claimed-text hidden">🎉 Reward Claimed!</div>
+
+        <!-- Multiplication Rewards -->
+        <img id="reward-multiplication-badge" class="reward-img hidden" alt="Badge Reward">
+        <img id="reward-multiplication-title" class="reward-img hidden" alt="Title Reward">
+        <img id="reward-multiplication-border" class="reward-img hidden" alt="Border Reward">
+        
+        <!-- Addition Rewards -->
+        <img id="reward-addition-badge" class="reward-img hidden" alt="Badge Reward">
+        <img id="reward-addition-title" class="reward-img hidden" alt="Title Reward">
+        <img id="reward-addition-border" class="reward-img hidden" alt="Border Reward">
+        
+        <!-- Subtraction Rewards -->
+        <img id="reward-subtraction-badge" class="reward-img hidden" alt="Badge Reward">
+        <img id="reward-subtraction-title" class="reward-img hidden" alt="Title Reward">
+        <img id="reward-subtraction-border" class="reward-img hidden" alt="Border Reward">
+        
+        <!-- Division Rewards -->
+        <img id="reward-division-badge" class="reward-img hidden" alt="Badge Reward">
+        <img id="reward-division-title" class="reward-img hidden" alt="Title Reward">
+        <img id="reward-division-border" class="reward-img hidden" alt="Border Reward">
+        
+        <!-- Counting Rewards -->
+        <img id="reward-counting-badge" class="reward-img hidden" alt="Badge Reward">
+        <img id="reward-counting-title" class="reward-img hidden" alt="Title Reward">
+        <img id="reward-counting-border" class="reward-img hidden" alt="Border Reward">
+        
+        <!-- Comparison Rewards -->
+        <img id="reward-comparison-badge" class="reward-img hidden" alt="Badge Reward">
+        <img id="reward-comparison-title" class="reward-img hidden" alt="Title Reward">
+        <img id="reward-comparison-border" class="reward-img hidden" alt="Border Reward">
+        
+        <!-- Numerals Rewards -->
+        <img id="reward-numerals-badge" class="reward-img hidden" alt="Badge Reward">
+        <img id="reward-numerals-title" class="reward-img hidden" alt="Title Reward">
+        <img id="reward-numerals-border" class="reward-img hidden" alt="Border Reward">
+        
+        <!-- Place Value Rewards -->
+        <img id="reward-placevalue-badge" class="reward-img hidden" alt="Badge Reward">
+        <img id="reward-placevalue-title" class="reward-img hidden" alt="Title Reward">
+        <img id="reward-placevalue-border" class="reward-img hidden" alt="Border Reward">
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Game Over Screen -->
+<div id="gameover-screen" class="gameover-screen">
+  <div class="gameover-box">
+    <div class="gameover-buttons">
+      <button id="go-retry-btn" class="gameover-btn"></button>
+      <button id="go-home-btn" class="gameover-btn"></button>
+    </div>
+  </div>
+</div>
+
+<!-- Route Paths -->
+<div id="route-paths"
+  data-roadmap="{{ url_for('roadmap') }}"
+  data-dashboard="{{ url_for('dashboard') }}">
+</div>
+
+
+  <!-- Game Menu Overlay -->
+  <div id="menuOverlay" class="menu-overlay hidden">
+    <div id="gameMenu" class="game-menu">
+      <button class="menu-item" data-lang="resume" onclick="resumeGame()"></button>
+      <button class="menu-item" data-lang="restart" onclick="restartGame()"></button>
+      <button class="menu-item" data-lang="settings" onclick="openSettings()"></button>
+      <button class="menu-item" data-lang="quit" onclick="goToMainMenu()"></button>
+    </div>
+
+<!-- Settings Menu -->
+<!-- Settings Menu -->
+<div id="settingsMenu" class="game-menu hidden">
+  <div class="settings-container">
+    <!-- Volume Control for BGM -->
+    <div class="setting-option">
+      <label for="volume" class="volume-label" data-lang="volumeLabel">
+        <img src="{{ url_for('static', filename='images/gameimg/menuimg/BGM/BGM.png') }}"  alt="BGM" class="volume-icon" />
+      </label>
+            <input type="range" id="volume" class="volume-slider" min="0" max="90" value="30">
+    </div>
+    
+
+    <!-- Mute Toggle for BGM -->
+    <div class="setting-option mute-align">
+      <div class="mute-wrapper">
+        <input type="checkbox" id="muteCheckbox" class="mute-checkbox" onchange="toggleMuteCheckbox(event)">
+        <span class="mute-icon" data-lang="muteLabel">
+          <img src="{{ url_for('static', filename='images/gameimg/menuimg/BGM/Mute.png') }}" alt="Mute" class="mute-icon" />
+        </span>
+              </div>
+    </div>
+
+    <!-- Volume Control for SFX -->
+    <div class="setting-option">
+      <label for="sfx-volume" class="sfx-volume-label" data-lang="sfxVolumeLabel">
+        <img src="{{ url_for('static', filename='images/gameimg/menuimg/SFX/SFX.png') }}" alt="SFX" class="sfx-volume-icon" />
+      </label>
+      
+      <input type="range" id="sfx-volume" class="volume-slider" min="0" max="90" value="60">
+    </div>
+
+    <!-- Mute Toggle for SFX -->
+    <div class="setting-option mute-align">
+      <div class="sfx-mute-wrapper">
+        <input type="checkbox" id="sfxMuteCheckbox" class="mute-checkbox" onchange="toggleSfxMuteCheckbox(event)">
+        <span class="sfx-mute-icon" data-lang="muteLabel">
+          <img src="{{ url_for('static', filename='images/gameimg/menuimg/SFX/Mute.png') }}" alt="Mute" class="sfx-mute-icon" />
+        </span>
+              </div>
+    </div>
+
+
+    <!-- Settings Buttons -->
+    <div class="settings-item-container">
+      <button class="settings-item" onclick="applySettings()" data-lang="apply"></button>
+      <button class="settings-item" onclick="closeSettings()" data-lang="back"></button>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+<script>
+  function autoResizeText() {
+    const wrapper = document.querySelector('.question-text-wrapper');
+    const text = document.querySelector('#question-text');
+
+    let fontSize = 7;  // Initial font size in vh
+    text.style.fontSize = fontSize + 'vh';
+
+    // Force layout reflow to ensure the browser updates the size first
+    text.offsetHeight; 
+
+    let tries = 0;
+    while ((text.scrollHeight > wrapper.clientHeight || text.scrollWidth > wrapper.clientWidth) && fontSize > 1) {
+      fontSize -= 0.5;  // Gradually decrease font size
+      text.style.fontSize = fontSize + 'vh';  // Apply new font size
+      tries++;
+    }
+
+    // // Logging values to help debug
+    // console.log('Final font size:', fontSize, 'after', tries, 'tries');
+    // console.log('Text size:', text.scrollWidth, text.scrollHeight);
+    // console.log('Wrapper size:', wrapper.clientWidth, wrapper.clientHeight);
+  }
+
+  function setQuestion(newText) {
+    const textElement = document.getElementById('question-text');
+    textElement.textContent = newText;
+
+    // Force a reflow before resizing
+    textElement.offsetHeight;
+
+    // Run auto-resizing after content update
+    setTimeout(() => {
+      autoResizeText();
+    }, 100);  // Added slight delay to ensure DOM is ready
+  }
+
+  // Example usage:
+  // setQuestion("This is a new dynamic question!");
+</script>
+
+<script>
+  function delayedRedirect(event) {
+    event.preventDefault(); // Stop immediate redirect
+    const targetUrl = event.currentTarget.getAttribute('href');
+    setTimeout(() => {
+      window.location.href = targetUrl;
+    }, 1000); // 1000 milliseconds = 1 second
+  }
+
+  function counticus() {
+            const sound = document.getElementById('counticus');
+
+            // Only play if not already playing
+            if (sound.paused) {
+              sound.currentTime = 0; // rewind to start
+              sound.volume = 0.5;
+              sound.play().catch((e) => {
+                console.error('Playback failed:', e);
+              });
+            }
+          }
+
+  function calcbtns() {
+      const originalSound = document.getElementById('calcbtns');
+      const soundClone = originalSound.cloneNode(); // clone the <audio> element
+      soundClone.volume = 1;
+      soundClone.playbackRate = 2;
+
+      // Play the cloned audio
+      soundClone.play().catch((e) => {
+          console.error('Playback failed:', e);
+      });
+    }
+
+  function potionused() {
+    const originalSound = document.getElementById('potionused');
+    const soundClone = originalSound.cloneNode(); // clone the <audio> element
+    soundClone.volume = 1;
+    soundClone.playbackRate = 2;
+
+    // Play the cloned audio
+    soundClone.play().catch((e) => {
+        console.error('Playback failed:', e);
+    });
+  }
+</script>
+  
+  
+  
+
+<script src="{{ url_for('static', filename='js/tutorial.js') }}"></script>
+<script src="{{ url_for('static', filename='js/questions.js') }}"></script>
+<script src="{{ url_for('static', filename='js/game.js') }}"></script>
+<script src="{{ url_for('static', filename='js/bgmusic.js') }}"></script>
+<script src="{{ url_for('static', filename='js/orientation.js') }}"></script>
+
+
+</body>
+</html>

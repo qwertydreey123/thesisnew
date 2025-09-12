@@ -1,0 +1,3008 @@
+@font-face {
+  font-family: "FSP DEMO - Merlo Neue Bold";
+  src: url("https://db.onlinewebfonts.com/t/8d461bab99a9a970a10bca9246b1f1ae.eot");
+  src: url("https://db.onlinewebfonts.com/t/8d461bab99a9a970a10bca9246b1f1ae.eot?#iefix")format("embedded-opentype"),
+  url("https://db.onlinewebfonts.com/t/8d461bab99a9a970a10bca9246b1f1ae.woff2")format("woff2"),
+  url("https://db.onlinewebfonts.com/t/8d461bab99a9a970a10bca9246b1f1ae.woff")format("woff"),
+  url("https://db.onlinewebfonts.com/t/8d461bab99a9a970a10bca9246b1f1ae.ttf")format("truetype"),
+  url("https://db.onlinewebfonts.com/t/8d461bab99a9a970a10bca9246b1f1ae.svg#FSP DEMO - Merlo Neue Bold")format("svg");
+}
+
+
+/* Body styles - change the background color and layout */
+body {
+  background-color: #bfdbfe; /* Tailwind bg-blue-100 - change the background color */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  flex-direction: column;
+  font-family: 'Poppins', sans-serif; /* Use the custom font */
+  margin: 0; /* Ensure no default margin */
+  box-sizing: border-box; /* Ensure consistent box sizing */
+  overflow: hidden; /* Disable scrollbars globally */
+
+}
+
+
+.game-wrapper {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+  position: relative;
+  overflow: hidden;
+}
+/* ========== PLAYER SECTION ========== */
+.player-container,
+.monster-container {
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  width: 42vh;
+  height: 10vh;
+  position: relative;
+  z-index: 999;
+
+  
+}
+
+.player-container {
+  background-image: url('../images/gameimg/playerborder.png');
+  user-select: none;
+  -webkit-user-drag: none; /* Prevents dragging in Safari/Chrome */
+  -webkit-user-select: none; /* Prevents text/image selection in WebKit */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE/Edge */
+}
+
+.monster-container {
+  background-image: url('../images/gameimg/monsterborder.png');
+  user-select: none;
+  -webkit-user-drag: none; /* Prevents dragging in Safari/Chrome */
+  -webkit-user-select: none; /* Prevents text/image selection in WebKit */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE/Edge */
+}
+
+
+
+.player-name,
+.monster-name {
+  position: absolute;
+  top: 28%;
+  font-size: 2.5vh;
+  color: #ffffff;
+  text-shadow: -1px -1px 0 #000, 1px -1px 0 #000,
+               -1px 1px 0 #000, 1px 1px 0 #000;
+  font-family: "Fredoka", sans-serif;
+  font-weight: bold;
+  letter-spacing: 1.5px;
+  white-space: nowrap;
+}
+
+.player-name {
+  left: 25px;
+  text-align: left;
+}
+
+.monster-name {
+  right: 25px;
+  text-align: right;
+}
+
+
+
+.player-image {
+  width: 100px;
+  height: 100px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  border: 5px solid #000000; /* Add a golden border */
+  border-radius: 10%; /* Make the border follow the rounded shape */
+  user-select: none;
+  -webkit-user-drag: none; /* Prevents dragging in Safari/Chrome */
+  -webkit-user-select: none; /* Prevents text/image selection in WebKit */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE/Edge */
+}
+
+.monster-image {
+  width: 100px;
+  height: 100px;
+  position: absolute;
+  top: 0;
+  right: 0;
+  border: 5px solid #000000; /* Add an orange-red border */
+  border-radius: 10%; /* Make the border follow the rounded shape */
+  user-select: none;
+  -webkit-user-drag: none; /* Prevents dragging in Safari/Chrome */
+  -webkit-user-select: none; /* Prevents text/image selection in WebKit */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE/Edge */
+}
+
+
+
+
+/* HP Bar Container */
+.hp-bar-container {
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  width: 42vh;
+  height: 10vh;
+  position: relative;
+  z-index: 999;
+  top:11vh;
+
+}
+
+.hp-bar-image{
+  user-select: none;
+  -webkit-user-drag: none; /* Prevents dragging in Safari/Chrome */
+  -webkit-user-select: none; /* Prevents text/image selection in WebKit */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE/Edge */
+}
+
+
+
+
+/* ========== QUESTION SECTION ========== */
+/* ========== QUESTION SECTION ========== */
+.question-container {
+  background-image: url('../images/gameimg/question wood2.png');
+  background-size: contain; 
+  background-position: center;
+  background-repeat: no-repeat;
+  position: absolute;
+  top: -1%;
+  left: 33%;
+  z-index: 10;
+  width: 70vh;
+  height: 38vh;
+  text-align: center;
+  padding: 0 10px;
+  animation: smoothBungeeDrop 1.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  
+}
+@keyframes smoothBungeeDrop {
+  0% {
+    transform: translateY(-100%) scale(0.8);
+    opacity: 0;
+  }
+  30% {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: translateY(-4%) scale(1.02);
+  }
+  100% {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+}
+/* Text wrapper */
+.question-text-wrapper {
+  position: absolute;
+  top: 18vh;
+  left: 12.5vh;
+  width: 45vh;
+  height: 16vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;  /* Prevent overflow of text */
+}
+
+.question-text {
+  max-width: 45vh;
+  max-height: 16vh;
+  font-size: 7vh;
+  font-weight: 700;
+  color: #f4f4f4;
+  font-family: "Fredoka", sans-serif;
+  text-align: center;
+  letter-spacing: 2px;
+  line-height: 1.2; /* ✅ Controls spacing between lines */
+  margin: 0;       /* ✅ Remove default margin from <p> */
+  padding: 0;      /* ✅ Remove padding if any */
+  text-shadow:
+    1px 1px 2px #a76e2e,
+    2px 2px 6px #e6b44b,
+    0 0 2px #c58e3d;
+  white-space: normal;
+  word-break: break-word;
+  overflow: hidden;
+  opacity: 0;
+  transition: opacity 1s ease-in-out;  /* Smooth fade-in and fade-out transition */
+}
+
+
+
+/* Initially invisible (opacity 0 for fade-in effect) */
+
+/* Fade in effect */
+.fade-in {
+  opacity: 0;
+  animation: fadeIn 1s forwards;
+}
+
+/* Fade out effect */
+.fade-out {
+  opacity: 1;
+  animation: fadeOut 1s forwards;
+}
+
+/* Animation for fade-in */
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+  }
+}
+
+/* Animation for fade-out */
+@keyframes fadeOut {
+  to {
+    opacity: 0;
+  }
+}
+
+
+
+
+
+
+
+
+/* Freeze Turns Display Styling */
+.freeze-turn {
+  position: absolute;
+  font-weight: 600; /* Slightly lighter weight for readability */
+  color: #fff; /* White text */
+  background-color: rgba(135, 206, 250, 0.85); /* Slightly less transparent for a more prominent ice blue effect */
+  padding: 1vh 2vh; /* Increased padding for better spacing */
+  border-radius: 1vh; /* More rounded corners */
+  top: 39vh;
+  left: 22vh;
+  text-align: center;
+  font-size: 1.6vh;
+  width: auto;
+  height: auto;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Subtle shadow for depth */
+  z-index: 9999;
+}
+
+
+
+
+/* ========== GAME BACKGROUND ========== */
+.game-bg {
+  position: relative;
+  top: -13vh; /* Moves the background up by 16vh */
+  left: 0;
+  width: 100vw; /* Full width of the viewport */
+  height: 74vh; /* Takes up 69% of the viewport height */
+  background-repeat: no-repeat;
+  background-size: cover; /* Ensures the background image covers the area */
+  z-index: 0; /* Behind the other elements like ground and game control box */
+  user-select: none; /* Disables text selection */
+  -webkit-user-drag: none; /* Prevents image dragging in webkit-based browsers */
+  -webkit-user-select: none; /* Prevents text selection in webkit-based browsers */
+  -moz-user-select: none; /* Prevents text selection in Mozilla browsers */
+  -ms-user-select: none; /* Prevents text selection in MS browsers */
+}
+
+
+
+
+
+
+
+.ground {
+  position: absolute; /* Make it absolutely positioned to control placement */
+  bottom: 3vh; /* Position it at the bottom of the screen */
+  left: 0;
+  width: 100%; /* Full width of the screen */
+  height: auto; /* Adjust height based on content */
+  z-index: 1; /* Ensure it stays above the game background but below the game control box */
+}
+
+.platform {
+  position: absolute; /* Absolute positioning to align properly with the ground */
+  bottom: 0; /* Align it to the bottom of the ground */
+  left: 0;
+  width: 100%; /* Full width of the screen */
+  height: auto; /* Adjust height based on content */
+  background-size: contain; /* Ensure the platform image scales correctly */
+  background-position: center; /* Center the platform image */
+  z-index: 0; /* Keep it behind the game control box */
+}
+
+#platform-image{
+  user-select: none;
+  -webkit-user-drag: none; /* Prevents dragging in Safari/Chrome */
+  -webkit-user-select: none; /* Prevents text/image selection in WebKit */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE/Edge */
+}
+/* Example platform sizes and positions for different maps */
+.platform-multiplication {
+  height: 30vh;
+  width: 100%;
+  position: absolute;
+  bottom: 0vh;
+}
+
+.platform-addition {
+  height: 28vh;
+  width: 100%;
+  position: absolute;
+  bottom: -8vh;
+}
+
+.platform-subtraction {
+  height: 22vh;
+  width: 100%;
+  position: absolute;
+  bottom: -6.5vh;
+}
+
+.platform-division {
+  height: 19vh;
+  width: 100%;
+  position: absolute;
+  bottom: -8.5vh;
+}
+
+.platform-counting {
+  height: 25vh;
+  width: 100%;
+  position: absolute;
+  bottom: -4.5vh;
+}
+
+.platform-comparison {
+  height: 32vh;
+  width: 100%;
+  position: absolute;
+  bottom: -7vh;
+}
+
+.platform-numerals {
+  height: 25vh;
+  width: 100%;
+  position: absolute;
+  bottom: -8.5vh;
+}
+
+.platform-placevalue {
+  height: 14vh;
+  width: 100%;
+  position: absolute;
+  bottom: -3.5vh;
+}
+
+
+/* ========== CHARACTER SECTION ========== */
+.character {
+  position: absolute;
+  bottom: 4vh;
+  z-index: 10;
+  animation: subtleStretchIdle 1s ease-in-out infinite;
+  transform-origin: center bottom; /* Make it stretch from the bottom */
+  user-select: none;
+  -webkit-user-drag: none; /* Prevents dragging in Safari/Chrome */
+  -webkit-user-select: none; /* Prevents text/image selection in WebKit */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE/Edge */
+}
+
+@keyframes subtleStretchIdle {
+  0%, 100% {
+    transform: scaleY(1); /* Original size */
+  }
+  25% {
+    transform: scaleY(1.05); /* Slight stretch down */
+  }
+  50% {
+    transform: scaleY(1.03); /* Slight contraction after stretch */
+  }
+  75% {
+    transform: scaleY(1.05); /* Stretch down again, but still subtle */
+  }
+}
+
+/* Player Wizard */
+.character.player {
+  height: 35vh; /* Full screen height */
+  width: auto;
+  left: 10%;   /* 100px of 1000px width */
+  transition: width 0.5s, height 0.5s; /* Adjust timing for smooth transition */
+
+}
+
+
+
+/* ========== FIREBALL SECTION ========== */
+.fireball {
+  position: absolute;
+  top: -35vh; /* Instead of fixed -300px, use -20% of viewport height */
+  right: 45%;
+  transform: translateX(-50%);
+  width: 10vw; /* Make the fireball's width 15% of the viewport width */
+  height: auto;
+  animation: fireball-move 0.8s linear forwards;
+  z-index: 9999;
+  display: block;
+}
+@keyframes fireball-move {
+  0% {
+    right: 20%;
+    top: -35vh; /* Consistent with the top value */
+    opacity: 1;
+  }
+  60% {
+    opacity: 0.9;
+  }
+  90% {
+    opacity: 0.7;
+  }
+  100% {
+    left: 85%;
+    opacity: 0;
+  }
+}
+
+
+
+
+/* Base class for all monsters */
+.monster {
+  right: 5%;
+  height: 35vh; 
+  position: absolute;
+  bottom: 10px;
+  z-index: 10;
+  animation: subtleStretchIdle 1s ease-in-out infinite;
+  transform-origin: center bottom; /* Make it stretch from the bottom */
+  user-select: none;
+  -webkit-user-drag: none; /* Prevents dragging in Safari/Chrome */
+  -webkit-user-select: none; /* Prevents text/image selection in WebKit */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE/Edge */
+  filter: 
+    drop-shadow(0 0 10px rgba(0, 0, 0, 0.5))  /* Light shadow */
+    drop-shadow(3px 3px 4px rgba(0, 0, 0, 0.4))  /* Bottom-right shadow */
+    drop-shadow(-3px -3px 4px rgba(0, 0, 0, 0.4));  /* Top-left shadow */
+}
+
+@keyframes subtleStretchIdle {
+  0%, 100% {
+    transform: scaleY(1); /* Original size */
+  }
+  25% {
+    transform: scaleY(1.05); /* Slight stretch down */
+  }
+  50% {
+    transform: scaleY(1.03); /* Slight contraction after stretch */
+  }
+  75% {
+    transform: scaleY(1.05); /* Stretch down again, but still subtle */
+  }
+
+}
+
+.monster-spawn {
+  position: absolute;
+  height: 25vh; /* Adjust height */
+  width: auto;
+  animation: monster-spawn-from-right 0.9s ease-out forwards; /* Animation for spawn */
+}
+
+@keyframes monster-spawn-from-right {
+  0% {
+    left: 100vw; /* Start from off-screen (right side) */
+    opacity: 0; /* Initially invisible */
+  }
+  100% {
+    left: 0; /* Final position on the screen */
+    opacity: 1; /* Fully visible */
+  }
+}
+
+
+
+
+
+.monster-death {
+  animation: monsterDissolve 0.7s ease-out forwards;
+}
+
+
+@keyframes monsterDissolve {
+  0% {
+    filter: blur(0px);
+    opacity: 1;
+    transform: scale(1);
+  }
+  100% {
+    filter: blur(4px);
+    opacity: 0;
+    transform: scale(1.1);
+  }
+}
+
+
+
+
+
+
+
+@keyframes freezeMonster {
+  0% { 
+    opacity: 0.5; 
+    transform: scale(1.1);
+    filter: hue-rotate(0deg) saturate(100%) contrast(100%) brightness(100%);
+  }
+  100% { 
+    opacity: 1; 
+    transform: scale(1);
+    filter: hue-rotate(220deg) saturate(130%) contrast(120%) brightness(90%);
+  }
+}
+
+.freeze-monster {
+  animation: freezeMonster 2s ease-out forwards;
+}
+
+.monster.frozen {
+  animation-play-state: paused !important;
+  filter: brightness(0.7) drop-shadow(0 0 15px #00bfff) sepia(1) hue-rotate(180deg) saturate(500%) brightness(80%);
+}
+
+
+
+/* When the monster takes damage */
+.monster.damaged {
+  animation: monsterDamage 0.4s ease-out, playerShake 0.5s ease-out;
+}
+
+/* Damage animation for the monster with intense red effect */
+@keyframes monsterDamage {
+  0% {
+    transform: scale(1);
+    filter: none;
+  }
+  30% {
+    transform: scale(1.08);
+    filter: brightness(0.6) sepia(1) hue-rotate(-50deg) saturate(800%) contrast(1.4); /* Stronger red tint */
+  }
+  60% {
+    transform: scale(1);
+    filter: none;
+  }
+  100% {
+    transform: scale(1);
+    filter: none;
+  }
+}
+
+
+
+/* Shake animation */
+@keyframes Playershake {
+  0% { transform: translateX(0); }
+  20% { transform: translateX(-6px); }
+  40% { transform: translateX(6px); }
+  60% { transform: translateX(-4px); }
+  80% { transform: translateX(4px); }
+  100% { transform: translateX(0); }
+}
+
+
+
+/* Aura effect around the player image with multiple drop-shadows */
+@keyframes playerHealAnimation {
+  0% {
+    filter: brightness(1)
+            drop-shadow(0 -10px 20px rgba(0, 255, 0, 0.6)) /* High upwards green glow */
+            drop-shadow(0 -20px 40px rgba(0, 255, 0, 0.4))
+            drop-shadow(0 -30px 60px rgba(0, 255, 0, 0.2)); /* Even larger green glow */
+  }
+  50% {
+    filter: brightness(1.5)
+            drop-shadow(0 -30px 60px rgba(0, 255, 0, 0.8)) /* Strong upwards green glow */
+            drop-shadow(0 -50px 100px rgba(0, 255, 0, 0.6)) 
+            drop-shadow(0 -70px 140px rgba(0, 255, 0, 0.3)); /* Much larger and higher green glow */
+  }
+  100% {
+    filter: brightness(1)
+            drop-shadow(0 -10px 20px rgba(0, 255, 0, 0.6)) /* High upwards green glow */
+            drop-shadow(0 -20px 40px rgba(0, 255, 0, 0.4)) 
+            drop-shadow(0 -30px 60px rgba(0, 255, 0, 0.2)); /* Even larger green glow */
+  }
+}
+
+/* Applying healing effect to player image */
+.player.heal {
+  animation: playerHealAnimation 0.5s ease-out forwards; /* Healing effect */
+}
+
+
+.player-spawn {
+  position: absolute;
+  height: 35vh; /* Full screen height */
+  width: auto;
+  left: 10%; 
+  animation: spawnEffect 1.5s ease-out forwards; /* Apply spawn effect */
+}
+
+@keyframes spawnEffect {
+  0% {
+    left: -50vw; /* Start from off-screen (left) */
+    opacity: 0;
+  }
+  50% {
+    left: 10%; /* Move closer but not too far (adjusted for less movement) */
+    opacity: 1; /* Make it visible */
+  }
+  100% {
+    left: 10%; /* Final position of the character */
+    opacity: 1;
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+/* Player damage animation */
+.player-damaged {
+  animation: playerDamageAnimation 0.5s ease-out, playerShake 0.5s ease-out;
+}
+
+/* Keyframes for player damage: more intense red flash effect */
+@keyframes playerDamageAnimation {
+  0% {
+    filter: none; /* No effect */
+  }
+  25% {
+    filter: brightness(0.6) sepia(1) hue-rotate(-50deg) saturate(800%) contrast(1.4); /* Stronger red tint */
+  }
+  50% {
+    filter: none; /* Back to normal */
+  }
+  75% {
+    filter: brightness(0.6) sepia(1) hue-rotate(-50deg) saturate(800%) contrast(1.4); /* Stronger red tint */
+  }
+  100% {
+    filter: none; /* Back to normal */
+  }
+}
+
+
+/* Shake animation */
+@keyframes playerShake {
+  0% {
+    transform: translateX(0); /* No shake */
+  }
+  20% {
+    transform: translateX(-6px); /* Shake left */
+  }
+  40% {
+    transform: translateX(6px); /* Shake right */
+  }
+  60% {
+    transform: translateX(-4px); /* Shake left */
+  }
+  80% {
+    transform: translateX(4px); /* Shake right */
+  }
+  100% {
+    transform: translateX(0); /* End shake */
+  }
+}
+
+
+.player.charging {
+  animation: chargeUp 0.4s ease-in-out;
+}
+
+@keyframes chargeUp {
+  0% {
+    filter: brightness(1) drop-shadow(0 0 0px yellow);
+    transform: scale(1);
+  }
+  50% {
+    filter: brightness(1.5) drop-shadow(0 0 10px yellow);
+    transform: scale(1.05);
+  }
+  100% {
+    filter: brightness(1) drop-shadow(0 0 0px yellow);
+    transform: scale(1);
+  }
+}
+.attack {
+  animation: attackAnimation 0.5s ease-out;
+  transform-origin: center center;
+}
+
+/* Attack animation: scale and move forward then back */
+@keyframes attackAnimation {
+  0% {
+    transform: scaleY(1) translateY(0) translateX(0);
+  }
+  25% {
+    transform: scaleY(1.02) translateY(-2px) translateX(6px);
+  }
+  50% {
+    transform: scaleY(1) translateY(0) translateX(12px);
+  }
+  75% {
+    transform: scaleY(1.01) translateY(-1px) translateX(6px);
+  }
+  100% {
+    transform: scaleY(1) translateY(0) translateX(0);
+  }
+}
+
+/* Smooth attack animation with a higher jump and more forward movement for reversed monster */
+.monster-attack {
+  animation-name: monster-attack;
+
+  animation: monsterAttackAnimation 0.7s ease-out;
+  transform-origin: center center;
+}
+
+/* Keyframes for monster attack animation with higher jump and more forward movement */
+@keyframes monsterAttackAnimation {
+  0% {
+    transform: scaleY(1) translateY(0) translateX(0); /* Start from the original position */
+  }
+  25% {
+    transform: scaleY(1.02) translateY(-2px) translateX(-6px); /* Move towards the player */
+  }
+  50% {
+    transform: scaleY(1) translateY(0) translateX(-12px); /* Closer to the player */
+  }
+  60% {
+    transform: scaleY(1.05) translateY(-40px) translateX(-35px); /* Higher jump with forward movement */
+  }
+  75% {
+    transform: scaleY(1.02) translateY(-20px) translateX(-19px); /* Monster descending with forward motion */
+  }
+  100% {
+    transform: scaleY(1) translateY(0) translateX(0); /* Final position */
+  }
+}
+
+/* ========== GAME CONTROL BOX ========== */
+.game-control-box {
+  position: absolute; /* Stay positioned relative to the viewport */
+  bottom: 0; /* Stick to the bottom */
+  left: 0; /* Align to the left */
+  width: 100vw; /* Full width of the screen */
+  height: 36vh; /* 36% of the viewport height */
+  background-image: url('../images/gameimg/gamecontrolbox.png');
+  background-repeat: no-repeat;
+  background-size: cover;
+  padding: 1rem;
+  overflow: visible; /* Allow the content to overflow if necessary */
+  z-index: 999; /* Ensure it's on top of other elements */
+  user-select: none; /* Prevent text selection */
+  -webkit-user-drag: none; /* Prevent dragging */
+  -webkit-user-select: none; /* Prevent text selection on webkit browsers */
+  -moz-user-select: none; /* Prevent text selection on Firefox */
+  -ms-user-select: none; /* Prevent text selection on IE/Edge */
+}
+
+
+
+
+/* ========== POTION SECTION ========== */
+.potion-section {
+  display: flex; /* Use flexbox to align items horizontally */
+  justify-content: center; /* Center items horizontally */
+  align-items: center; /* Align items vertically */
+  width: 32vw; /* Adjust width relative to viewport */
+  height: 30vh; /* Adjust height */
+  z-index: 1000;
+  position: absolute; /* Position relative to its parent */
+  bottom: 0; /* Stick it to the bottom of the parent container */
+  left: -5vh; /* Move it 5% from the left side of the screen */
+  gap: 1vw; /* Space out potion items */
+  user-select: none;
+  -webkit-user-drag: none; /* Prevents dragging in Safari/Chrome */
+  -webkit-user-select: none; /* Prevents text/image selection in WebKit */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE/Edge */
+}
+
+/* ========== POTION ITEM ========== */
+.potion-item {
+  position: relative;
+  width: 15vh; /* Width of the potion item */
+  height: 25vh; /* Height adjusted for better spacing */
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  user-select: none;
+  -webkit-user-drag: none; /* Prevents dragging in Safari/Chrome */
+  -webkit-user-select: none; /* Prevents text/image selection in WebKit */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE/Edge */
+}
+
+/* ========== POTION IMAGES ========== */
+.freeze-potion, .health-potion, .thunder-potion {
+  width: 15vh; /* Adjust width based on viewport width */
+  height: auto;
+  background: transparent center/contain no-repeat;
+  border: none;
+  padding: 0;
+  margin: 0;
+  outline: none;
+  cursor: pointer;
+  transition: transform 0.1s ease;
+  animation: bobble 1s ease-in-out infinite, shadowEffect 1s ease-in-out infinite;
+  z-index: 1; /* Ensure potion is in front */
+  user-select: none;
+  -webkit-user-drag: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+
+/* Position the potions relative to their boxes */
+.freeze-potion {
+  position: absolute;
+  top: 0;
+  left: -1vh; /* Adjusted position */
+}
+
+.health-potion {
+  position: absolute;
+  top: 0;
+  left: 2vh; /* Adjusted position */
+}
+
+.thunder-potion {
+  position: absolute;
+  top: 0;
+  left: 5vh; /* Adjusted position */
+}
+
+/* ========== POTION BOXES ========== */
+.freeze-box, .health-box, .thunder-box {
+  width: 15vh; /* Adjust width based on viewport width */
+  height: auto;
+  position: absolute;
+  background: transparent center/contain no-repeat;
+  border: none;
+  padding: 0;
+  margin: 0;
+  outline: none;
+  box-shadow: none;
+  user-select: none;
+  -webkit-user-drag: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+
+/* Position the boxes to match potion images */
+.freeze-box {
+  top: 17vh;
+  left: -1vh; /* Match the adjusted position of the Freeze potion */
+}
+
+.health-box {
+  top: 17vh;
+  left: 2vh; /* Match the adjusted position of the Health potion */
+}
+
+.thunder-box {
+  top: 17vh;
+  left: 5vh; /* Match the adjusted position of the Thunder potion */
+}
+
+/* ========== POTION QUANTITY ========== */
+.potion-quantity {
+  position: absolute;
+  bottom: -2vh; /* Adjust bottom position of the quantity */
+  font-size: 2vh; /* Adjust size of the quantity text */
+  font-weight: bold;
+  color: #ffffff; /* White text color for visibility */
+  z-index: 2; /* Ensure quantity is in front */
+  left: 1vh; /* Adjust left positioning */
+  padding: 0.5vh 1vh; /* Add some padding around the text */
+  border-radius: 5px; /* Rounded corners for a soft look */
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black background */
+  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.5); /* Subtle shadow for a floating effect */
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7); /* Add text shadow for better readability */
+}
+
+/* Aligning quantities with their respective potions */
+#freeze-quantity {
+  left: 15vh; /* Align the Freeze quantity */
+  bottom: 0vh; /* Place it at the bottom of the potion */
+  background-color: rgb(0 115 165);
+  color: #ffffff; /* White text for contrast */
+  box-shadow: 0px 2px 10px rgb(0 115 165);
+  user-select: none;
+  -webkit-user-drag: none; /* Prevents dragging in Safari/Chrome */
+  -webkit-user-select: none; /* Prevents text/image selection in WebKit */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE/Edge */
+}
+
+#health-quantity {
+  left: 18vh; /* Align the Health quantity */
+  bottom: 0vh; /* Place it at the bottom of the potion */
+  background-color: #cd0000;
+  color: #ffffff; /* White text for contrast */
+  box-shadow: 0px 2px 10px #cd0000;
+  user-select: none;
+  -webkit-user-drag: none; /* Prevents dragging in Safari/Chrome */
+  -webkit-user-select: none; /* Prevents text/image selection in WebKit */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE/Edge */
+}
+
+#thunder-quantity {
+  left: 21vh; /* Align the Thunder quantity */
+  bottom: 0vh; /* Place it at the bottom of the potion */
+  background-color: rgb(236 152 2);
+  color: #ffffff; /* Black text for contrast */
+  box-shadow: 0px 2px 10px rgb(236 152 2);
+  user-select: none;
+  -webkit-user-drag: none; /* Prevents dragging in Safari/Chrome */
+  -webkit-user-select: none; /* Prevents text/image selection in WebKit */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE/Edge */
+}
+
+
+
+
+
+
+
+
+/* Popping effect */
+.potion-clicked {
+  animation: pop 0.3s ease !important;
+}
+
+/* Darker shadow beneath the potion */
+@keyframes shadowEffect {
+  0% {
+    filter: drop-shadow(0px 10px 15px rgba(0, 0, 0, 0.8)); /* Darker shadow beneath potion */
+  }
+  50% {
+    filter: drop-shadow(0px 15px 25px rgba(0, 0, 0, 0.9)); /* Larger and darker shadow beneath */
+  }
+  100% {
+    filter: drop-shadow(0px 10px 15px rgba(0, 0, 0, 0.8)); /* Reset to darker shadow */
+  }
+}
+
+@keyframes bobble {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+@keyframes pop {
+  0% {
+    transform: translateY(-2px) scale();
+  }
+  50% {
+    transform: translateY(-5px) scale(1.06);
+  }
+  100% {
+    transform: translateY(-5px) scale(1);
+  }
+}
+
+
+
+
+
+
+
+
+
+/* ========== GAME CONTROL CONTAINER ========== */
+.game-control-container {
+  background-image: url('../images/gameimg/buttons/bookbg.png');
+  background-repeat: no-repeat;
+  background-size: contain;
+  width: 80vh;
+  height: 36vh;
+  user-select: none;
+  z-index: 999;
+  bottom: 0;
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%); /* Adjust to perfectly center the container */
+}
+/* ========== BUTTON STYLES ========== */
+
+/* General Button Style */
+.button {
+  width: 7vh; /* Converted width from px to vw */
+  height: 7vh; /* Converted height from px to vw */
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.1s ease;
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+  position: absolute;
+  user-select: none;
+  -webkit-user-drag: none; /* Prevents dragging in Safari/Chrome */
+  -webkit-user-select: none; /* Prevents text/image selection in WebKit */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE/Edge */
+}
+
+/* Press down effect */
+.button:active {
+  transform: scale(0.94); /* Slightly shrinks on click */
+}
+
+/* Individual Button Adjustments */
+.button:nth-child(1) {
+  background-image: url('../images/gameimg/buttons/7.png');
+  top: 6vh;
+  left: 12.2vh;
+}
+
+.button:nth-child(2) {
+  background-image: url('../images/gameimg/buttons/8.png');
+  top: 6vh;
+  left: 19.6vh;
+}
+
+.button:nth-child(3) {
+  background-image: url('../images/gameimg/buttons/9.png');
+  top: 6vh;
+  left: 26.9vh;
+}
+
+.button:nth-child(4) {
+  background-image: url('../images/gameimg/buttons/4.png');
+  top: 13vh;
+  left: 12.2vh;
+}
+
+.button:nth-child(5) {
+  background-image: url('../images/gameimg/buttons/5.png');
+  top: 13vh;
+  left: 19.6vh;
+}
+
+.button:nth-child(6) {
+  background-image: url('../images/gameimg/buttons/6.png');
+  top: 13vh;
+  left: 26.9vh;
+}
+
+.button:nth-child(7) {
+  background-image: url('../images/gameimg/buttons/1.png');
+  top: 20vh;
+  left: 12.2vh;
+}
+
+.button:nth-child(8) {
+  background-image: url('../images/gameimg/buttons/2.png');
+  top: 20vh;
+  left: 19.6vh;
+}
+
+.button:nth-child(9) {
+  background-image: url('../images/gameimg/buttons/3.png');
+  top: 20vh;
+  left: 26.9vh;
+}
+
+/* Backspace Button */
+.button.backspace {
+  background-image: url('../images/gameimg/buttons/backspace.png');
+  top: 27.2vh;
+  left: 12.2vh;
+}
+.button:nth-child(11) {
+  background-image: url('../images/gameimg/buttons/0.png');
+  top: 27.2vh;
+  left: 19.6vh;
+}
+
+.button:nth-child(12) {
+  background-image: url('../images/gameimg/buttons/point.png');
+  top: 27.2vh;
+  left: 26.9vh;
+}
+/* ========== RIGHT SECTION LAYOUT ========== */
+
+/* ========== INPUT FIELD ========== */
+.input-field {
+  background-image: url('../images/gameimg/buttons/monitor.png');
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+  width: 20vh;
+  height: 9vh;
+  padding: 1.52vw 1.62vw;
+  font-size: 1.4vw; /* Converted font-size from rem to vw */
+  text-align: center;
+  color: #fff7e8;
+  background-color: transparent;
+  position: relative;
+  top: 6vh;
+  left: 46vh;
+  border: none; /* Remove border by default */
+  outline: none; /* Remove the outline on focus */
+}
+
+.input-field:focus {
+  border: none; /* Ensure border stays removed when focused */
+  outline: none; /* Ensure outline doesn't appear */
+}
+
+
+
+/* ========== ATTACK BUTTON STYLING ========== */
+.attack-button {
+  background-image: url('../images/gameimg/buttons/attack button.png');
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+  width: 17vh;
+  height: 18vh;
+  cursor: pointer;
+  position: absolute;
+  top: 16vh;
+  left: 48vh;
+  transition: transform 0.1s ease;
+  user-select: none;
+  -webkit-user-drag: none; /* Prevents dragging in Safari/Chrome */
+  -webkit-user-select: none; /* Prevents text/image selection in WebKit */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE/Edge */
+}
+
+.attack-button:active {
+  transform: translateY(0.09vh); /* Slight movement on click */
+}
+
+
+
+
+
+/* ========== CHATBOT CONTAINER ========== */
+/* ========== CHATBOT CONTAINER ========== */
+.chatbot-container {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  z-index: 999;
+}
+
+
+
+/* ========== CHATBOT IMAGE ========== */
+.chatbot-img {
+  width: 28vh;
+  height: 36vh;
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+  position: absolute;
+  bottom: 0vh;
+  right: 1vh;
+  z-index: 999;
+  transition: transform 0.3s ease, filter 0.2s ease;
+  filter: drop-shadow(0 0 1vw rgba(255, 255, 150, 0.6))
+          drop-shadow(0 0 2vw rgba(255, 255, 150, 0.4))
+          drop-shadow(0 0 3vw rgba(255, 255, 150, 0.2));
+  user-select: none;
+  -webkit-user-drag: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+
+
+/* ========== CHATBOT IMAGE ACTIVE STATE ========== */
+.chatbot-img:active {
+  transform: scale(1.02);
+  filter: drop-shadow(0 0 1vw rgba(255, 255, 150, 0.6))
+          drop-shadow(0 0 2vw rgba(255, 255, 150, 0.4))
+          drop-shadow(0 0 3vw rgba(255, 255, 150, 0.2));
+}
+
+.speech-bubble {
+  position: absolute;
+  bottom: 4vh;
+  right: 30vh;
+  background: #f5e0b7;
+  border: 0.3vh solid #d97706;
+  border-radius: 2vh;
+  padding: 2vh 3vh;
+  width: 30.5vh;
+  height: 20vh;
+  font-weight: normal;
+  color: #4b2c12;
+  font-size: 1.8vh;
+  word-wrap: break-word;
+  white-space: normal;
+  z-index: 999;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  background-image: linear-gradient(135deg, #f9ebc3, #fef3c7);
+  display: none; /* Initially hidden */
+  transition: opacity 0.5s ease-in-out; /* Fade out effect */
+}
+
+.speech-bubble::after {
+  content: '';
+  position: absolute;
+  top: 8vh;
+  right: -2.5vh;
+  width: 0;
+  height: 0;
+  border-top: 1.5vh solid transparent;
+  border-bottom: 1.5vh solid transparent;
+  border-left: 2.5vh solid #fdf1c5;
+}
+
+
+
+
+
+
+
+/* Scrollbar styling */
+.speech-bubble::-webkit-scrollbar {
+  width: 0.31vw;
+}
+.speech-bubble::-webkit-scrollbar-track {
+  border-radius: 0.31vw;
+}
+.speech-bubble::-webkit-scrollbar-thumb {
+  background: #5B3A29;
+  border-radius: 0.31vw;
+  box-shadow: inset 0 0 0.26vw rgba(0, 0, 0, 0.15);
+}
+.speech-bubble::-webkit-scrollbar-thumb:hover {
+  background: #5B3A29;
+}
+
+
+
+
+
+
+
+.sprite-lightning {
+  width: 22.34vw;  /* Converted width from px to vw */
+  height: 72vh;
+  position: absolute;
+  margin-top: -10vh;    /* Converted top from px to vh */
+  left: 72vw;   /* Converted left from px to vw */
+
+  opacity: 0; /* Hide all frames initially */
+  transition: opacity 0.1s ease; /* Smooth transition */
+  z-index: 999; /* Ensures it's above other elements */
+  image-rendering: pixelated; /* If it's pixel art */
+  user-select: none;
+  -webkit-user-drag: none; /* Prevents dragging in Safari/Chrome */
+  -webkit-user-select: none; /* Prevents text/image selection in WebKit */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE/Edge */
+}
+
+.sprite-lightning.active {
+  opacity: 10; /* Fully visible when active */
+}
+
+.red {
+  filter: brightness(2.5) saturate(1.3) hue-rotate(3deg); /* Pure white glow effect */
+  transform: scale(1.06); /* Add a slight zoom-in effect for more intensity */
+  transition: filter 0.2s ease-in-out, transform 0.2s ease-out; /* Adjust transition speed of color change */
+}
+
+@keyframes lightningStrike {
+  0% {
+    display: block;
+  }
+  20% {
+    display: none;
+  }
+  40% {
+    display: block;
+  }
+  60% {
+    display: none;
+  }
+  80% {
+    display: block;
+  }
+  100% {
+    display: none;
+  }
+}
+
+
+
+  /* Overlay that dims the background */
+  .menu-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* dim effect */
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding-top: 100px; /* adjust distance from top */
+    z-index: 9999; /* slightly lower than gameMenu */
+    pointer-events: all;
+    user-select: none;
+    -webkit-user-drag: none; /* Prevents dragging in Safari/Chrome */
+    -webkit-user-select: none; /* Prevents text/image selection in WebKit */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* IE/Edge */
+  }
+  /* Block clicks on overlay background but allow on menu */
+  .menu-overlay::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 998;
+    pointer-events: all; /* This absorbs all clicks outside the menu */
+  }
+
+  /* Menu Button Container */
+/* Menu Button Wrapper */
+.menu-btn-wrapper {
+  position: absolute;
+  top: 1.3vh; /* Convert 13px to vh */
+  left: 50%; /* Center horizontally */
+  transform: translateX(-50%); /* Keeps the button horizontally centered */
+  z-index: 999; /* Ensure it's above other elements */
+  transition: opacity 0.2s ease; /* Only apply opacity transition to wrapper */
+}
+
+
+/* Menu Button Styling */
+.menu-btn {
+  background-image: url('../images/gameimg/menubg2.png');
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  margin-top: 1.8vh;
+  width: 19.6vw;
+  height: 11.7vh; /* Convert 117px to vh (approximately) */
+  font-size: 4vh;  /* Responsive font size based on viewport height */
+  color: white;
+  font-weight: bold;
+  padding: 1vh 2vw; /* Adjust padding to be more responsive */
+  border-radius: 1rem; /* Use rem for rounded corners */
+  cursor: pointer;
+  letter-spacing: 0.3rem;
+  font-family: "Fredoka", sans-serif;
+  transition: transform 0.3s ease; /* Fixed typo: spacing in '0.4 s' */
+  user-select: none;
+  -webkit-user-drag: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+
+  text-shadow:
+    -0.1vh -0.1vh 0  #b1862f,        /* Adjusted shadow for depth */
+    -0.2vh -0.2vh 1px rgba(0, 0, 0, 0.2); /* Soft deeper edge */
+}
+
+/* Hover Effect */
+.menu-btn:hover {
+  transform: scale(1.01); /* Scale only the button */
+}
+
+
+
+  .game-menu {
+    position: absolute;
+    top: 8vh;        /* 80px / 10 */
+    left: 50%;       /* stays as % for horizontal centering */
+    transform: translateX(-50%);
+    background-image: url('../images/gameimg/menuimg/menubg.png');
+    background-size: contain; /* Make image fill the area more prominently */
+    background-position: center;
+    background-repeat: no-repeat;
+    z-index: 999;
+    width: 100vh;
+    height: 65vh;
+    align-items: center;
+    justify-content: center; /* Center items vertically */
+    user-select: none;
+    -webkit-user-drag: none; /* Prevents dragging in Safari/Chrome */
+    -webkit-user-select: none; /* Prevents text/image selection in WebKit */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* IE/Edge */
+
+  }
+
+
+  .menu-item {
+    width: 31vh;
+    height: 8vh;
+    background-size: contain; /* Make image fill the area more prominently */
+    background-position: center;
+    background-repeat: no-repeat;
+    cursor: pointer;
+    transition: all 0.4s ease;
+    position: absolute;
+
+  }
+
+/* Resume Button */
+.menu-item:nth-child(1) {
+  top: 17vh;
+  left: 34.7vh;
+  background-image: url('../images/gameimg/menuimg/Resume.png');
+}
+
+/* Restart Button */
+.menu-item:nth-child(2) {
+  top:25vh;
+  left: 34.7vh;
+  background-image: url('../images/gameimg/menuimg/Restart.png');
+}
+
+
+/* Settings Button */
+.menu-item:nth-child(3) {
+  top: 33vh;
+  left: 34.7vh;
+  background-image: url('../images/gameimg/menuimg/Settings.png');}
+
+/* Quit Button */
+.menu-item:nth-child(4) {
+  top:41vh;
+  left: 34.7vh;
+  background-image: url('../images/gameimg/menuimg/Quit.png');}
+
+  /* Hover effect with slight lift */
+  .menu-item:hover {
+    transform: scale(1.02);
+  }
+
+
+
+/* General Settings Container */
+.settings-container {
+  position: absolute;
+  padding: 2vh;
+  text-align: center;
+  width: 100%;
+  max-width: 50vh; /* 400px */
+  color: white;
+  font-family: 'Poppins', sans-serif;
+  top: 9vh;
+  left: 18vh;
+}
+
+/* Each Setting Block */
+.setting-option {
+  margin-bottom: 2.5vh; /* 25px */
+  text-align: left;
+}
+
+/* Label Styles */
+.setting-option label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 1vh; /* 10px */
+  color: #e6ffe6;
+}
+
+/* === Volume Slider Track === */
+#volume {
+  width: 50vh;
+  height: 6.5vh;
+  top: 16vh;
+  left: 6vh;
+  appearance: none;
+  background: url('../images/gameimg/menuimg/SFX/slider.png') no-repeat center;
+  background-size: 100% 100%;
+  outline: none;
+  position: absolute;
+}
+
+/* === Volume Label === */
+
+
+.volume-icon {
+  position: absolute;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  top: 11vh;
+  left: 6vh;
+  width: 10vh;
+  height: 5vh;
+  user-select: none;
+  -webkit-user-drag: none; /* Prevents dragging in Safari/Chrome */
+  -webkit-user-select: none; /* Prevents text/image selection in WebKit */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE/Edge */
+}
+
+
+/* === Customized Thumb (Chrome, Safari) === */
+#volume::-webkit-slider-thumb {
+  appearance: none;
+  height: 6.5vh;
+  width: 6.5vh;
+  background: url('../images/gameimg/menuimg/SFX/thumb.png') no-repeat center;
+  background-size: contain;
+  border: none;
+  cursor: pointer;
+  transform: translateY(-1.2vh);
+  transition: transform 0.2s ease;
+}
+
+#volume::-webkit-slider-thumb:hover {
+  transform: translateY(-1.2vh) scale(1.1);
+}
+
+/* === Customized Thumb (Firefox) === */
+#volume::-moz-range-thumb {
+  height: 6.5vh;
+  width: 6.5vh;
+  background: url('../images/gameimg/menuimg/SFX/thumb.png') no-repeat center;
+  background-size: contain;
+  border: none;
+  cursor: pointer;
+  transform: translateY(-1.2vh);
+  transition: transform 0.2s ease;
+}
+
+#volume::-moz-range-thumb:hover {
+  transform: translateY(-1.2vh) scale(1.1);
+}
+
+
+/* Mute Wrapper aligns checkbox and label horizontally */
+.mute-wrapper {
+  top:6vh;
+  left:3vh;
+  position: absolute;
+  display: flex;
+  align-items: center;
+  gap: 1vh;
+  user-select: none;
+  -webkit-user-drag: none; /* Prevents dragging in Safari/Chrome */
+  -webkit-user-select: none; /* Prevents text/image selection in WebKit */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE/Edge */
+}
+
+/* Mute Checkbox Style */
+#muteCheckbox {
+  left: 40.1vh;
+  top: 5.4vh;
+  appearance: none;
+  width: 2.5vh;
+  height: 2.5vh;
+  border: none;
+  position: absolute;
+  cursor: pointer;
+  z-index: 10;
+  user-select: none;
+  -webkit-user-drag: none; /* Prevents dragging in Safari/Chrome */
+  -webkit-user-select: none; /* Prevents text/image selection in WebKit */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE/Edge */
+}
+
+/* Show mute icon when checked */
+#muteCheckbox:checked::before {
+  content: "🔇";
+  font-size: 2vh;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* Mute Label Style */
+.mute-icon {
+  position: absolute;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  top: 2.5vh;
+  left: 19.9vh;
+  width: 13vh;
+  height: 3vh;
+  user-select: none;
+  user-select: none;
+  -webkit-user-drag: none; /* Prevents dragging in Safari/Chrome */
+  -webkit-user-select: none; /* Prevents text/image selection in WebKit */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE/Edge */
+}
+
+/* === SFX Volume Range === */
+#sfx-volume {
+  width: 50vh;
+  height: 6.5vh;
+  top: 28vh;
+  left: 6vh;
+  appearance: none;
+  background: url('../images/gameimg/menuimg/SFX/slider.png') no-repeat center;
+  background-size: 100% 100%;
+  outline: none;
+  position: absolute;
+  
+}
+
+.sfx-volume-icon {
+  position: absolute;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  top: 23vh;
+  left: 6vh;
+  width: 12vh;
+  height: 5vh;
+  user-select: none;
+  -webkit-user-drag: none; /* Prevents dragging in Safari/Chrome */
+  -webkit-user-select: none; /* Prevents text/image selection in WebKit */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE/Edge */
+  
+}
+/* === Customized Thumb (Chrome, Safari) === */
+#sfx-volume::-webkit-slider-thumb {
+  appearance: none;
+  height: 6.5vh;
+  width: 6.5vh;
+  background: url('../images/gameimg/menuimg/SFX/thumb.png') no-repeat center;
+  background-size: contain;
+  border: none;
+  cursor: pointer;
+  transform: translateY(-1.2vh); /* ✅ Adjust this value to vertically center */
+  transition: transform 0.2s ease;
+}
+
+#sfx-volume::-webkit-slider-thumb:hover {
+  transform: translateY(-1.2vh) scale(1.1); /* Maintain same shift on hover */
+}
+
+/* === Customized Thumb (Firefox) === */
+#sfx-volume::-moz-range-thumb {
+  height: 6.5vh;
+  width: 6.5vh;
+  background: url('../images/gameimg/menuimg/SFX/thumb.png') no-repeat center;
+  background-size: contain;
+  border: none;
+  cursor: pointer;
+  transform: translateY(-1.2vh); /* ✅ Same vertical adjustment for Firefox */
+  transition: transform 0.2s ease;
+}
+
+#sfx-volume::-moz-range-thumb:hover {
+  transform: translateY(-1.2vh) scale(1.1);
+}
+
+
+
+
+/* SFX Mute Wrapper (aligns checkbox and label horizontally) */
+.sfx-mute-wrapper {
+  top:17vh;
+  left: 3vh;
+  position: absolute;
+
+
+}
+
+/* SFX Mute Checkbox */
+#sfxMuteCheckbox {
+  left: 40.1vh;
+  top: 6.4vh;
+  appearance: none;
+  width: 2.5vh;
+  height: 2.5vh;
+  border: none;
+  position: absolute;
+  cursor: pointer;
+  z-index: 10;
+}
+
+/* SFX Mute Icon when checked */
+#sfxMuteCheckbox:checked::before {
+  content: "🔇";
+  font-size: 2vh;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* SFX Mute Label */
+.sfx-mute-icon {
+  position: absolute;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  top: 3vh;
+  left: 19.9vh;
+  width: 13vh;
+  height: 3vh;
+  user-select: none;
+  user-select: none;
+  -webkit-user-drag: none; /* Prevents dragging in Safari/Chrome */
+  -webkit-user-select: none; /* Prevents text/image selection in WebKit */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE/Edge */
+}
+
+/* Buttons Section */
+.settings-item-container {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  top: 32vh;
+  left: 4vh;
+}
+
+/* Shared styles */
+.settings-item {
+  width: 21vh;
+  height: 6vh;
+  background-size: contain; /* Make image fill the area more prominently */
+  background-position: center;
+  background-repeat: no-repeat;
+  cursor: pointer;
+  transition: all 0.4s ease;
+  position: absolute;
+
+}
+
+/* Apply Button */
+.settings-item:first-child {
+  top: 2vh;
+  left: 5vh;
+  background-image: url('../images/gameimg/menuimg/apply.png');
+}
+
+/* Back Button */
+.settings-item:last-child {
+  top:2vh;
+  left: 27.7vh;
+  background-image: url('../images/gameimg/menuimg/back.png');
+}
+
+
+
+#feedback {
+  position: absolute;
+  top: 40vh; /* 70% of viewport height */
+  left: 50vw; /* 50% of viewport width */
+  transform: translate(-50%, -50%);
+  padding: 2.6vh 3vw; /* Scaled padding for responsiveness */
+  font-size: 4.5vh; /* Scaled font size relative to height */
+  color: white;
+  border-radius: 1vh;
+  text-align: center;
+  font-weight: bold;
+  word-wrap: normal;
+  overflow-wrap: normal;
+  z-index: 100;
+  font-family: "Fredoka", sans-serif;
+}
+
+@keyframes bounceFadeIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.7) translateY(-50px);
+  }
+  60% {
+    opacity: 1;
+    transform: scale(1.05) translateY(10px);
+  }
+  100% {
+    transform: scale(1) translateY(0);
+  }
+}
+
+@keyframes boxPop {
+  0% {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.box-animation {
+  animation: boxPop 0.2s ease-out forwards;
+}
+
+
+
+
+
+/* Main screen (Victory Background) */
+.victory-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  visibility: hidden;
+  animation: bounceFadeIn 0.8s ease-out forwards;
+}
+
+/* Popup box */
+.victory-box {
+  top:8vh;
+  position: absolute;
+  background-image: url('../images/gameimg/victorybox.png');
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  width: 91vh;
+  height: 71vh;
+  opacity: 0;
+  transform: scale(0.8);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+
+
+
+
+/* Base button styles */
+.victory-btn {
+  position: absolute;
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+  height: 10vh;
+  width: 40vh;
+  /* Embossed effect with dark shadows */
+}
+
+/* CONTINUE - Royal Blue */
+#continue-btn {
+  top: 28vh;
+  left: 28vh;
+  background-image: url('../images/gameimg/continue.png');
+}
+#continue-btn:hover {
+  transform: translateY(-0.3vh);
+}
+
+/* RETRY - Crimson Red */
+#retry-btn {
+  top: 39vh;
+  left: 28vh;
+  background-image: url('../images/gameimg/retry.png');
+}
+#retry-btn:hover {
+  transform: translateY(0.3vh);
+}
+
+/* HOME - Fresh Green */
+#home-btn {
+  top: 50vh;
+  left: 28vh;
+  background-image: url('../images/gameimg/home.png');
+}
+#home-btn:hover {
+  transform: translateY(0.3vh);
+}
+
+/* Reward Box and Others — unchanged */
+.reward-box {
+  position: absolute;
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-image: url('../images/gameimg/rewardbox.png');
+  top: 61vh;
+  left: 26vh;
+  width: 44vh;
+  height: 17vh;
+  overflow: hidden;
+}
+
+
+/* Reward claimed text styling */
+.reward-claimed-text {
+  position: absolute;
+  top: 100%;
+  left: 52%;
+  transform: translate(-50%, -50%);
+  font-size: 2.2vh;
+  font-weight: bold;
+  color: #3f210a;
+  padding: 1vh 2vh;
+  border-radius: 1vh;
+  z-index: 5;
+  opacity: 0;
+  transition: opacity 0.8s ease;
+
+}
+
+.reward-claimed-text.fade-in {
+  opacity: 1;
+}
+
+.reward-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 1vh;
+  margin-top: 2vh;
+}
+
+.reward-img {
+  position: absolute;
+}
+
+.hidden {
+  display: none;
+}
+.reward-img.hidden {
+  display: none !important;
+}
+
+
+/* ✅ NEW layout and sizing for rewards */
+/* Multiplication */
+#reward-multiplication-badge {
+  width: auto;
+  height: 8.6vh;
+  top: 6.5vh;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+#reward-multiplication-title {
+  width: auto;
+  height: 8.6vh;
+  top: 6.5vh;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+#reward-multiplication-border {
+  width: auto;
+  height: 8.6vh;
+  top: 6.5vh;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/* Addition */
+#reward-addition-badge {
+  width: auto;
+  height: 8.6vh;
+  top: 6.5vh;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+#reward-addition-title {
+  width: auto;
+  height: 8.6vh;
+  top: 6.5vh;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+#reward-addition-border {
+  width: auto;
+  height: 8.6vh;
+  top: 6.5vh;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/* Subtraction */
+#reward-subtraction-badge {
+  width: auto;
+  height: 8.6vh;
+  top: 6.5vh;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+#reward-subtraction-title {
+  width: auto;
+  height: 8.6vh;
+  top: 6.5vh;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+#reward-subtraction-border {
+  width: auto;
+  height: 8.6vh;
+  top: 6.5vh;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/* Division */
+#reward-division-badge {
+  width: auto;
+  height: 8.6vh;
+  top: 6.5vh;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+#reward-division-title {
+  width: auto;
+  height: 8.6vh;
+  top: 6.5vh;;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+#reward-division-border {
+  width: auto;
+  height: 8.6vh;
+  top: 6.5vh;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/* Counting */
+#reward-counting-badge {
+  width: auto;
+  height: 8.6vh;
+  top: 6.5vh;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+#reward-counting-title {
+  width: auto;
+  height: 8.6vh;
+  top: 6.5vh;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+#reward-counting-border {
+  width: auto;
+  height: 8.6vh;
+  top: 6.5vh;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/* Comparison */
+#reward-comparison-badge {
+  width: auto;
+  height: 8.6vh;
+  top: 6.5vh;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+#reward-comparison-title {
+  width: auto;
+  height: 8.6vh;
+  top: 6.5vh;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+#reward-comparison-border {
+  width: auto;
+  height: 8.6vh;
+  top: 6.5vh;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/* Numerals */
+#reward-numerals-badge {
+  width: auto;
+  height: 8.6vh;
+  top: 6.5vh;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+#reward-numerals-title {
+  width: auto;
+  height: 8.6vh;
+  top: 6.5vh;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+#reward-numerals-border {
+  width: auto;
+  height: 8.6vh;
+  top: 6.5vh;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/* Place Value */
+#reward-placevalue-badge {
+  width: auto;
+  height: 8.6vh;
+  top: 6.5vh;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+#reward-placevalue-title {
+  width: auto;
+  height: 8.6vh;
+  top: 6.5vh;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+#reward-placevalue-border {
+  width: auto;
+  height: 8.6vh;
+  top: 6.5vh;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+
+
+
+
+/* Main screen (Game Over Background) */
+.gameover-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  visibility: hidden;
+  animation: bounceFadeIn 0.8s ease-out forwards;
+}
+
+/* Popup box for Game Over */
+.gameover-box {
+  top:8vh;
+  position: absolute;
+  background-image: url('../images/gameimg/gameoverbox.png');
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  width: 91vh;
+  height: 71vh;
+  opacity: 0;
+  transform: scale(0.8);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+
+
+/* Button base styles */
+.gameover-btn {
+  position: absolute;
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+  height: 10vh;
+  width: 40vh;
+  /* Embossed effect with dark shadows */
+}
+
+
+#go-retry-btn {
+  top: 29vh;
+  left: 28vh;
+  background-image: url('../images/gameimg/retry.png');
+}
+#go-retry-btn:hover {
+  transform: translateY(-0.3vh);
+}
+
+/* HOME - Fresh Green */
+#go-home-btn {
+  top: 40vh;
+  left: 28vh;
+  background-image: url('../images/gameimg/home.png');
+}
+#go-home-btn:hover {
+  transform: translateY(-0.3vh);
+}
+
+
+.paused .monster, 
+.paused .monster-spawn, 
+.paused .monster-death,
+.paused .character,
+.paused .freeze-potion,
+.paused .health-potion,
+.paused .thunder-potion {
+  animation-play-state: paused !important;
+  transition: none !important;
+}
+
+/* ============================
+   ➗ Division Monsters
+============================ */
+.monster-division-mob-1 {
+  width: 33vh;
+  margin-left: 73vw;
+  top: -37vh; /* Adjusted */
+}
+
+.monster-division-mob-2 {
+  width: 29vh;
+  margin-left: 74vw;
+  top: -33vh; /* Adjusted */
+}
+
+.monster-division-mob-3 {
+  width: 30vh;
+  margin-left: 74vw;
+  top: -29vh; /* Adjusted */
+}
+
+.monster-division-boss-1 {
+  width: 60vh;
+  margin-left: 68vw;
+  top: -57vh; /* Adjusted */
+}
+
+.monster-division-mob-4 {
+  width: 30vh;
+  margin-left: 75vw;
+  top: -34vh; /* Adjusted */
+}
+
+.monster-division-mob-5 {
+  width: 33vh;
+  margin-left: 74vw;
+  top: -36vh; /* Adjusted */
+}
+
+.monster-division-mob-6 {
+  width: 29vh;
+  margin-left: 75vw;
+  top: -39vh; /* Adjusted */
+}
+
+.monster-division-boss-2 {
+  width: 60vh;
+  margin-left: 70vw;
+  top: -54vh; /* Adjusted */
+}
+
+.monster-division-mob-7 {
+  width: 30vh;
+  margin-left: 75vw;
+  top: -45vh; /* Adjusted */
+}
+
+.monster-division-mob-8 {
+  width: 34vh;
+  margin-left: 74vw;
+  top: -38vh; /* Adjusted */
+}
+
+.monster-division-mob-9 {
+  width: 27vh;
+  margin-left: 74vw;
+  top: -31vh; /* Adjusted */
+}
+
+.monster-division-boss-3 {
+  width: 54vh;
+  margin-left: 69vw;
+  top: -55vh; /* Adjusted */
+}
+
+
+
+/* ============================
+   ➕ Addition Monsters
+============================ */
+.monster-addition-mob-1 {
+  width: 33vh;
+  margin-left: 74vw;
+  top: -36vh; /* Adjusted */
+}
+
+.monster-addition-mob-2 {
+  width: 31vh;
+  margin-left: 74vw;
+  top: -35vh; /* Adjusted */
+}
+
+.monster-addition-mob-3 {
+  width: 27vh;
+  margin-left: 74vw;
+  top: -31vh; /* Adjusted */
+}
+
+.monster-addition-boss-1 {
+  width: 43vh;
+  margin-left: 71vw;
+  top: -55vh; /* Adjusted */
+}
+
+.monster-addition-mob-4 {
+  width: 25vh;
+  margin-left: 75vw;
+  top: -33vh; /* Adjusted */
+}
+
+.monster-addition-mob-5 {
+  width: 38vh;
+  margin-left: 73vw;
+  top: -41vh; /* Adjusted */
+}
+
+.monster-addition-mob-6 {
+  width: 35vh;
+  margin-left: 72vw;
+  top: -38vh; /* Adjusted */
+}
+
+.monster-addition-boss-2 {
+  width: 45vh;
+  margin-left: 72vw;
+  top: -56vh; /* Adjusted */
+}
+
+.monster-addition-mob-7 {
+  width: 32vh;
+  margin-left: 74vw;
+  top: -33vh; /* Adjusted */
+}
+
+.monster-addition-mob-8 {
+  width: 35vh;
+  margin-left: 74vw;
+  top: -37vh; /* Adjusted */
+}
+
+.monster-addition-mob-9 {
+  width: 35vh;
+  margin-left: 73vw;
+  top: -42vh; /* Adjusted */
+}
+
+.monster-addition-boss-3 {
+  width: 40vh;
+  margin-left: 73vw;
+  top: -55vh; /* Adjusted */
+}
+
+
+
+/* ============================
+   ➖ Subtraction Monsters
+============================ */
+.monster-subtraction-mob-1 {
+  width: 26vh;
+  margin-left: 74vw;
+  top: -33vh; /* Adjusted */
+}
+
+.monster-subtraction-mob-2 {
+  width: 26vh;
+  margin-left: 75vw;
+  top: -39vh; /* Adjusted */
+}
+
+.monster-subtraction-mob-3 {
+  width: 34vh;
+  margin-left: 73vw;
+  top: -31vh; /* Adjusted */
+}
+
+.monster-subtraction-boss-1 {
+  width: 44vh;
+  margin-left: 74vw;
+  top: -48vh; /* Adjusted */
+}
+
+.monster-subtraction-mob-4 {
+  width: 31vh;
+  margin-left: 74vw;
+  top: -38vh; /* Adjusted */
+}
+
+.monster-subtraction-mob-5 {
+  width: 29vh;
+  margin-left: 74vw;
+  top: -41vh; /* Adjusted */
+}
+
+.monster-subtraction-mob-6 {
+  width: 41vh;
+  margin-left: 70vw;
+  top: -30vh; /* Adjusted */
+}
+
+.monster-subtraction-boss-2 {
+  width: 47vh;
+  margin-left: 71vw;
+  top: -49vh; /* Adjusted */
+}
+
+.monster-subtraction-mob-7 {
+  width: 22vh;
+  margin-left: 76vw;
+  top: -39vh; /* Adjusted */
+}
+
+.monster-subtraction-mob-8 {
+  width: 26vh;
+  margin-left: 75vw;
+  top: -40vh; /* Adjusted */
+}
+
+.monster-subtraction-mob-9 {
+  width: 27vh;
+  margin-left: 75vw;
+  top: -47vh; /* Adjusted */
+}
+
+.monster-subtraction-boss-3 {
+  width: 38vh;
+  margin-left: 73vw;
+  top: -52vh; /* Adjusted */
+}
+
+
+
+/* ============================
+   ✖️ Multiplication Monsters
+============================ */
+.monster-multiplication-mob-1 {
+  width: 29vh;
+  margin-left: 75vw;
+  top: -32vh;
+}
+
+.monster-multiplication-mob-2 {
+  width: 27vh;
+  margin-left: 75vw;
+  top: -34vh;
+}
+
+.monster-multiplication-mob-3 {
+  width: 30vh;
+  margin-left: 75vw;
+  top: -38vh;
+}
+
+.monster-multiplication-boss-1 {
+  width: 59vh;
+  margin-left: 69vw;
+  top: -58vh;
+}
+
+.monster-multiplication-mob-4 {
+  width: 25vh;
+  margin-left: 75vw;
+  top: -27vh;
+}
+
+.monster-multiplication-mob-5 {
+  width: 32vh;
+  margin-left: 75vw;
+  top: -33vh;
+}
+
+.monster-multiplication-mob-6 {
+  width: 33vh;
+  margin-left: 75vw;
+  top: -33vh;
+}
+
+.monster-multiplication-boss-2 {
+  width: 41vh;
+  margin-left: 75vw;
+  top: -50vh;
+}
+
+.monster-multiplication-mob-7 {
+  width: 31vh;
+  margin-left: 75vw;
+  top: -32vh;
+}
+
+.monster-multiplication-mob-8 {
+  width: 32vh;
+  margin-left: 75vw;
+  top: -33vh;
+}
+
+.monster-multiplication-mob-9 {
+  width: 32vh;
+  margin-left: 75vw;
+  top: -38vh;
+}
+
+.monster-multiplication-boss-3 {
+  width: 50vh;
+  margin-left: 73vw;
+  top: -53vh;
+}
+
+
+/* ============================
+   🔢 Counting Monsters
+============================ */
+.monster-counting-mob-1 {
+  width: 28vh;
+  margin-left: 75vw;
+  top: -35vh; /* Adjusted */
+}
+
+.monster-counting-mob-2 {
+  width: 35vh;
+  margin-left: 74vw;
+  top: -40vh; /* Adjusted */
+}
+
+.monster-counting-mob-3 {
+  width: 29vh;
+  margin-left: 75vw;
+  top: -31vh; /* Adjusted */
+}
+
+.monster-counting-boss-1 {
+  width: 36vh;
+  margin-left: 74vw;
+  top: -57vh; /* Adjusted */
+}
+
+.monster-counting-mob-4 {
+  width: 31vh;
+  margin-left: 74vw;
+  top: -36vh; /* Adjusted */
+}
+
+.monster-counting-mob-5 {
+  width: 26vh;
+  margin-left: 75vw;
+  top: -35vh; /* Adjusted */
+}
+
+.monster-counting-mob-6 {
+  width: 38vh;
+  margin-left: 73vw;
+  top: -42vh; /* Adjusted */
+}
+
+.monster-counting-boss-2 {
+  width: 35vh;
+  margin-left: 73vw;
+  top: -54vh; /* Adjusted */
+}
+
+.monster-counting-mob-7 {
+  width: 24vh;
+  margin-left: 74vw;
+  top: -30vh; /* Adjusted */
+}
+
+.monster-counting-mob-8 {
+  width: 29vh;
+  margin-left: 75vw;
+  top: -44vh; /* Adjusted */
+}
+
+.monster-counting-mob-9 {
+  width: 31vh;
+  margin-left: 74vw;
+  top: -35vh; /* Adjusted */
+}
+
+.monster-counting-boss-3 {
+  width: 39vh;
+  margin-left: 73vw;
+  top: -60vh; /* Adjusted */
+}
+
+
+
+/* ============================
+   🟰 Comparison Monsters
+============================ */
+.monster-comparison-mob-1 {
+  width: 31vh;
+  margin-left: 75vw;
+  top: -36vh; /* Adjusted */
+}
+
+.monster-comparison-mob-2 {
+  width: 43vh;
+  margin-left: 75vw;
+  top: -33vh; /* Adjusted */
+}
+
+.monster-comparison-mob-3 {
+  width: 32vh;
+  margin-left: 75vw;
+  top: -33vh; /* Adjusted */
+}
+
+.monster-comparison-boss-1 {
+  width: 44vh;
+  margin-left: 75vw;
+  top: -52vh; /* Adjusted */
+}
+
+.monster-comparison-mob-4 {
+  width: 36vh;
+  margin-left: 73vw;
+  top: -34vh; /* Adjusted */
+}
+
+.monster-comparison-mob-5 {
+  width: 28vh;
+  margin-left: 75vw;
+  top: -39vh; /* Adjusted */
+}
+
+.monster-comparison-mob-6 {
+  width: 34vh;
+  margin-left: 74vw;
+  top: -42vh; /* Adjusted */
+}
+
+.monster-comparison-boss-2 {
+  width: 46vh;
+  margin-left: 72vw;
+  top: -50vh; /* Adjusted */
+}
+
+.monster-comparison-mob-7 {
+  width: 36vh;
+  margin-left: 73vw;
+  top: -38vh; /* Adjusted */
+}
+
+.monster-comparison-mob-8 {
+  width: 34vh;
+  margin-left: 73vw;
+  top: -39vh; /* Adjusted */
+}
+
+.monster-comparison-mob-9 {
+  width: 33vh;
+  margin-left: 73vw;
+  top: -43vh; /* Adjusted */
+}
+
+.monster-comparison-boss-3 {
+  width: 79vh;
+  margin-left: 64vw;
+  top: -55vh; /* Adjusted */
+}
+
+
+
+/* ============================
+   🔠 Numerals Monsters
+============================ */
+.monster-numerals-mob-1 {
+  width: 37vh;
+  margin-left: 74vw;
+  top: -43vh; /* Adjusted */
+}
+
+.monster-numerals-mob-2 {
+  width: 30vh;
+  margin-left: 74vw;
+  top: -38vh; /* Adjusted */
+}
+
+.monster-numerals-mob-3 {
+  width: 26vh;
+  margin-left: 75vw;
+  top: -42vh; /* Adjusted */
+}
+
+.monster-numerals-boss-1 {
+  width: 44vh;
+  margin-left: 71vw;
+  top: -57vh; /* Adjusted */
+}
+
+.monster-numerals-mob-4 {
+  width: 25vh;
+  margin-left: 75vw;
+  top: -37vh; /* Adjusted */
+}
+
+.monster-numerals-mob-5 {
+  width: 24vh;
+  margin-left: 76vw;
+  top: -40vh; /* Adjusted */
+}
+
+.monster-numerals-mob-6 {
+  width: 27vh;
+  margin-left: 75vw;
+  top: -40vh; /* Adjusted */
+}
+
+.monster-numerals-boss-2 {
+  width: 42vh;
+  margin-left: 71vw;
+  top: -60vh; /* Adjusted */
+}
+
+.monster-numerals-mob-7 {
+  width: 28vh;
+  margin-left: 75vw;
+  top: -33vh; /* Adjusted */
+}
+
+.monster-numerals-mob-8 {
+  width: 28vh;
+  margin-left: 75vw;
+  top: -45vh; /* Adjusted */
+}
+
+.monster-numerals-mob-9 {
+  width: 35vh;
+  margin-left: 73vw;
+  top: -45vh; /* Adjusted */
+}
+
+.monster-numerals-boss-3 {
+  width: 38vh;
+  margin-left: 73vw;
+  top: -53vh; /* Adjusted */
+}
+
+
+
+/* ============================
+   🧩 Place Value Monsters
+============================ */
+.monster-placevalue-mob-1 {
+  width: 26vh;
+  margin-left: 75vw;
+  top: -35vh;
+}
+
+.monster-placevalue-mob-2 {
+  width: 28vh;
+  margin-left: 75vw;
+  top: -33vh;
+}
+
+.monster-placevalue-mob-3 {
+  width: 29vh;
+  margin-left: 75vw;
+  top: -31vh;
+}
+
+.monster-placevalue-boss-1 {
+  width: 47vh;
+  margin-left: 70vw;
+  top: -59vh;
+}
+
+.monster-placevalue-mob-4 {
+  width: 27vh;
+  margin-left: 75vw;
+  top: -31vh;
+}
+
+.monster-placevalue-mob-5 {
+  width: 33vh;
+  margin-left: 75vw;
+  top: -36vh;
+}
+
+.monster-placevalue-mob-6 {
+  width: 37vh;
+  margin-left: 75vw;
+  top: -36vh;
+}
+
+.monster-placevalue-boss-2 {
+  width: 40vh;
+  margin-left: 71vw;
+  top: -61vh;
+}
+
+.monster-placevalue-mob-7 {
+  width: 32vh;
+  margin-left: 73vw;
+  top: -45vh;
+}
+
+.monster-placevalue-mob-8 {
+  width: 33vh;
+  margin-left: 75vw;
+  top: -38vh;
+}
+
+.monster-placevalue-mob-9 {
+  width: 29vh;
+  margin-left: 75vw;
+  top: -34vh;
+}
+
+.monster-placevalue-boss-3 {
+  width: 36vh;
+  margin-left: 75vw;
+  top: -54vh;
+}
+
+/* Style for feedback message */
+.feedback-message {
+  position: absolute;  /* Absolute positioning */
+  top: 50%;  /* Position vertically in the center */
+  left: 50%;  /* Position horizontally in the center */
+  transform: translate(-50%, -50%);  /* Adjust positioning to truly center */
+  margin-top: 10px;
+  text-align: center;
+  font-family: "Fredoka", sans-serif;
+  font-size: 3vh;  /* Increased font size */
+  font-weight: bold;
+  padding: 2.5vh 3vh;  /* Increased padding for a larger background */
+  border-radius: 2vh;
+  width: auto;
+  display: none;  /* Start hidden to prevent small background */
+  z-index: 9999;  /* Ensure it appears on top */
+  background-color: rgba(0, 0, 0, 0.7); /* Darker semi-dimmed black background */
+  color: white; /* White text */
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3); /* More prominent shadow */
+  opacity: 0; /* Initially hidden */
+  animation: fadeIn 0.5s ease-in-out forwards;
+  width: auto;  /* Set max width to prevent excessive width on large screens */
+  height: auto; /* Use vh for max height */
+  word-wrap: break-word;  /* Ensure long text doesn't overflow */
+}
+
+
+/* Optional: Animation for the feedback message */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+
+
+/* Add this CSS to position the difficulty display */
+.difficulty-display {
+  position: absolute;
+  top: 18vh;
+  left: 1vh;
+  width: auto;
+  height: 5vh;
+  padding: 1vh 2vh;
+  font-size: 2vh;
+  font-weight: bold;
+  color: #ffffff;
+  border-radius: 1vh;
+  z-index: 9999;
+  background-color: rgba(0, 0, 0, 0.6); /* Slightly darker background for better contrast */
+}
+
+/* Difficulty levels with distinct colors */
+.difficulty-display.easy {
+  background-color: #28a745; /* Green for easy */
+}
+
+.difficulty-display.normal {
+  background-color: #ffc107; /* Yellow for normal */
+}
+
+.difficulty-display.hard {
+  background-color: #fd7e14; /* Orange for hard */
+}
+
+.difficulty-display.extreme {
+  background-color: #dc3545; /* Red for extreme */
+}
+
+/* Optional hover effect for interactivity */
+
+
+
+    /* Overlay styling */
+  /* Overlay for 'Coming Soon' message */
+  #coming-soon-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    pointer-events: none; /* So it doesn't interfere with clicks */
+  }
+
+  #coming-soon-overlay p {
+    color: white;
+    font-size: 3rem;
+    font-weight: bold;
+    text-align: center;
+    margin: 0;
+    animation: fadeOut 2s forwards;
+  }
+
+  .coming-soon-hidden {
+    display: none;
+  }
+
+  @keyframes fadeOut {
+    0% { opacity: 1; }
+    70% { opacity: 1; }
+    100% { opacity: 0; }
+  }
+

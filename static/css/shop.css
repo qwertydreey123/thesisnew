@@ -1,0 +1,240 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    font-family: 'Poppins', sans-serif; /* Use the custom font */
+
+    
+  }
+  
+  .shop-wrapper {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .shop-content {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    max-width: none; /* remove max-width if you want full stretch */
+  }
+  
+  .shop-img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    object-fit: fill; /* Force stretching */
+    z-index: 0;
+    user-select: none;
+    -webkit-user-drag: none; /* Prevents dragging in Safari/Chrome */
+    -webkit-user-select: none; /* Prevents text/image selection in WebKit */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* IE/Edge */
+  }
+  
+  
+  /* Roadmap content scales with screen width */
+  .shop-content {
+    position: relative;
+    width: 100%;
+    max-width: 1920px;
+  }
+  
+  
+  /* Generic button styling (acts like cutout image) */
+  .shop-btn {
+    position: absolute;
+    background: transparent center/contain no-repeat;
+    border: none;
+    padding: 0;
+    margin: 0;
+    outline: none;
+    box-shadow: none;
+    cursor: pointer;
+    transition: transform 0.5s ease;
+    user-select: none;
+    -webkit-user-drag: none; /* Prevents dragging in Safari/Chrome */
+    -webkit-user-select: none; /* Prevents text/image selection in WebKit */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* IE/Edge */
+    /* Shadow Border */
+    filter: drop-shadow(0 0 5px rgba(255, 255, 150, 0.6))
+            drop-shadow(0 0 10px rgba(255, 255, 150, 0.4))
+            drop-shadow(0 0 15px rgba(255, 255, 150, 0.2));
+  
+  }
+  
+  /* Hover effect only when the button is clicked */
+  .shop-btn:hover {
+    transform: scale(1.03);
+  }
+  
+
+  
+  /* Button positions and sizes based on 1920x1080 */
+  .shopkeeper {
+    top: 14%;
+    left: 23%;
+    width: 22.5%;
+    height: 46.8%;
+    background-image: url('../images/shopimg/Shopkeeper.png');
+    user-select: none;
+    -webkit-user-drag: none; /* Prevents dragging in Safari/Chrome */
+    -webkit-user-select: none; /* Prevents text/image selection in WebKit */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* IE/Edge */
+  }
+
+  .shopkeeper, .counticus {
+    filter: none !important;         /* Remove glow effects */
+    transition: none !important;     /* Disable hover transition */
+
+  }
+  
+  .shopkeeper:hover, .counticus:hover {
+    transform: none !important;      /* Disable scaling on hover */
+  }
+  
+
+.back-btn {
+        position: absolute; /* Same positioning as shop-btn */
+        top: 11.1%;
+        left: 7.1%;
+        width: 8%;
+        height: 14.8%;
+        background: transparent center/contain no-repeat; /* Same layout (image background) */
+        background-image: url('../images/shopimg/back.png'); /* Image as background */
+        border: none; /* No border */
+        padding: 0; /* No padding */
+        margin: 0; /* No margin */
+        outline: none; /* Remove outline */
+        box-shadow: none; /* No shadow */
+        cursor: pointer; /* Pointer cursor on hover */
+        transition: transform 0.5s ease; /* Smooth transition */
+        z-index: 999; /* Ensure it's on top */
+      }
+      
+  .back-btn:hover {
+        transform: scale(1.03); /* Scale up on hover */
+      }
+
+  .back-btn {
+  filter: drop-shadow(0 0 8px rgba(0, 0, 0, 0.8)) /* Stronger shadow with higher opacity */
+          drop-shadow(0 0 12px rgba(0, 0, 0, 0.6)) /* Slightly larger shadow */
+          drop-shadow(0 0 18px rgba(0, 0, 0, 0.4)); /* Even larger shadow for deeper effect */
+      }
+  
+  
+  .health {
+    top: 64%;
+    left: 14.1%;
+    width: 8%;
+    height: 16.8%;
+    background-image: url('../images/shopimg/health.png');
+  }
+  
+  
+  .thunder {
+    top: 64.1%;
+    left: 30.1%;
+    width: 8.3%;
+    height: 16.8%;
+    background-image: url('../images/shopimg/thunder.png');
+  }
+  
+  
+  .freeze {
+    top: 64%;
+    left: 46.6%;
+    width: 8.4%;
+    height: 17.8%;
+    background-image: url('../images/shopimg/freeze.png');
+  }
+  
+  .counticus {
+    top: 60.1%;
+    left: 80.6%;
+    width: 10.5%;
+    height: 46.8%;
+    background-image: url('../images/gameimg/counticus.png');
+    
+  }
+
+  .speech-bubble {
+    position: absolute;
+    top: 80vh;
+    left: 70vw;
+    background: #fef3c7;
+    border: 3px solid #d97706;
+    border-radius: 3vh;
+    padding: 2vh 3vw;
+    max-width: 12.5vw; /* Fixed width to prevent resizing the bubble */
+    width: fit-content;
+    height: auto;
+    max-height: 19vh; /* Limit height to 10% of viewport height */
+    color: #5B3A29;
+    word-wrap: break-word;
+    transform: translate(-50%, -50%);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.5s ease-in-out, visibility 0.5s ease-in-out;
+    z-index: 10;
+}
+
+.speech-bubble.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+.speech-bubble::after {
+  content: '';
+  position: absolute;
+
+  top: 85%;
+  right: -3.03vh;
+  width: 0;
+  height: 0;
+  border-top: 1.2vh solid transparent;
+  border-left: 3.5vh solid #fef3c7;
+  border-bottom: 1.4vh solid transparent;
+  transform: translateY(-50%);
+}
+
+/* Title styling */
+.speech-bubble h2 {
+    margin: 0;
+    font-size: 2.1vh;
+    text-align: center;
+    font-weight: 800;
+}
+
+/* Title colors */
+.health-title { color: #d4150c; }
+.thunder-title { color: #fbc513; }
+.freeze-title { color: #53cbe5; }
+
+.speech-bubble p {
+    margin-top: 0.5vh;
+    font-size: 1.8vh;
+    text-align: justify;
+    line-height: 1.4;
+    font-weight: 600;
+    max-width: 100%; /* This will ensure the paragraph does not exceed 90% of the speech bubble's width */
+    word-wrap: break-word; /* Ensures long words are wrapped */
+}
+
+
+  
+  
+  
+  

@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+</head>
+<body data-page="dashboard" data-bgm="/static/bgm/dashboard.mp3">
+  <div class="dashboard-wrapper">
+    <div class="dashboard-content">
+      <!-- Background Image -->
+      <img src="{{ url_for('static', filename='images/dshbrdimg/dashboardbg.png') }}" alt="Dashboard Image"/>
+
+      <!-- Image-Based Buttons -->
+      <div class="dashboard-buttons">
+        <audio id="buttonClickSound" src="/static/sfx/click.mp3" preload="auto"></audio>
+
+          <!-- LOGOUT BUTTON -->
+          <div class="dashboard-btn-wrapper">
+            <button class="dashboard-btn logout" id="logoutBtn"onclick="playButtonClickSound()"></button>
+          </div>
+          
+
+        <!-- PROFILE -->
+        <div class="dashboard-btn-wrapper">
+          <div class="dashboard-btn profile">
+            <span class="user-name" id="username">{{ first_name }} {{ last_name }}</span>
+            <span class="gender">GENDER: {{ gender }}</span>
+            <span class="id">USER ID: {{ id }}</span>
+          </div>
+        </div>
+        
+        
+        
+
+          <!-- ADVENTURE -->
+          <div class="dashboard-btn-wrapper">
+            <a href="{{ url_for('roadmap') }}" onclick="delayedRedirect(event, this.href)">
+              <button class="dashboard-btn adventure"></button>
+            </a>
+          </div>
+
+          <!-- COLLECTIBLES -->
+          <div class="dashboard-btn-wrapper">
+            <a href="{{ url_for('collectibles') }}" onclick="delayedRedirect(event, this.href)">
+              <button class="dashboard-btn collections"></button>
+            </a>
+          </div>
+
+          <!-- MONSTER ATLAS -->
+          <div class="dashboard-btn-wrapper">
+            <a href="{{ url_for('monster_atlas') }}" onclick="delayedRedirect(event, this.href)">
+              <button class="dashboard-btn monsters"></button>
+            </a>
+          </div>
+
+          <!-- SHOP -->
+          <div class="dashboard-btn-wrapper">
+            <a href="{{ url_for('shop') }}" onclick="delayedRedirect(event, this.href)">
+              <button class="dashboard-btn shop"></button>
+            </a>
+          </div>
+
+
+
+
+
+<!-- SETTINGS BUTTON -->
+<div class="dashboard-btn-wrapper">
+  <button class="dashboard-btn settings" onclick="showComingSoon(); playButtonClickSound()"></button>
+</div>
+
+<!-- COMING SOON OVERLAY -->
+<div id="coming-soon-overlay" class="coming-soon-hidden">
+  <p>Coming Soon</p>
+</div>
+      
+
+
+      </div> <!-- .dashboard-buttons -->
+    </div> <!-- .dashboard-content -->
+  </div> <!-- .dashboard-wrapper -->
+
+
+  <script>
+    function showComingSoon() {
+      const overlay = document.getElementById('coming-soon-overlay');
+      overlay.classList.remove('coming-soon-hidden');
+  
+      const text = overlay.querySelector('p');
+      text.style.animation = 'none'; // Reset animation
+      void text.offsetWidth;         // Trigger reflow
+      text.style.animation = 'fadeOut 2s forwards';
+  
+      setTimeout(() => {
+        overlay.classList.add('coming-soon-hidden');
+      }, 2000);
+    }
+  
+    function playButtonClickSound() {
+      const sound = document.getElementById('buttonClickSound');
+      if (sound) sound.play();
+    }
+  
+    // Ensure it's hidden when page loads
+    window.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('coming-soon-overlay')?.classList.add('coming-soon-hidden');
+    });
+  </script>
+  
+  
+  <script>
+  
+    const logoutBtn = document.getElementById('logoutBtn');
+  
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', () => {
+            // Create loading overlay
+            const loadingOverlay = document.createElement('div');
+            loadingOverlay.style.position = 'fixed';
+            loadingOverlay.style.top = '0';
+            loadingOverlay.style.left = '0';
+            loadingOverlay.style.width = '100vw';
+            loadingOverlay.style.height = '100vh';
+            loadingOverlay.style.backgroundColor = 'rgba(0, 0, 0, 0.7)'; // Dim background
+            loadingOverlay.style.display = 'flex';
+            loadingOverlay.style.justifyContent = 'center';
+            loadingOverlay.style.alignItems = 'center';
+            loadingOverlay.style.color = '#fff';
+            loadingOverlay.style.fontSize = '2rem';
+            loadingOverlay.style.zIndex = '9999';
+            loadingOverlay.style.flexDirection = 'column'; // Align vertically
+            
+            // Create spinner
+            const spinner = document.createElement('div');
+            spinner.classList.add('spinner-border');
+            spinner.setAttribute('role', 'status');
+            spinner.style.width = '4rem';
+            spinner.style.height = '4rem';
+            spinner.style.color = 'white';
+  
+            // Create text
+            const loadingText = document.createElement('div');
+            loadingText.innerText = 'Logging out...';
+            loadingText.style.marginTop = '20px';
+            loadingText.style.fontSize = '1.5rem';
+  
+            loadingOverlay.appendChild(spinner);
+            loadingOverlay.appendChild(loadingText);
+            document.body.appendChild(loadingOverlay);
+  
+            // After 1 second, redirect to logout URL
+            setTimeout(() => {
+                window.location.href = "{{ url_for('logout') }}";
+            }, 1000); // 1 second delay
+        });
+    }
+</script>
+
+<script>
+  function playButtonClickSound() {
+    const originalSound = document.getElementById('buttonClickSound');
+    const soundClone = originalSound.cloneNode(); // clone the <audio> element
+    soundClone.volume = 1;
+    soundClone.playbackRate = 2;
+
+    // Play the cloned audio
+    soundClone.play().catch((e) => {
+        console.error('Playback failed:', e);
+    });
+  }
+
+  function delayedRedirect(event, url) {
+    event.preventDefault(); // Stop immediate redirect
+    playButtonClickSound();
+
+    setTimeout(() => {
+      window.location.href = url;
+    }, 300); // Adjust delay as needed
+  }
+
+  function autoResizeFont(element) {
+  let fontSize = 4;
+  element.style.fontSize = fontSize + 'vh';
+  element.style.whiteSpace = 'normal';
+
+  while ((element.scrollHeight > element.offsetHeight || element.scrollWidth > element.offsetWidth) && fontSize > 1) {
+    fontSize -= 0.1;
+    element.style.fontSize = fontSize + 'vh';
+  }
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+  const username = document.getElementById('username');
+  if (username) autoResizeFont(username);
+});
+
+</script>
+<script src="{{ url_for('static', filename='js/tutorial.js') }}"></script>
+<script src="{{ url_for('static', filename='js/orientation.js') }}"></script>
+<script src="{{ url_for('static', filename='js/bgmusic.js') }}"></script>
+
+  
+</body>
+</html>

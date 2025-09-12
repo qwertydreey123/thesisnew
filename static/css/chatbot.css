@@ -1,0 +1,161 @@
+body {
+    background-color: #101010 ;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
+    padding: 20px;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+}
+
+.chat-container {
+    position: absolute;
+    top: 3vh;
+    left: 4vh;
+    width: 96vw;
+    height: 93vh;
+    margin-bottom: 20px;
+    border-radius: 1vh;
+    padding: 2vh;
+    background-color: #1a1a1a;
+    display: flex;
+    flex-direction: column;
+}
+
+.chat-messages {
+    flex-grow: 1;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column-reverse;
+    padding: 1vh 1vh;
+    border-radius: 5px;
+    background-color: #1f1f1f;
+    height: 90%;
+}
+
+.message-row {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 10px;
+    position: relative; /* Keeps positioning for the speaker icon */
+}
+
+.message-row.user {
+    justify-content: flex-end;
+    /* Ensure there's enough space between profile and bubble */
+}
+
+.profile-pic {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-left: 10px; /* Added space to separate bubble and profile */
+}
+
+.message-bubble {
+    max-width: 50%;
+    padding: 10px 15px;
+    border-radius: 20px;
+    color: white;
+    background-color: #303030;
+    white-space: pre-line;
+    word-wrap: break-word;
+    position: relative;
+    margin-left: 1vh;
+    margin-top: 0.3vh;
+}
+
+
+/* User bubble */
+.message-row.user .message-bubble {
+    background-color: #80aaff;
+}
+
+/* Speaker icon for user messages */
+.speaker-icon {
+    cursor: pointer;
+    min-width: 20px;
+    min-height: 20px;
+    font-size: 20px;
+    user-select: none;
+    /* Remove any absolute positioning */
+    position: static !important;
+    margin-left: 11px;
+    margin-top: 4px; /* space below the image */
+    display: inline-block;
+    color: #0d6efd; /* or your preferred icon color */
+    transition: color 0.2s ease;
+}
+
+.speaker-icon:hover {
+    color: #0f61db; /* Bootstrap primary blue on hover */
+}
+
+/* Remove the .message-row.bot .speaker-icon left/top positioning */
+.message-row.bot .speaker-icon {
+    left: auto !important;
+    top: auto !important;
+    transform: none !important;
+}
+
+
+
+#user-input::placeholder {
+    color: white;
+}
+
+label[for="voice-select"] {
+    margin-bottom: 1vh;
+    color: white;
+}
+
+
+.form-select {
+    --bs-form-select-bg-img: url(data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e);
+    display: block;
+    width: 100%;
+    padding: .375rem 2.25rem .375rem .75rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: white;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-color: #3a3b3c;
+    background-image: var(--bs-form-select-bg-img), var(--bs-form-select-bg-icon, none);
+    background-repeat: no-repeat;
+    background-position: right .75rem center;
+    background-size: 16px 12px;
+    border: var(--bs-border-width) solid #3a3b3c;
+    border-radius: var(--bs-border-radius);
+    transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+}
+
+.form-control {
+    display: block;
+    width: 100%;
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: white;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-color: #3a3b3c;
+    background-clip: padding-box;
+    border: var(--bs-border-width) solid #3a3b3c;
+    border-radius: var(--bs-border-radius);
+    transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+}
+
+.form-control:focus {
+    color: white;
+    background-color: #3a3b3c;
+    background-color: #3a3b3c;
+    outline: 0;
+}

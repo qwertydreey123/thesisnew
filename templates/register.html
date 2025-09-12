@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up</title>
+    
+    <!-- Tailwind CSS -->
+    <!-- Bootstrap CSS -->
+    <!-- Font Awesome -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/register.css') }}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
+</head>
+
+<body>
+    <img class="bg-img" src="{{ url_for('static', filename='images/registerimg/registerbg.png') }}" alt="Background Image">
+
+    <div class="custom-container">
+        <div class="register-wrapper">
+            <div class="register-content">
+                <form action="{{ url_for('register') }}" method="POST">
+
+                    <!-- Flash messages -->
+                    {% with messages = get_flashed_messages(with_categories=true) %}
+                      {% if messages %}
+                        <div class="flash-container">
+                          {% for category, message in messages %}
+                            <div class="flash flash-{{ category }}">
+                              {{ message }}
+                            </div>
+                          {% endfor %}
+                        </div>
+                      {% endif %}
+                    {% endwith %}
+
+                    <div class="mb-3">
+                        <input type="text" id="username" name="username" placeholder="Username" minlength="3" required class="content username">
+                    </div>
+                    <div class="mb-3">
+                        <input type="text" id="first_name" name="first_name" placeholder="First Name" class="content firstname">
+                    </div>
+                    <div class="mb-3">
+                        <input type="text" id="last_name" name="last_name" placeholder="Last Name" class="content lastname">
+                    </div>
+
+                    <select id="birth_day" name="birth_day" class="birthday-select day" required>
+                        <option value="" disabled selected>Day</option>
+                        {% for day in range(1, 32) %}
+                            <option value="{{ day }}">{{ day }}</option>
+                        {% endfor %}
+                    </select>
+
+                    <select id="birth_month" name="birth_month" class="birthday-select month" required>
+                        <option value="" disabled selected>Month</option>
+                        {% for month in ['January','February','March','April','May','June','July','August','September','October','November','December'] %}
+                            <option value="{{ month }}">{{ month }}</option>
+                        {% endfor %}
+                    </select>
+
+                    <select id="birth_year" name="birth_year" class="birthday-select year" required>
+                        <option value="" disabled selected>Year</option>
+                        {% for year in range(2000, 2026) %}
+                            <option value="{{ year }}">{{ year }}</option>
+                        {% endfor %}
+                    </select>
+                            
+                    <div class="gender-group">
+                        <label class="gender-option male">
+                            👦🏻 Male
+                            <input type="radio" name="gender" value="male" required>
+                        </label>
+                        <label class="gender-option female">
+                            👩🏻 Female
+                            <input type="radio" name="gender" value="female" required>
+                        </label>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <input type="password" id="password" name="password" placeholder="New password" minlength="6" required class="content newpass">
+                    </div>
+
+                    <div class="mb-3">
+                        <input type="password" id="confirm_password" name="confirm_password" placeholder="Confirm password" minlength="6" required class="content confirmpass">
+                    </div>
+
+                    <div class="btn-wrapper">
+                        <button type="submit"></button>
+                    </div>
+
+                    <div class="already-acc">
+                        <a href="{{ url_for('login') }}">
+                            <button type="button" class="sign-in"></button>
+                        </a>
+                    </div>
+                    
+                </form>
+            </div>
+        </div>
+    </div>
+    <script>
+          const form = document.querySelector('form');
+  const usernameInput = document.getElementById('username');
+  const passwordInput = document.getElementById('password');
+  const confirmInput = document.getElementById('confirm_password');
+
+  form.addEventListener('submit', function(e) {
+    let errorMsg = '';
+
+    if (usernameInput.value.trim().length < 3) {
+      errorMsg = 'Username must be at least 3 characters.';
+    } else if (passwordInput.value.length < 6) {
+      errorMsg = 'Password must be at least 6 characters.';
+    } else if (passwordInput.value !== confirmInput.value) {
+      errorMsg = 'Passwords do not match.';
+    }
+
+    if (errorMsg) {
+      e.preventDefault();
+      alert(errorMsg);
+    }
+  });
+  
+        // Auto-hide flash messages after 4 seconds
+        setTimeout(function () {
+          const flashMessages = document.querySelectorAll('.flash');
+          flashMessages.forEach(function (msg) {
+            msg.style.transition = 'opacity 0.5s ease';
+            msg.style.opacity = '0';
+            setTimeout(() => msg.remove(), 500); // Remove from DOM after fade
+          });
+        }, 4000); // 4 seconds
+      </script>
+      
+    <script src="{{ url_for('static', filename='js/orientation.js') }}"></script>
+</body>
+</html>

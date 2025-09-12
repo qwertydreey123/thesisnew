@@ -1,0 +1,338 @@
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #1E273E;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  overflow: hidden; /* Prevent body from showing extra background */
+}
+
+
+.main-wrapper {
+  width: 100vw;
+  height: 100vh;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+  position: relative;
+  overflow: hidden;
+
+}
+
+
+.stages-content {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  max-width: none; /* remove max-width if you want full stretch */
+
+}
+
+.bg-img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  object-fit: fill; /* Force stretching */
+  z-index: -1;
+  filter: blur(5px); /* Add blur effect with 10px radius, you can adjust this value */
+  user-select: none;
+  -webkit-user-drag: none; /* Prevents dragging in Safari/Chrome */
+  -webkit-user-select: none; /* Prevents text/image selection in WebKit */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE/Edge */
+}
+
+
+.map-img {
+  position: absolute;
+  top: 8%;
+  left: 28%;
+  width: 43%;
+  height: 85%;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  z-index: 1;
+  animation: smoothBungeeDrop 1.5s cubic-bezier(0.22, 1, 0.36, 1) forwards; /* Bungee drop effect */
+  user-select: none;
+  -webkit-user-drag: none; /* Prevents dragging in Safari/Chrome */
+  -webkit-user-select: none; /* Prevents text/image selection in WebKit */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE/Edge */
+}
+
+@keyframes smoothBungeeDrop {
+  0% {
+    transform: translateY(-100%) scale(0.8); /* Start off-screen and slightly scaled */
+  }
+  50% {
+    transform: translateY(0) scale(1); /* Smooth fall to the original position */
+  }
+  100% {
+    transform: translateY(0) scale(1); /* Final position, no movement or scaling */
+  }
+}
+
+
+.star {
+  position: absolute;
+  width: auto;
+  height: 9%;
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  z-index: 4;
+  transition: transform 0.4s ease; /* Smooth transition */
+  user-select: none;
+  -webkit-user-drag: none; /* Prevents dragging in Safari/Chrome */
+  -webkit-user-select: none; /* Prevents text/image selection in WebKit */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE/Edge */
+  }
+  .star:hover {
+    transform: scale(1.02); /* Scale up on hover */
+  }
+  .st1{
+    top: 45%;
+    left: 61%;
+  }
+  .st2{
+    top: 56%;
+    left: 61%;
+  }
+  .st3{
+    top: 67%;
+    left: 61%;
+  }
+
+  .back-btn{
+    position: absolute; /* Same positioning as shop-btn */
+    top: 5.1%;
+    left: 4.1%;
+    width: 12%;
+    height: 14.8%;
+    background: transparent center/contain no-repeat; /* Same layout (image background) */
+    background-image: url('../images/stageimg/back2.png'); /* Image as background */
+    cursor: pointer; /* Pointer cursor on hover */
+    transition: transform 0.2s ease; /* Smooth transition */
+    z-index: 999; /* Ensure it's on top */
+    user-select: none;
+    -webkit-user-drag: none; /* Prevents dragging in Safari/Chrome */
+    -webkit-user-select: none; /* Prevents text/image selection in WebKit */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* IE/Edge */
+  }
+  .back-btn:hover {
+    transform: scale(1.02); /* Scale up on hover */
+  }
+
+
+/* Stage styles */
+
+.stage {
+  position: absolute;
+  width: 24vh;
+  height: auto;
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  z-index: 3;
+  transition: transform 0.3s ease;
+  transform-origin: center center;
+  
+}
+.stage:hover {
+  transform: scale(1.03); /* Scale up on hover */
+}
+
+.s1 {
+  top: 46%;
+  left: 33%;
+  
+}
+
+.s2 {
+  top: 57%;
+  left: 33%;
+}
+
+.s3 {
+  top: 68%;
+  left: 33%;
+}
+
+
+
+/* Apply grayscale for locked stages */
+.stage.locked img {
+  filter: grayscale(100%) !important; /* Grayscale effect when locked */
+}
+
+/* Locked text overlay */
+.stage.locked::after {
+  content: "Locked";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 18px;
+  color: white;
+  background: rgba(0, 0, 0, 0.5);
+  padding: 5px;
+  border-radius: 5px;
+}
+
+.btn.locked {
+  opacity: 0.5; /* Optional: Dim the locked stage to indicate it's not fully accessible */
+  filter: grayscale(100%);
+}
+
+/* Reward Bubble Styles */
+/* Full screen background animation */
+.reward-bubble {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-image: url('../images/gameimg/rewardimg/bg.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  z-index: 10000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  transform: scale(0); /* Start at scale 0 */
+  animation: rewardPop 2s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards; /* Add animation for background */
+}
+
+/* Pop-in animation for the background */
+@keyframes rewardPop {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  60% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* Reward image animation */
+/* Reward image animation */
+.reward-img {
+  position: absolute;
+  width: auto;
+  height: 34vh;
+  top: 50%;
+  left: 49.5%;
+  opacity: 0;
+  display: block;
+  transition: transform 0.5s ease-out, opacity 0.5s ease-out;
+  animation: rewardImagePop 1.5s ease-out forwards, rewardImageBounce 2s ease-in-out infinite 1.5s; /* Image pop and bounce with delay */
+}
+
+/* Pop-in animation for the reward image */
+@keyframes rewardImagePop {
+  0% {
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 0;
+  }
+  60% {
+    transform: translate(-50%, -50%) scale(1.2); /* Slightly enlarged during mid-animation */
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+  }
+}
+
+/* Bounce animation with delay between bounces */
+@keyframes rewardImageBounce {
+  0% {
+    transform: translate(-50%, -50%) scale(1);
+  }
+  25% {
+    transform: translate(-50%, -50%) scale(1.05);
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1);
+  }
+  75% {
+    transform: translate(-50%, -50%) scale(1.05);
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+
+/* OK button fade-in and pop animation */
+.reward-btn {
+  position: absolute;
+  background-image: url('../images/gameimg/rewardimg/claimbtn.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  cursor: pointer;
+  width: 22vh;
+  height: 6.5vh;
+  top: 92%;
+  left: 44.5%;
+  opacity: 0;
+  transition: opacity 0.4s ease, transform 0.4s ease, box-shadow 0.3s ease, background 0.3s ease;
+  animation: buttonFadePop 1.3s ease-out forwards;
+}
+
+
+.reward-btn:active {
+  transform: scale(1.05); /* Button will snap back to normal when clicked */
+}
+
+
+
+/* Pop-in animation for the OK button */
+@keyframes buttonFadePop {
+  0% {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Add a shake effect to the button when it appears */
+.reward-btn.shake {
+  animation: buttonShake 0.5s ease-in-out forwards;
+}
+
+@keyframes buttonShake {
+  0% {
+    transform: scale(1) translateX(0);
+  }
+  25% {
+    transform: scale(1) translateX(-5px);
+  }
+  50% {
+    transform: scale(1) translateX(5px);
+  }
+  75% {
+    transform: scale(1) translateX(-5px);
+  }
+  100% {
+    transform: scale(1) translateX(0);
+  }
+}
+
+

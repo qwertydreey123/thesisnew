@@ -1,0 +1,273 @@
+@font-face {
+  font-family: "FSP DEMO - Merlo Neue Bold";
+  src: url("https://db.onlinewebfonts.com/t/8d461bab99a9a970a10bca9246b1f1ae.eot");
+  src: url("https://db.onlinewebfonts.com/t/8d461bab99a9a970a10bca9246b1f1ae.eot?#iefix")format("embedded-opentype"),
+  url("https://db.onlinewebfonts.com/t/8d461bab99a9a970a10bca9246b1f1ae.woff2")format("woff2"),
+  url("https://db.onlinewebfonts.com/t/8d461bab99a9a970a10bca9246b1f1ae.woff")format("woff"),
+  url("https://db.onlinewebfonts.com/t/8d461bab99a9a970a10bca9246b1f1ae.ttf")format("truetype"),
+  url("https://db.onlinewebfonts.com/t/8d461bab99a9a970a10bca9246b1f1ae.svg#FSP DEMO - Merlo Neue Bold")format("svg");
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #1E273E;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  overflow: hidden; /* Prevent body from showing extra background */
+}
+
+.dashboard-wrapper {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center; /* or flex-start if you prefer top-aligned */
+  box-sizing: border-box;
+}
+
+.dashboard-wrapper img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain; /* Ensures it keeps aspect ratio while fitting */
+  user-select: none;
+  -webkit-user-drag: none; /* Prevents dragging in Safari/Chrome */
+  -webkit-user-select: none; /* Prevents text/image selection in WebKit */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE/Edge */
+}
+
+
+/* Roadmap content scales with screen width */
+.dashboard-content {
+  position: relative;
+  width: 100%;
+  max-width: 1920px;
+}
+
+
+/* Generic button styling (acts like cutout image) */
+.dashboard-btn {
+  position: absolute;
+  background: transparent center/contain no-repeat;
+  border: none;
+  padding: 0;
+  margin: 0;
+  outline: none;
+  box-shadow: none;
+  cursor: pointer;
+  transition: transform 0.5s ease;
+  user-select: none;
+  -webkit-user-drag: none; /* Prevents dragging in Safari/Chrome */
+  -webkit-user-select: none; /* Prevents text/image selection in WebKit */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE/Edge */
+
+  /* Shadow Border */
+  filter: drop-shadow(0 0 5px rgba(255, 255, 150, 0.6))
+          drop-shadow(0 0 10px rgba(255, 255, 150, 0.4))
+          drop-shadow(0 0 15px rgba(255, 255, 150, 0.2));
+}
+
+/* Hover effect only when the button is clicked */
+.dashboard-btn:hover {
+  transform: scale(1.03);
+}
+
+.logout {
+  top: 12.1vh;
+  right: 1.5vh;
+  width: 20.5vh;
+  height: 7.8vh;
+  background-image: url('../images/dshbrdimg/Logout2.png');
+}
+.profile {
+  top: 60.2%;
+  left: 39%;
+  width: 22.5%;
+  height: 27.8%;
+  background-image: url('../images/dshbrdimg/Profile1.png');
+  cursor: default;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.user-name {
+  color: #603002;
+  font-size: 4vh;
+  font-weight: 700;
+  font-family: "FSP DEMO - Merlo Neue Bold";
+  position: absolute;
+  top: 3.3vh;
+  left: 6.4vh;
+
+  width: 35vh;    /* Width fixed */
+  height: 6vh;    /* Height fixed */
+  max-width: 35vh;
+  max-height: 6vh;
+
+  display: flex;
+  flex-direction: column; /* Stack text vertically */
+  justify-content: center; /* Vertically center the text */
+  align-items: flex-start; /* Align text to the left */
+
+  padding-left: 0vh;       /* Optional padding to the left */
+
+  white-space: normal;     /* Allow text wrapping */
+  overflow: hidden;
+  text-align: left;        /* Align text to the left */
+  line-height: 1.2;
+  text-transform: uppercase;
+
+
+
+
+
+
+  /* Mas contrasty stroke-style */
+  text-shadow:
+    -1px -1px 0 #fcd516,
+     1px -1px 0 #fcd516,
+    -1px  1px 0 #fcd516,
+     1px  1px 0 #fcd516;
+}
+
+.gender {
+  color: #603002;
+  font-size: 2.5vh;
+  font-weight: 500;
+  text-align: left;
+  font-family: "FSP DEMO - Merlo Neue Bold";
+  position: absolute;
+  top: 9.5vh;
+  left: 6.4vh;
+  width: 35vh;
+  max-width: 35vh;
+  word-wrap: break-word;
+  word-break: break-word;
+  line-height: 1.4;
+  text-transform: uppercase;
+
+
+  /* Mas contrasty stroke-style */
+  text-shadow:
+    -1px -1px 0 #fcd516,
+     1px -1px 0 #fcd516,
+    -1px  1px 0 #fcd516,
+     1px  1px 0 #fcd516;
+}
+
+.id {
+  color: #603002;
+  font-size: 2.5vh;
+  font-weight: 500;
+  text-align: left;
+  font-family: "FSP DEMO - Merlo Neue Bold";
+  position: absolute;
+  top: 12vh;
+  left: 6.4vh;
+  width: 35vh;
+  max-width: 35vh;
+  word-wrap: break-word;
+  word-break: break-word;
+  line-height: 1.4;
+  text-transform: uppercase;
+
+
+  /* Mas contrasty stroke-style */
+  text-shadow:
+    -1px -1px 0 #fcd516,
+     1px -1px 0 #fcd516,
+    -1px  1px 0 #fcd516,
+     1px  1px 0 #fcd516;
+}
+
+
+.profile:hover {
+  transform: none; /* Walang effect sa hover */
+}
+/* Button positions and sizes based on 1920x1080 */
+.adventure {
+  top: 13.2%;
+  left: 39%;
+  width: 22.5%;
+  height: 41.8%;
+  background-image: url('../images/dshbrdimg/Adventure.png');
+
+}
+
+
+.collections {
+  top: 48.1%;
+  left: 4.4%;
+  width: 21%;
+  height: 41.8%;
+  background-image: url('../images/dshbrdimg/Collection.png');
+}
+
+
+.monsters {
+  top: 6.1%;
+  left: 69.3%;
+  width: 19.5%;
+  height: 41.8%;
+  background-image: url('../images/dshbrdimg/monsters.png');
+}
+
+
+.settings {
+  top: 48.1%;
+  left: 73.3%;
+  width: 20.5%;
+  height: 41.8%;
+  background-image: url('../images/dshbrdimg/Settings.png');
+}
+
+
+.shop {
+  top: 6.1%;
+  left: 10.4%;
+  width: 19.7%;
+  height: 41.8%;
+  background-image: url('../images/dshbrdimg/Shop.png');
+}
+
+#coming-soon-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+#coming-soon-overlay p {
+  color: #fff;
+  font-size: 7vh;
+  font-weight: bold;
+  margin: 0;
+  opacity: 1;
+  animation: fadeOut 2s forwards;
+}
+
+.coming-soon-hidden {
+  display: none !important;  /* Force it to hide */
+}
+
+@keyframes fadeOut {
+  0% { opacity: 1; }
+  70% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+
+
